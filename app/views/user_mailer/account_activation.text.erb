@@ -1,0 +1,5 @@
+Hi there <%= @user.name %>,
+
+Thank you for signing up for the Theia Portal. Please copy and paste the link below into your browser to verify your email.
+
+<%= edit_account_activation_url(@user.activation_token, email: @user.email) %>

@@ -1,0 +1,59 @@
+<%= provide(:title, @organization.name) %>
+
+<div class="hide-on-small-and-down" style="padding-top: 32px"></div>
+
+<div class="hide-on-small-and-down" style="padding-top: 32px"></div>
+<div class="row">
+  <div class="z-depth-2 white col s12 m10 offset-m1 l6 offset-l3" style="position: relative">
+    <div style="padding-top: 32px"></div>
+
+    <div class="row">
+      <div class="col s12">
+        <%= render "shared/grid_helper" %>
+        <h3>Invite New Members</h3>
+        <p class="flow-text">Emails placed here will be automatically sent an email inviting them to join this organization</p>
+        <%= form_tag organization_send_invites_path(@organization) do %>
+          <div class="row">
+            <div class="col s6 center">
+              <a href="javascript:" id="add_new_email" class="hide-on-small-and-down"><i class="material-icons" style="position: relative; top: 6px; padding-bottom: 4px">add</i>Add Invite</a>
+            </div>
+            <div class="col s6">
+              <%= submit_tag "Send Invites", class: "btn-small theia_blue right hide-on-small-and-down"%>
+            </div>
+            <br>
+            <div id="emails_form">
+            </div>
+            <div class="col s12 center">
+              <%= submit_tag "Send Invites", class: "btn-large theia_blue hide-on-med-and-up"%>
+              <div class="fixed-action-btn">
+                <a href="javascript:" id="add_new_email_mobile" class="btn-floating btn-large waves-effect waves-light red hide-on-med-and-up"><i class="material-icons">add</i></a>
+              </div>
+            </div>
+            <div class="col s2 offset-s2">
+            </div>
+          </div>
+          <br>
+        <% end %>
+        <div class="divider"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hide" id="new_emails_form">
+  <div class="input-field col s12 m8 offset-m2 l6">
+    <%= text_field_tag 'emails[]' %>
+    <%= label_tag 'Email' %>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $("#add_new_email").click(function(){
+            $("#emails_form").append($("#new_emails_form").html());
+        });
+        $("#add_new_email_mobile").click(function(){
+            $("#emails_form").append($("#new_emails_form").html());
+        });
+    });
+</script>

@@ -1,0 +1,39 @@
+<%= provide(:title, "Invites Sent!") %>
+
+<div class="hide-on-small-and-down" style="padding-top: 32px"></div>
+<div class="row">
+  <div class="z-depth-2 white col s12 m10 offset-m1 l6 offset-l3" style="position: relative">
+    <div class="center">
+      <h2>Invites Sent</h2>
+    </div>
+
+    <ul class="collection">
+      <% @successful_invites.each do |user| %>
+        <li class="collection-item avatar">
+          <img src="http://placekitten.com/g/50/50" alt="" class="circle">
+          <span class="title">Successfully invited</span>
+          <p><%= user.email %>
+          </p>
+          <a href="#!" class="secondary-content"><i class="material-icons">check</i></a>
+        </li>
+      <% end %>
+    </ul>
+
+    <ul class="collection">
+      <% @unsuccessful_invites.each do |user| %>
+        <li class="collection-item avatar">
+          <img src="http://placekitten.com/g/50/50" alt="" class="circle">
+          <span class="title">Failed to invite</span>
+          <p><%= user.email %> <br>
+            <% user.errors.full_messages.each do |error| %>
+              <%= error %>
+              <br>
+            <% end %>
+          </p>
+          <a href="#!" class="secondary-content"><i class="material-icons">clear</i></a>
+        </li>
+      <% end %>
+    </ul>
+
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<% provide(:title, "Forgot Password") %>
+
+<div class="hide-on-small-and-down" style="padding-top: 32px">
+</div>
+<div class="row">
+  <div class="z-depth-2 white col s12 m8 offset-m2 l4 offset-l4" style="position: relative">
+    <div class="center">
+      <h2>Forgot Password</h2>
+    </div>
+    <div class="row" style="padding-bottom: 16px">
+      <div class="col s12 m8 offset-m2">
+        <%= form_for(:password_reset, url: password_resets_path) do |f| %>
+          <%= f.email_field :email%>
+          <%= f.label :email %>
+
+          <%= f.submit "Reset", class: "btn theia_blue", style: "margin-top: 16px;"%>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

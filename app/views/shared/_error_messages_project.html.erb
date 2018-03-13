@@ -1,0 +1,10 @@
+<% if @project.errors.any?  %>
+  <div id="error_explanation">
+    <span class="card-title">The form contains <%= pluralize(@project.errors.count, "error") %>:</span>
+    <ul>
+      <% @project.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

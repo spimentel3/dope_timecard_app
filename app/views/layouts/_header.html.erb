@@ -1,0 +1,27 @@
+<% if logged_in? %>
+  <ul id="account_dropdown" class="dropdown-content" style="margin-top: 64px">
+    <li><%= link_to "Profile",  current_user,                   class: "theia_text_blue" %></li>
+    <li><%= link_to "Settings", edit_user_path(current_user),   class: "theia_text_blue" %></li>
+    <li><%= link_to "Logout",   logout_path,  method: :delete,  class: "theia_text_blue" %></li>
+  </ul>
+<% end %>
+<nav class="theia_slate">
+  <div class="nav-wrapper container">
+    <ul class="right">
+      <% if logged_in? %>
+        <li><a class="dropdown-trigger theia_text_blue" href="" data-target="account_dropdown">Account<i class="material-icons right">arrow_drop_down</i></a></li>
+      <% end %>
+    </ul>
+    <ul class="sidenav" id="side-nav">
+      <% if logged_in? %>
+        <%= image_tag(gravatar_for(@current_user, 100), alt: @current_user.name, style: "margin: 10px 0 0 10px", class: "circle")%>
+        <div class="divider"></div>
+        <li><%= link_to "Settings",   edit_user_path(current_user), class: "theia_text_blue" %></li>
+        <li><%= link_to "Logout",     logout_path, method: :delete, class: "theia_text_blue" %></li>
+      <% else %>
+        <li><%= link_to "Login",      login_path,   class: "theia_text_blue" %></li>
+        <li><%= link_to "Signup",     signup_path,  class: "theia_text_blue" %></li>
+      <% end %>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,32 @@
+<%= provide(:title, "Create Company") %>
+
+<div class="hide-on-small-and-down" style="padding-top: 32px"></div>
+<div class="row">
+  <div class="z-depth-2 white col s12 m8 offset-m2 l4 offset-l4" style="position: relative">
+    <div class="center">
+      <h2>Create Company</h2>
+    </div>
+    <div class="row" style="padding-bottom: 16px">
+      <div class="col s12 m8 offset-m2">
+        <%= form_for(@company, url: create_company_path) do |f| %>
+
+          <div class="input-field">
+            <%= f.text_field :name, class: "form_focus" %>
+            <%= f.label :name, "Company Name" %>
+          </div>
+
+          <div class="input-field">
+            <%= f.text_field :owner%>
+            <%= f.label :owner, "Owner Name" %>
+          </div>
+
+          <br>
+          <%= f.submit "Create Company", class: "btn theia_blue", style: "margin-top: 16px;" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="card white darken-1 hide-on-small-and-down" style="width: 200px; position: absolute; top: 25%; right: -100px;">
+      <%= render 'shared/error_messages_company' %>
+    </div>
+  </div>
+</div>
