@@ -5,12 +5,25 @@
 <div class="hide-on-small-and-down" style="padding-top: 32px"></div>
 <div class="row">
   <div class="z-depth-2 white col s12 m10 offset-m1 l6 offset-l3" style="position: relative">
-    <div style="padding-top: 32px"></div>
+
 
     <div class="row">
       <div class="col s12">
-        <%= render "shared/grid_helper" %>
-        <h3>Invite New Members</h3>
+        <!--<%= render "shared/grid_helper" %>-->
+        <h4>Current Members:</h4>
+        <ul class="collection">
+          <% @employees.each do |user| %>
+            <li class="collection-item avatar">
+              <img src="http://placekitten.com/g/50/50" alt="" class="circle">
+              <span class="title"></span>
+              <p><%= User.find(user.user_id).email %>
+              </p>
+            </li>
+          <% end %>
+        </ul>
+        <div class="divider"></div>
+
+        <h4>Invite New Members</h4>
         <p class="flow-text">Emails placed here will be automatically sent an email inviting them to join this organization</p>
         <%= form_tag organization_send_invites_path(@organization) do %>
           <div class="row">

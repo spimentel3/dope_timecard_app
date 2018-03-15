@@ -25,6 +25,7 @@ class OrganizationsController < ApplicationController
 
   def show
     @organization = Organization.find(params[:id])
+    @employees = @organization.employees
   end
 
   # noinspection RailsChecklist01

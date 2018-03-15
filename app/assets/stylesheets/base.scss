@@ -177,6 +177,14 @@ input[type="checkbox"]:checked+span:not(.lever):before {
   color: $theia_slate !important;
 }
 
+.material-icons.red_icon {
+    color: #F44336 !important;
+}
+
+.material-icons.green_icon {
+    color: #4CAF50 !important;
+}
+
 .tabs
 {
   .tab a {
