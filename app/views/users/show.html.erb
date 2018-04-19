@@ -251,10 +251,23 @@
           this.value = zero_pad(this.value, 2);
       });
 
+      $("#timecard_table input[id*='hour']").focusout(function(){
+          if (parseInt(this.value) > 8 && parseInt(this.value) < 12) {
+              $(this).siblings("div[id*='am_pm']").children(".am-btn").addClass("theia_text_blue");
+          } else {
+              $(this).siblings("div[id*='am_pm']").children(".pm-btn").addClass("theia_text_blue");
+          }
+      });
+
       function zero_pad(n, width, z) {
           z = z || '0';
           n = n + '';
           return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+      }
+
+      function toggle_am(elem){
+          $(elem).addClass("theia_text_blue");
+          $(elem).siblings().removeClass("theia_text_blue");
       }
 
 
@@ -311,7 +324,7 @@
               }
           };
           console.log(data);
-          
+
           /*
           $.ajax({
               type: 'PUT'
