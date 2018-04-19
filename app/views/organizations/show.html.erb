@@ -1,7 +1,6 @@
 <%= provide(:title, @organization.name) %>
 
 <div class="hide-on-small-and-down" style="padding-top: 32px"></div>
-
 <div class="hide-on-small-and-down" style="padding-top: 32px"></div>
 <div class="row">
   <div class="z-depth-2 white col s12 m10 offset-m1 l6 offset-l3" style="position: relative">
@@ -55,7 +54,7 @@
 
 <div class="hide" id="new_emails_form">
   <div class="input-field col s12 m8 offset-m2 l6">
-    <%= text_field_tag 'emails[]' %>
+    <%= text_field_tag 'emails[]', nil, class:"email_input_field" %>
     <%= label_tag 'Email' %>
   </div>
 </div>
@@ -63,10 +62,25 @@
 <script>
     $(document).ready(function(){
         $("#add_new_email").click(function(){
-            $("#emails_form").append($("#new_emails_form").html());
+            add_field();
+            update_form();
         });
+
         $("#add_new_email_mobile").click(function(){
             $("#emails_form").append($("#new_emails_form").html());
         });
+
+        function add_field(){
+            $("#emails_form").append($("#new_emails_form").html());
+        }
+
+        function update_form(){
+            $(".email_input_field:last")
+                .on('keydown', function(e){
+                    if( e.which === 9 ){
+                        alert("hello");
+                    }
+                });
+        }
     });
 </script>

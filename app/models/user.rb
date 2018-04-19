@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_many    :owned_organizations,   :class_name => 'Organization', :foreign_key => 'owner_id'
   has_one     :employer,              :class_name => 'Employee'
+  has_many    :timebooks
+  has_many    :timecards,   through: :timebooks
 
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save   :downcase_email
@@ -43,6 +45,10 @@ class User < ApplicationRecord
 
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
+  end
+
+  def send_invitation_email
+    UserMailer.account_invitation(self).deliver_now
   end
 
   def create_reset_digest

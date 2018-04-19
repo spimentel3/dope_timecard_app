@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sat_hours: 1
+  sat_break: 1
+  sun_hours: 1
+  sun_break: 1
+  mon_hours: 1
+  mon_break: 1
+  tue_hours: 1
+  tue_break: 1
+  wed_hours: 1
+  wed_break: 1
+  thu_hours: 1
+  thu_break: 1
+  fri_hours: 1
+  fri_break: 1
+
+two:
+  sat_hours: 1
+  sat_break: 1
+  sun_hours: 1
+  sun_break: 1
+  mon_hours: 1
+  mon_break: 1
+  tue_hours: 1
+  tue_break: 1
+  wed_hours: 1
+  wed_break: 1
+  thu_hours: 1
+  thu_break: 1
+  fri_hours: 1
+  fri_break: 1

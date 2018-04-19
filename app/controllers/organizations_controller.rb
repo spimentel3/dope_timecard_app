@@ -8,7 +8,7 @@ class OrganizationsController < ApplicationController
 
   def create
     @organization = Organization.new(organization_params)
-    @organization.owner_id = params[:owner_id]
+    @organization.owner = User.find(params[:owner_id])
 
     if @organization.save
       flash[:success] = "Organization Created"
@@ -35,11 +35,22 @@ class OrganizationsController < ApplicationController
     @successful_invites = []
     @unsuccessful_invites = []
     @invites.each do |email|
-      user = User.new(email: email, password: "theia123", password_confirmation: "theia123")
+      password = SecureRandom.urlsafe_base64
+      user = User.new(email: email, password: password, password_confirmation: password)
+      user.needs_to_update_account = true
+      user.admin_level = 20
       if user.save
-        user.send_activation_email
+        user.send_invitation_email
         employee = Employee.new(user: user, organization: @organization)
         employee.save
+
+        timecard = Timecard.new
+        timecard.set_up_timecard
+        timecard.save
+
+        timebook_entry = Timebook.new(organization: @organization, timecard: timecard, user: user)
+        timebook_entry.save
+
         @successful_invites.push(user)
       else
         @unsuccessful_invites.push(user)

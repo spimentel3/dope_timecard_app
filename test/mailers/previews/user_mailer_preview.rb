@@ -15,4 +15,11 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.password_reset(user)
   end
 
+  def account_invitation
+    user = User.first
+    user.activation_token = User.new_token
+    UserMailer.account_invitation(user)
+  end
+
+
 end

@@ -8,7 +8,7 @@ class CompaniesController < ApplicationController
       @company = user.owned_companies.build(name: params[:company][:name])
       if @company.save
         flash[:success] = "Company Created"
-        redirect_to current_user
+        redirect_to @current_user
       else
         flash[:danger] = "No company name"
         redirect_to create_company_path

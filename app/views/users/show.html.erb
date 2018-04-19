@@ -1,34 +1,253 @@
 <%= provide(:title, @user.name) %>
 
-<div class="hide-on-small-and-down" style="padding-top: 32px"></div>
+<div class="" style="padding-top: 32px"></div>
+<% if has_company_access? %>
 <div class="row">
-  <div class="z-depth-2 white col s12 m10 offset-m1 l8 offset-l2" style="position: relative">
+  <div class="z-depth-2 white col s12 m3 offset-m1">
     <div class="row">
-      <div class="col m3 hide-on-med-and-down center">
-        <%= image_tag(gravatar_for(@user, 100), alt: @user.name, style: "padding-top: 10px")%>
-        <p class="flow-text" style="margin-bottom: 0"><%= @user.name %></p>
-      </div>
-      <div id="user_content" class="col s12 l8">
-        <% @owned_organizations.each do |org| %>
-          <div class="row">
-            <div class="col s7 offset-s1">
-              <h4><%= org.name %></h4>
-            </div>
-            <div class="col s4 center" style="margin-top: 24px">
-              <%= link_to "Manage", org, class: "btn-small theia_blue"%>
-            </div>
-          </div>
-        <% end %>
-        <% if @owned_organizations.count == 0 %>
-          <div style="margin-top: 64px"></div>
-        <% end %>
-        <div class="row center">
-          <div class="col s12 m6">
-            <%=	 link_to "New Organization", new_organization_path, class: "btn-large theia_blue" %>
-          </div>
-          <div class="col s12 hide-on-med-and-up" style="padding: 8px"></div>
-        </div>
+      <div class="col s12">
+        <%= image_tag("icon_only_100.png", alt: @user.name, class:"circle left", style: "margin: 0.75rem 0.75rem 0 0")%>
+        <h5 style="margin-bottom: 0"><%= @user.name %></h5>
       </div>
     </div>
+    <div class="center">
+      <%=	 link_to "New Organization", new_organization_path, class: "btn theia_blue", style: "margin-bottom: 16px;"  %>
+    </div>
+  </div>
+  <div class="col s12 m6 offset-m1">
+    <% @owned_organizations.each do |org| %>
+      <div class="row">
+        <div class="col s7 offset-s1">
+          <h4><%= org.name %></h4>
+        </div>
+        <div class="col s4 center" style="margin-top: 24px">
+          <%= link_to "Manage", org, class: "btn-small theia_blue"%>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>
+<% elsif is_company_user? %>
+<div class="row">
+  <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3" style="position: relative">
+    <div class="row">
+      <div class="col s6">
+        <h5>Timecard</h5>
+        <p><%= @user.name %></p>
+      </div>
+      <div class="col s6 right">
+        <p class="right">Due at: <%= @user.timecards.last.end_date.strftime("%m/%d %I:%M %p") %></p>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <table class="striped centered">
+      <thead>
+      <tr>
+        <th>Day</th>
+        <th>Starting Time</th>
+        <th>Ending Time</th>
+        <th>Break Duration</th>
+      </tr>
+      </thead>
+      <tbody id="timecard_table">
+      <tr id="sat_row">
+        <td>Saturday</td>
+        <td>
+          <input id="sat_start_hour" type="text" style="width: 20px">
+          :
+          <input id="sat_start_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="sat_end_hour" type="text" style="width: 20px">
+          :
+          <input id="sat_end_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="sat_break_hour" type="text" style="width: 20px">
+          h
+          <input id="sat_break_minute" type="text" style="width: 20px">
+          m
+        </td>
+      </tr>
+      <tr id="sun_row">
+        <td>Sunday</td>
+        <td>
+          <input id="sun_start_hour" type="text" style="width: 20px">
+          :
+          <input id="sun_start_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="sun_end_hour" type="text" style="width: 20px">
+          :
+          <input id="sun_end_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="sun_break_hour" type="text" style="width: 20px">
+          h
+          <input id="sun_break_minute" type="text" style="width: 20px">
+          m
+        </td>
+      </tr>
+      <tr id="mon_row">
+        <td>Monday</td>
+        <td>
+          <input id="mon_start_hour" type="text" style="width: 20px">
+          :
+          <input id="mon_start_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="mon_end_hour" type="text" style="width: 20px">
+          :
+          <input id="mon_end_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="mon_break_hour" type="text" style="width: 20px">
+          h
+          <input id="mon_break_minute" type="text" style="width: 20px">
+          m
+        </td>
+      </tr>
+      <tr id="tue_row">
+        <td>Tuesday</td>
+        <td>
+          <input id="tue_start_hour" type="text" style="width: 20px">
+          :
+          <input id="tue_start_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="tue_end_hour" type="text" style="width: 20px">
+          :
+          <input id="tue_end_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="tue_break_hour" type="text" style="width: 20px">
+          h
+          <input id="tue_break_minute" type="text" style="width: 20px">
+          m
+        </td>
+      </tr>
+      <tr id="wed_row">
+        <td>Wednesday</td>
+        <td>
+          <input id="wed_start_hour" type="text" style="width: 20px">
+          :
+          <input id="wed_start_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="wed_end_hour" type="text" style="width: 20px">
+          :
+          <input id="wed_end_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="wed_break_hour" type="text" style="width: 20px">
+          h
+          <input id="wed_break_minute" type="text" style="width: 20px">
+          m
+        </td>
+      </tr>
+      <tr id="thu_row">
+        <td>Thursday</td>
+        <td>
+          <input id="thu_start_hour" type="text" style="width: 20px">
+          :
+          <input id="thu_start_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="thu_end_hour" type="text" style="width: 20px">
+          :
+          <input id="thu_end_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="thu_break_hour" type="text" style="width: 20px">
+          h
+          <input id="thu_break_minute" type="text" style="width: 20px">
+          m
+        </td>
+      </tr>
+      <tr id="fri_row">
+        <td>Friday</td>
+        <td>
+          <input id="fri_start_hour" type="text" style="width: 20px">
+          :
+          <input id="fri_start_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="fri_end_hour" type="text" style="width: 20px">
+          :
+          <input id="fri_end_minute" type="text" style="width: 20px">
+        </td>
+        <td>
+          <input id="fri_break_hour" type="text" style="width: 20px">
+          h
+          <input id="fri_break_minute" type="text" style="width: 20px">
+          m
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <a id="submit_hours" class="btn theia_blue" style="margin: 8px">Submit</a>
+  </div>
+</div>
+
+  <script>
+
+      $("#timecard_table input").focusout(function(){
+          this.value = zero_pad(this.value, 2);
+      });
+
+      function zero_pad(n, width, z) {
+          z = z || '0';
+          n = n + '';
+          return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+      }
+
+      $('#submit_hours').click(function () {
+          var data = {
+              timecard: {
+                  sat_start: ($('#sat_start_hour').val() == "" || $('#sat_start_minute').val() == "") ? "" : "<%= @timecard.sat_start.strftime("%Y-%m-%d") %> " + $('#sat_start_hour').val() + ":" + $('#sat_start_minute').val() + ":00",
+                  sat_end: ($('#sat_end_hour').val() == "" || $('#sat_end_minute').val() == "") ? "" : "<%= @timecard.sat_end.strftime("%Y-%m-%d") %> " + $('#sat_end_hour').val() + ":" + $('#sat_end_minute').val() + ":00",
+                  sat_break_hours: $('#sat_break_hour').val(),
+                  sat_break_minutes: $('#sat_break_minute').val(),
+                  sun_start: ($('#sun_start_hour').val() == "" || $('#sun_start_minute').val() == "") ? "" : "<%= @timecard.sun_start.strftime("%Y-%m-%d") %> " + $('#sun_start_hour').val() + ":" + $('#sun_start_minute').val() + ":00",
+                  sun_end: ($('#sun_end_hour').val() == "" || $('#sun_end_minute').val() == "") ? "" : "<%= @timecard.sun_end.strftime("%Y-%m-%d") %> " + $('#sun_end_hour').val() + ":" + $('#sun_end_minute').val() + ":00",
+                  sun_break_hours: $('#sun_break_hour').val(),
+                  sun_break_minutes: $('#sun_break_minute').val(),
+                  mon_start: ($('#mon_start_hour').val() == "" || $('#mon_start_minute').val() == "") ? "" : "<%= @timecard.mon_start.strftime("%Y-%m-%d") %> " + $('#mon_start_hour').val() + ":" + $('#mon_start_minute').val() + ":00",
+                  mon_end: ($('#mon_end_hour').val() == "" || $('#mon_end_minute').val() == "") ? "" : "<%= @timecard.mon_end.strftime("%Y-%m-%d") %> " + $('#mon_end_hour').val() + ":" + $('#mon_end_minute').val() + ":00",
+                  mon_break_hours: $('#mon_break_hour').val(),
+                  mon_break_minutes: $('#mon_break_minute').val(),
+                  tue_start: ($('#tue_start_hour').val() == "" || $('#tue_start_minute').val() == "") ? "" : "<%= @timecard.tue_start.strftime("%Y-%m-%d") %> " + $('#tue_start_hour').val() + ":" + $('#tue_start_minute').val() + ":00",
+                  tue_end: ($('#tue_end_hour').val() == "" || $('#tue_end_minute').val() == "") ? "" : "<%= @timecard.tue_end.strftime("%Y-%m-%d") %> " + $('#tue_end_hour').val() + ":" + $('#tue_end_minute').val() + ":00",
+                  tue_break_hours: $('#tue_break_hour').val(),
+                  tue_break_minutes: $('#tue_break_minute').val(),
+                  wed_start: ($('#wed_start_hour').val() == "" || $('#wed_start_minute').val() == "") ? "" : "<%= @timecard.wed_start.strftime("%Y-%m-%d") %> " + $('#wed_start_hour').val() + ":" + $('#wed_start_minute').val() + ":00",
+                  wed_end: ($('#wed_end_hour').val() == "" || $('#wed_end_minute').val() == "") ? "" : "<%= @timecard.wed_end.strftime("%Y-%m-%d") %> " + $('#wed_end_hour').val() + ":" + $('#wed_end_minute').val() + ":00",
+                  wed_break_hours: $('#wed_break_hour').val(),
+                  wed_break_minutes: $('#wed_break_minute').val(),
+                  thu_start: ($('#thu_start_hour').val() == "" || $('#thu_start_minute').val() == "") ? "" : "<%= @timecard.thu_start.strftime("%Y-%m-%d") %> " + $('#thu_start_hour').val() + ":" + $('#thu_start_minute').val() + ":00",
+                  thu_end: ($('#thu_end_hour').val() == "" || $('#thu_end_minute').val() == "") ? "" : "<%= @timecard.thu_end.strftime("%Y-%m-%d") %> " + $('#thu_end_hour').val() + ":" + $('#thu_end_minute').val() + ":00",
+                  thu_break_hours: $('#thu_break_hour').val(),
+                  thu_break_minutes: $('#thu_break_minute').val(),
+                  fri_start: ($('#fri_start_hour').val() == "" || $('#fri_start_minute').val() == "") ? "" : "<%= @timecard.fri_start.strftime("%Y-%m-%d") %> " + $('#fri_start_hour').val() + ":" + $('#fri_start_minute').val() + ":00",
+                  fri_end: ($('#fri_end_hour').val() == "" || $('#fri_end_minute').val() == "") ? "" : "<%= @timecard.fri_end.strftime("%Y-%m-%d") %> " + $('#fri_end_hour').val() + ":" + $('#fri_end_minute').val() + ":00",
+                  fri_break_hours: $('#fri_break_hour').val(),
+                  fri_break_minutes: $('#fri_break_minute').val()
+              }
+          };
+          console.log(data);
+
+          $.ajax({
+              type: 'PUT'
+              , url: '<%= timecard_path(@timecard) %>'
+              , data: data
+              , success: function () {
+                  console.log("Updated project binary info");
+              }
+              , error: function (XMLHttpRequest, textStatus, errorThrown) {
+                  console.log('Upload error: ' + XMLHttpRequest.responseText);
+              }
+          });
+      });
+  </script>
+
+<% end %>

@@ -10,7 +10,7 @@
 
   </head>
 
-  <body>
+  <body class="theia_slate">
 
   <%= render 'layouts/header' %>
   <div id="app_content">
@@ -26,10 +26,15 @@
   <% end %>
 
   <script>
+
       $(document).ready(function(){
           // console.log("calling ready function");
           $(".dropdown-trigger").dropdown();
           $('.tabs').tabs();
+          var side_nav_options = {};
+          var side_nav = document.querySelector('.sidenav');
+          var side_nav_instance = M.Sidenav.init(side_nav, side_nav_options);
+
       });
   </script>
 

@@ -13,5 +13,9 @@ Rails.application.routes.draw do
   resources :password_resets,     only: [:new, :create, :edit, :update]
   resources :organizations,       only: [:new, :create, :show, :destroy] do
     post  'send_invites',         to: 'organizations#send_invites'
+    resources :timebook,          only: [:show, :new, :index]
+    resources :timecard,          only: [:edit]
   end
+
+  resources :timecard,            only: [:new, :create, :show, :update]
 end

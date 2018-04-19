@@ -12,6 +12,15 @@ User.create!(name:  "theia-root",
              admin_level: 1,
              activated: true,
              activated_at: Time.zone.now)
+
+User.create!(name:  "Stephen Phillips",
+             email: "stephen@theia.io",
+             password: "theia123",
+             password_confirmation: "theia123",
+             admin_level: 10,
+             activated: true,
+             activated_at: Time.zone.now)
+
 #
 # User.create!(name:  "theia-dev",
 #              email: "theia-dev@theia.io",

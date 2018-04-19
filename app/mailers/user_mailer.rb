@@ -19,4 +19,11 @@ class UserMailer < ApplicationMailer
     @user = user
     mail to: user.email, subject: "Password Reset"
   end
+
+
+  def account_invitation(user)
+    @user = user
+    mail to: user.email, subject: "A Saudi Prince has invited you to..."
+  end
+
 end
