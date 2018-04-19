@@ -136,6 +136,8 @@ class TimecardController < ApplicationController
 
     @timecard.save
 
+    render json: {total_hours: @timecard.total_hours}
+
   end
 
   def edit

@@ -248,7 +248,12 @@
       </tr>
       </tbody>
     </table>
-    <a id="submit_hours" class="btn theia_blue" style="margin: 8px">Submit</a>
+    <div class="divider" style="margin: 16px 0 16px 0"></div>
+    <div class="row">
+      <div class="col s4">
+        <h5 id="total_hours">Total Hours: <%= @timecard.total_hours %> </h5>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -319,14 +324,14 @@
                   fri_break_minutes: $('#fri_break_minute').val(),
               }
           };
-          console.log(data);
-          
+
           $.ajax({
               type: 'PUT'
               , url: '<%= timecard_path(@timecard) %>'
               , data: data
-              , success: function () {
+              , success: function (json) {
                   console.log("Updated timecard");
+                  $("#total_hours").html("Total Hours: " + json["total_hours"])
               }
               , error: function (XMLHttpRequest, textStatus, errorThrown) {
                   console.log('Upload error: ' + XMLHttpRequest.responseText);
