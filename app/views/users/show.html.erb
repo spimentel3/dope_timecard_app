@@ -58,191 +58,191 @@
       </thead>
       <tbody id="timecard_table">
       <tr id="sat_row">
-        <td>Saturday</td>
+        <td>Saturday <%= @timecard.sat_start.strftime("%m/%d") %></td>
         <td>
-          <input id="sat_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="sat_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sat_start_is_set)? @timecard.sat_start.strftime("%I"): "" %>">
           :
-          <input id="sat_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="sat_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sat_start_is_set)? @timecard.sat_start.strftime("%M"): "" %>">
           <div id="sat_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.sat_start_is_set and @timecard.sat_start.strftime("%I").to_i > 8 and @timecard.sat_start.strftime("I").to_i < 12)? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.sat_start_is_set and @timecard.sat_start.strftime("%I").to_i < 8 or  @timecard.sat_start.strftime("I").to_i > 12)? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="sat_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="sat_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sat_end_is_set)? @timecard.sat_end.strftime("%I"): "" %>">
           :
-          <input id="sat_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="sat_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sat_end_is_set)? @timecard.sat_end.strftime("%M"): "" %>">
           <div id="sat_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.sat_end_is_set and @timecard.sat_end.strftime("%I").to_i > 8 and @timecard.sat_end.strftime("I").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.sat_end_is_set and @timecard.sat_end.strftime("%I").to_i < 8 or @timecard.sat_end.strftime("I").to_i > 12) ? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="sat_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="sat_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sat_break_hours_is_set)? @timecard.sat_break_hours : "" %>">
           h
-          <input id="sat_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="sat_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sat_break_hours_is_set)? @timecard.sat_break_minutes : "" %>">
           m
         </td>
       </tr>
       <tr id="sun_row">
-        <td>Sunday</td>
+        <td>Sunday <%= @timecard.sun_start.strftime("%m/%d") %></td>
         <td>
-          <input id="sun_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="sun_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sun_start_is_set) ? @timecard.sun_start.strftime("%I") : "" %>">
           :
-          <input id="sun_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="sun_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sun_start_is_set) ? @timecard.sun_start.strftime("%M") : "" %>">
           <div id="sun_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.sun_start_is_set and @timecard.sun_start.strftime("%I").to_i > 8 and @timecard.sun_start.strftime("I").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.sun_start_is_set and @timecard.sun_start.strftime("%I").to_i < 8 or @timecard.sun_start.strftime("I").to_i > 12) ? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="sun_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="sun_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sun_end_is_set) ? @timecard.sun_end.strftime("%I") : "" %>">
           :
-          <input id="sun_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="sun_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sun_end_is_set) ? @timecard.sun_end.strftime("%M") : "" %>">
           <div id="sun_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.sun_end_is_set and @timecard.sun_end.strftime("%I").to_i > 8 and @timecard.sun_end.strftime("I").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.sun_end_is_set and @timecard.sun_end.strftime("%I").to_i < 8 or @timecard.sun_end.strftime("I").to_i > 12) ? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="sun_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="sun_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sun_break_hours_is_set) ? @timecard.sun_break_hours : "" %>">
           h
-          <input id="sun_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="sun_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sun_break_hours_is_set) ? @timecard.sun_break_minutes : "" %>">
           m
         </td>
       </tr>
       <tr id="mon_row">
-        <td>Monday</td>
+        <td>Monday <%= @timecard.mon_start.strftime("%m/%d") %></td>
         <td>
-          <input id="mon_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="mon_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.mon_start_is_set) ? @timecard.mon_start.strftime("%I") : "" %>">
           :
-          <input id="mon_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="mon_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.mon_start_is_set) ? @timecard.mon_start.strftime("%M") : "" %>">
           <div id="mon_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.mon_start_is_set and @timecard.mon_start.strftime("%I").to_i > 8 and @timecard.mon_start.strftime("I").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.mon_start_is_set and @timecard.mon_start.strftime("%I").to_i < 8 or @timecard.mon_start.strftime("I").to_i > 12) ? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="mon_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="mon_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.mon_end_is_set) ? @timecard.mon_end.strftime("%I") : "" %>">
           :
-          <input id="mon_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="mon_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.mon_end_is_set) ? @timecard.mon_end.strftime("%M") : "" %>">
           <div id="mon_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.mon_end_is_set and @timecard.mon_end.strftime("%I").to_i > 8 and @timecard.mon_end.strftime("I").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.mon_end_is_set and @timecard.mon_end.strftime("%I").to_i < 8 or @timecard.mon_end.strftime("I").to_i > 12) ? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="mon_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="mon_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.mon_break_hours_is_set) ? @timecard.mon_break_hours : "" %>">
           h
-          <input id="mon_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="mon_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.mon_break_hours_is_set) ? @timecard.mon_break_minutes : "" %>">
           m
         </td>
       </tr>
       <tr id="tue_row">
-        <td>Tuesday</td>
+        <td>Tuesday <%= @timecard.tue_start.strftime("%m/%d") %></td>
         <td>
-          <input id="tue_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="tue_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.tue_start_is_set) ? @timecard.tue_start.strftime("%I") : "" %>">
           :
-          <input id="tue_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="tue_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.tue_start_is_set) ? @timecard.tue_start.strftime("%M") : "" %>">
           <div id="tue_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.tue_start_is_set and @timecard.tue_start.strftime("%I").to_i > 8 and @timecard.tue_start.strftime("I").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.tue_start_is_set and @timecard.tue_start.strftime("%I").to_i < 8 or @timecard.tue_start.strftime("I").to_i > 12) ? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="tue_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="tue_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.tue_end_is_set) ? @timecard.tue_end.strftime("%I") : "" %>">
           :
-          <input id="tue_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="tue_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.tue_end_is_set) ? @timecard.tue_end.strftime("%M") : "" %>">
           <div id="tue_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.tue_end_is_set and @timecard.tue_end.strftime("%I").to_i > 8 and @timecard.tue_end.strftime("I").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.tue_end_is_set and @timecard.tue_end.strftime("%I").to_i < 8 or @timecard.tue_end.strftime("I").to_i > 12) ? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="tue_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="tue_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.tue_break_hours_is_set) ? @timecard.tue_break_hours : "" %>">
           h
-          <input id="tue_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="tue_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.tue_break_hours_is_set) ? @timecard.tue_break_minutes : "" %>">
           m
         </td>
       </tr>
       <tr id="wed_row">
-        <td>Wednesday</td>
+        <td>Wednesday <%= @timecard.wed_start.strftime("%m/%d") %></td>
         <td>
-          <input id="wed_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="wed_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.wed_start_is_set) ? @timecard.wed_start.strftime("%I") : "" %>">
           :
-          <input id="wed_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="wed_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.wed_start_is_set) ? @timecard.wed_start.strftime("%M") : "" %>">
           <div id="wed_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.wed_start_is_set and @timecard.wed_start.strftime("%I").to_i > 8 and @timecard.wed_start.strftime("I").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.wed_start_is_set and @timecard.wed_start.strftime("%I").to_i < 8 or @timecard.wed_start.strftime("I").to_i > 12) ? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="wed_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="wed_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.wed_end_is_set) ? @timecard.wed_end.strftime("%I") : "" %>">
           :
-          <input id="wed_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="wed_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.wed_end_is_set) ? @timecard.wed_end.strftime("%M") : "" %>">
           <div id="wed_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.wed_end_is_set and @timecard.wed_end.strftime("%I").to_i > 8 and @timecard.wed_end.strftime("I").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.wed_end_is_set and @timecard.wed_end.strftime("%I").to_i < 8 or @timecard.wed_end.strftime("I").to_i > 12) ? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="wed_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="wed_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.wed_break_hours_is_set) ? @timecard.wed_break_hours : "" %>">
           h
-          <input id="wed_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="wed_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.wed_break_hours_is_set) ? @timecard.wed_break_minutes : "" %>">
           m
         </td>
       </tr>
       <tr id="thu_row">
-        <td>Thursday</td>
+        <td>Thursday <%= @timecard.thu_start.strftime("%m/%d") %></td>
         <td>
-          <input id="thu_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="thu_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.thu_start_is_set) ? @timecard.thu_start.strftime("%I") : "" %>">
           :
-          <input id="thu_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="thu_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.thu_start_is_set) ? @timecard.thu_start.strftime("%M") : "" %>">
           <div id="thu_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.thu_start_is_set and @timecard.thu_start.strftime("%I").to_i > 8 and @timecard.thu_start.strftime("I").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.thu_start_is_set and @timecard.thu_start.strftime("%I").to_i < 8 or @timecard.thu_start.strftime("I").to_i > 12) ? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="thu_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="thu_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.thu_end_is_set) ? @timecard.thu_end.strftime("%I") : "" %>">
           :
-          <input id="thu_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="thu_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.thu_end_is_set) ? @timecard.thu_end.strftime("%M") : "" %>">
           <div id="thu_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.thu_end_is_set and @timecard.thu_end.strftime("%I").to_i > 8 and @timecard.thu_end.strftime("I").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.thu_end_is_set and @timecard.thu_end.strftime("%I").to_i < 8 or @timecard.thu_end.strftime("I").to_i > 12) ? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="thu_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="thu_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.thu_break_hours_is_set) ? @timecard.thu_break_hours : "" %>">
           h
-          <input id="thu_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="thu_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.thu_break_hours_is_set) ? @timecard.thu_break_minutes : "" %>">
           m
         </td>
       </tr>
       <tr id="fri_row">
-        <td>Friday</td>
+        <td>Friday <%= @timecard.fri_start.strftime("%m/%d") %></td>
         <td>
-          <input id="fri_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="fri_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.fri_start_is_set) ? @timecard.fri_start.strftime("%I") : "" %>">
           :
-          <input id="fri_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="fri_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.fri_start_is_set) ? @timecard.fri_start.strftime("%M") : "" %>">
           <div id="fri_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.fri_start_is_set and @timecard.fri_start.strftime("%I").to_i > 8 and @timecard.fri_start.strftime("I").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.fri_start_is_set and @timecard.fri_start.strftime("%I").to_i < 8 or @timecard.fri_start.strftime("I").to_i > 12) ? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="fri_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="fri_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.fri_end_is_set) ? @timecard.fri_end.strftime("%I") : "" %>">
           :
-          <input id="fri_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="fri_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.fri_end_is_set) ? @timecard.fri_end.strftime("%M") : "" %>">
           <div id="fri_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
-            <div class="am-btn">AM</div>
-            <div class="pm-btn">PM</div>
+            <div class="am-btn <%= (@timecard.fri_end_is_set and @timecard.fri_end.strftime("%I").to_i > 8 and @timecard.fri_end.strftime("I").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.fri_end_is_set and @timecard.fri_end.strftime("%I").to_i < 8 or @timecard.fri_end.strftime("I").to_i > 12) ? "animate_theia_text_blue" : "" %>">PM</div>
           </div>
         </td>
         <td>
-          <input id="fri_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
+          <input id="fri_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.fri_break_hours_is_set) ? @timecard.fri_break_hours : "" %>">
           h
-          <input id="fri_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <input id="fri_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.fri_break_hours_is_set) ? @timecard.fri_break_minutes : "" %>">
           m
         </td>
       </tr>
@@ -277,19 +277,7 @@
           }
       });
 
-      $("#timecard_table input[id*='break_minute']").focusout(function () {
-
-      });
-
-      $(".am-btn").click(function(){
-          toggle_am_pm($(this));
-      });
-
-      $(".pm-btn").click(function(){
-          toggle_am_pm($(this));
-      });
-
-      $("#submit_hours").click(function(){
+      $("#timecard_table input").focusout(function () {
           // language=JQuery-CSS
           var n = $('.invalid').length;
 
@@ -301,49 +289,57 @@
 
           var data = {
               timecard: {
-                  sat_start: ($('#sat_start_hour').val() == "" || $('#sat_start_minute').val() == "") ? "" : "<%= @timecard.sat_start.strftime("%Y-%m-%d") %> " + (($("#sat_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#sat_start_hour').val()) + 12 : $('#sat_start_hour').val()) + ":" + $('#sat_start_minute').val() + ":00",
-                  sat_end: ($('#sat_end_hour').val() == "" || $('#sat_end_minute').val() == "") ? "" : "<%= @timecard.sat_end.strftime("%Y-%m-%d") %> " + (($("#sat_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#sat_end_hour').val()) + 12 : $('#sat_end_hour').val()) + ":" + $('#sat_end_minute').val() + ":00",
+                  sat_start: ($('#sat_start_hour').val() == "" || $('#sat_start_minute').val() == "") ? "" : "<%= @timecard.sat_start.strftime("%Y-%m-%d") %> " + (($("#sat_start_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#sat_start_hour').val()) != 12) ? parseInt($('#sat_start_hour').val()) + 12 : ($("#sat_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#sat_start_hour').val()) == 12) ? parseInt($('#sat_start_hour').val()) - 12 : $('#sat_start_hour').val()) + ":" + $('#sat_start_minute').val() + ":00",
+                  sat_end: ($('#sat_end_hour').val() == "" || $('#sat_end_minute').val() == "") ? "" : "<%= @timecard.sat_end.strftime("%Y-%m-%d") %> " + (($("#sat_end_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#sat_end_hour').val()) != 12) ? parseInt($('#sat_end_hour').val()) + 12 : ($("#sat_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#sat_end_hour').val()) == 12) ? parseInt($('#sat_end_hour').val()) - 12 : $('#sat_end_hour').val()) + ":" + $('#sat_end_minute').val() + ":00",
                   sat_break_hours: $('#sat_break_hour').val(),
                   sat_break_minutes: $('#sat_break_minute').val(),
-                  sun_start: ($('#sun_start_hour').val() == "" || $('#sun_start_minute').val() == "") ? "" : "<%= @timecard.sun_start.strftime("%Y-%m-%d") %> " + (($("#sun_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#sun_start_hour').val()) + 12 : $('#sun_start_hour').val()) + ":" + $('#sun_start_minute').val() + ":00",
-                  sun_end: ($('#sun_end_hour').val() == "" || $('#sun_end_minute').val() == "") ? "" : "<%= @timecard.sun_end.strftime("%Y-%m-%d") %> " + (($("#sun_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#sun_end_hour').val()) + 12 : $('#sun_end_hour').val()) + ":" + $('#sun_end_minute').val() + ":00",
+                  sun_start: ($('#sun_start_hour').val() == "" || $('#sun_start_minute').val() == "") ? "" : "<%= @timecard.sun_start.strftime("%Y-%m-%d") %> " + (($("#sun_start_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#sun_start_hour').val()) != 12) ? parseInt($('#sun_start_hour').val()) + 12 : ($("#sun_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#sun_start_hour').val()) == 12) ? parseInt($('#sun_start_hour').val()) - 12 : $('#sun_start_hour').val()) + ":" + $('#sun_start_minute').val() + ":00",
+                  sun_end: ($('#sun_end_hour').val() == "" || $('#sun_end_minute').val() == "") ? "" : "<%= @timecard.sun_end.strftime("%Y-%m-%d") %> " + (($("#sun_end_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#sun_end_hour').val()) != 12) ? parseInt($('#sun_end_hour').val()) + 12 : ($("#sun_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#sun_end_hour').val()) == 12) ? parseInt($('#sun_end_hour').val()) - 12 : $('#sun_end_hour').val()) + ":" + $('#sun_end_minute').val() + ":00",
                   sun_break_hours: $('#sun_break_hour').val(),
                   sun_break_minutes: $('#sun_break_minute').val(),
-                  mon_start: ($('#mon_start_hour').val() == "" || $('#mon_start_minute').val() == "") ? "" : "<%= @timecard.mon_start.strftime("%Y-%m-%d") %> " + (($("#mon_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#mon_start_hour').val()) + 12 : $('#mon_start_hour').val()) + ":" + $('#mon_start_minute').val() + ":00",
-                  mon_end: ($('#mon_end_hour').val() == "" || $('#mon_end_minute').val() == "") ? "" : "<%= @timecard.mon_end.strftime("%Y-%m-%d") %> " + (($("#mon_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#mon_end_hour').val()) + 12 : $('#mon_end_hour').val()) + ":" + $('#mon_end_minute').val() + ":00",
+                  mon_start: ($('#mon_start_hour').val() == "" || $('#mon_start_minute').val() == "") ? "" : "<%= @timecard.mon_start.strftime("%Y-%m-%d") %> " + (($("#mon_start_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#mon_start_hour').val()) != 12) ? parseInt($('#mon_start_hour').val()) + 12 : ($("#mon_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#mon_start_hour').val()) == 12) ? parseInt($('#mon_start_hour').val()) - 12 : $('#mon_start_hour').val()) + ":" + $('#mon_start_minute').val() + ":00",
+                  mon_end: ($('#mon_end_hour').val() == "" || $('#mon_end_minute').val() == "") ? "" : "<%= @timecard.mon_end.strftime("%Y-%m-%d") %> " + (($("#mon_end_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#mon_end_hour').val()) != 12) ? parseInt($('#mon_end_hour').val()) + 12 : ($("#mon_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#mon_end_hour').val()) == 12) ? parseInt($('#mon_end_hour').val()) - 12 : $('#mon_end_hour').val()) + ":" + $('#mon_end_minute').val() + ":00",
                   mon_break_hours: $('#mon_break_hour').val(),
                   mon_break_minutes: $('#mon_break_minute').val(),
-                  tue_start: ($('#tue_start_hour').val() == "" || $('#tue_start_minute').val() == "") ? "" : "<%= @timecard.tue_start.strftime("%Y-%m-%d") %> " + (($("#tue_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#tue_start_hour').val()) + 12 : $('#tue_start_hour').val()) + ":" + $('#tue_start_minute').val() + ":00",
-                  tue_end: ($('#tue_end_hour').val() == "" || $('#tue_end_minute').val() == "") ? "" : "<%= @timecard.tue_end.strftime("%Y-%m-%d") %> " + (($("#tue_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#tue_end_hour').val()) + 12 : $('#tue_end_hour').val()) + ":" + $('#tue_end_minute').val() + ":00",
+                  tue_start: ($('#tue_start_hour').val() == "" || $('#tue_start_minute').val() == "") ? "" : "<%= @timecard.tue_start.strftime("%Y-%m-%d") %> " + (($("#tue_start_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#tue_start_hour').val()) != 12) ? parseInt($('#tue_start_hour').val()) + 12 : ($("#tue_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#tue_start_hour').val()) == 12) ? parseInt($('#tue_start_hour').val()) - 12 : $('#tue_start_hour').val()) + ":" + $('#mon_start_minute').val() + ":00",
+                  tue_end: ($('#tue_end_hour').val() == "" || $('#tue_end_minute').val() == "") ? "" : "<%= @timecard.tue_end.strftime("%Y-%m-%d") %> " + (($("#tue_end_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#tue_end_hour').val()) != 12) ? parseInt($('#tue_end_hour').val()) + 12 : ($("#tue_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#tue_end_hour').val()) == 12) ? parseInt($('#tue_end_hour').val()) - 12 : $('#tue_end_hour').val()) + ":" + $('#tue_end_minute').val() + ":00",
                   tue_break_hours: $('#tue_break_hour').val(),
                   tue_break_minutes: $('#tue_break_minute').val(),
-                  wed_start: ($('#wed_start_hour').val() == "" || $('#wed_start_minute').val() == "") ? "" : "<%= @timecard.wed_start.strftime("%Y-%m-%d") %> " + (($("#wed_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#wed_start_hour').val()) + 12 : $('#wed_start_hour').val()) + ":" + $('#wed_start_minute').val() + ":00",
-                  wed_end: ($('#wed_end_hour').val() == "" || $('#wed_end_minute').val() == "") ? "" : "<%= @timecard.wed_end.strftime("%Y-%m-%d") %> " + (($("#wed_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#wed_end_hour').val()) + 12 : $('#wed_end_hour').val()) + ":" + $('#wed_end_minute').val() + ":00",
+                  wed_start: ($('#wed_start_hour').val() == "" || $('#wed_start_minute').val() == "") ? "" : "<%= @timecard.wed_start.strftime("%Y-%m-%d") %> " + (($("#wed_start_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#wed_start_hour').val()) != 12) ? parseInt($('#wed_start_hour').val()) + 12 : ($("#wed_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#wed_start_hour').val()) == 12) ? parseInt($('#wed_start_hour').val()) - 12 : $('#wed_start_hour').val()) + ":" + $('#wed_start_minute').val() + ":00",
+                  wed_end: ($('#wed_end_hour').val() == "" || $('#wed_end_minute').val() == "") ? "" : "<%= @timecard.wed_end.strftime("%Y-%m-%d") %> " + (($("#wed_end_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#wed_end_hour').val()) != 12) ? parseInt($('#wed_end_hour').val()) + 12 : ($("#wed_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#wed_end_hour').val()) == 12) ? parseInt($('#wed_end_hour').val()) - 12 : $('#wed_end_hour').val()) + ":" + $('#wed_end_minute').val() + ":00",
                   wed_break_hours: $('#wed_break_hour').val(),
                   wed_break_minutes: $('#wed_break_minute').val(),
-                  thu_start: ($('#thu_start_hour').val() == "" || $('#thu_start_minute').val() == "") ? "" : "<%= @timecard.thu_start.strftime("%Y-%m-%d") %> " + (($("#thu_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#thu_start_hour').val()) + 12 : $('#thu_start_hour').val()) + ":" + $('#thu_start_minute').val() + ":00",
-                  thu_end: ($('#thu_end_hour').val() == "" || $('#thu_end_minute').val() == "") ? "" : "<%= @timecard.thu_end.strftime("%Y-%m-%d") %> " + (($("#thu_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#thu_end_hour').val()) + 12 : $('#thu_end_hour').val()) + ":" + $('#thu_end_minute').val() + ":00",
+                  thu_start: ($('#thu_start_hour').val() == "" || $('#thu_start_minute').val() == "") ? "" : "<%= @timecard.thu_start.strftime("%Y-%m-%d") %> " + (($("#thu_start_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#thu_start_hour').val()) != 12) ? parseInt($('#thu_start_hour').val()) + 12 : ($("#thu_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#thu_start_hour').val()) == 12) ? parseInt($('#thu_start_hour').val()) - 12 : $('#thu_start_hour').val()) + ":" + $('#thu_start_minute').val() + ":00",
+                  thu_end: ($('#thu_end_hour').val() == "" || $('#thu_end_minute').val() == "") ? "" : "<%= @timecard.thu_end.strftime("%Y-%m-%d") %> " + (($("#thu_end_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#thu_end_hour').val()) != 12) ? parseInt($('#thu_end_hour').val()) + 12 : ($("#thu_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#thu_end_hour').val()) == 12) ? parseInt($('#thu_end_hour').val()) - 12 : $('#thu_end_hour').val()) + ":" + $('#thu_end_minute').val() + ":00",
                   thu_break_hours: $('#thu_break_hour').val(),
                   thu_break_minutes: $('#thu_break_minute').val(),
-                  fri_start: ($('#fri_start_hour').val() == "" || $('#fri_start_minute').val() == "") ? "" : "<%= @timecard.fri_start.strftime("%Y-%m-%d") %> " + (($("#fri_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#fri_start_hour').val()) + 12 : $('#fri_start_hour').val()) + ":" + $('#fri_start_minute').val() + ":00",
-                  fri_end: ($('#fri_end_hour').val() == "" || $('#fri_end_minute').val() == "") ? "" : "<%= @timecard.fri_end.strftime("%Y-%m-%d") %> " + (($("#fri_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#fri_end_hour').val()) + 12 : $('#fri_end_hour').val()) + ":" + $('#fri_end_minute').val() + ":00",
+                  fri_start: ($('#fri_start_hour').val() == "" || $('#fri_start_minute').val() == "") ? "" : "<%= @timecard.fri_start.strftime("%Y-%m-%d") %> " + (($("#fri_start_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#fri_start_hour').val()) != 12) ? parseInt($('#fri_start_hour').val()) + 12 : ($("#fri_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#fri_start_hour').val()) == 12) ? parseInt($('#fri_start_hour').val()) - 12 : $('#fri_start_hour').val()) + ":" + $('#fri_start_minute').val() + ":00",
+                  fri_end: ($('#fri_end_hour').val() == "" || $('#fri_end_minute').val() == "") ? "" : "<%= @timecard.fri_end.strftime("%Y-%m-%d") %> " + (($("#fri_end_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#fri_end_hour').val()) != 12) ? parseInt($('#fri_end_hour').val()) + 12 : ($("#fri_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#fri_end_hour').val()) == 12) ? parseInt($('#fri_end_hour').val()) - 12 : $('#fri_end_hour').val()) + ":" + $('#fri_end_minute').val() + ":00",
                   fri_break_hours: $('#fri_break_hour').val(),
-                  fri_break_minutes: $('#fri_break_minute').val()
+                  fri_break_minutes: $('#fri_break_minute').val(),
               }
           };
           console.log(data);
-
+          
           $.ajax({
               type: 'PUT'
               , url: '<%= timecard_path(@timecard) %>'
               , data: data
               , success: function () {
-                  console.log("Updated project binary info");
+                  console.log("Updated timecard");
               }
               , error: function (XMLHttpRequest, textStatus, errorThrown) {
                   console.log('Upload error: ' + XMLHttpRequest.responseText);
               }
           });
+      });
+
+      $(".am-btn").click(function(){
+          toggle_am_pm($(this));
+      });
+
+      $(".pm-btn").click(function(){
+          toggle_am_pm($(this));
       });
   </script>
 

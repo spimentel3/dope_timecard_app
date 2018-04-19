@@ -30,4 +30,40 @@ class Timecard < ApplicationRecord
 
   end
 
+  def total_sat_hours
+    self.sat_hours = ((self.sat_end - self.sat_start) / 1.hour).round - self.sat_break_hours - (self.sat_break_minutes / 60.0)
+  end
+  def total_sun_hours
+    self.sun_hours = ((self.sun_end - self.sun_start) / 1.hour).round - self.sun_break_hours - (self.sun_break_minutes / 60.0)
+  end
+  def total_mon_hours
+    self.mon_hours = ((self.mon_end - self.mon_start) / 1.hour).round - self.mon_break_hours - (self.mon_break_minutes / 60.0)
+  end
+  def total_tue_hours
+    self.tue_hours = ((self.tue_end - self.tue_start) / 1.hour).round - self.tue_break_hours - (self.tue_break_minutes / 60.0)
+  end
+  def total_wed_hours
+    self.wed_hours = ((self.wed_end - self.wed_start) / 1.hour).round - self.wed_break_hours - (self.wed_break_minutes / 60.0)
+  end
+  def total_thu_hours
+    self.thu_hours = ((self.thu_end - self.thu_start) / 1.hour).round - self.thu_break_hours - (self.thu_break_minutes / 60.0)
+  end
+  def total_fri_hours
+    self.fri_hours = ((self.fri_end - self.fri_start) / 1.hour).round - self.fri_break_hours - (self.fri_break_minutes / 60.0)
+  end
+
+  def gather_all_hours
+    self.total_sat_hours
+    self.total_sun_hours
+    self.total_mon_hours
+    self.total_tue_hours
+    self.total_wed_hours
+    self.total_thu_hours
+    self.total_fri_hours
+  end
+
+  def total_hours
+    self.total_hours = self.sat_hours + self.sun_hours + self.mon_hours + self.tue_hours + self.wed_hours + self.thu_hours + self.fri_hours
+  end
+
 end
