@@ -1,5 +1,12 @@
 <%= provide(:title, @user.name) %>
 
+<style>
+  .animate_theia_text_blue{
+    color: #3A96D1 !important;
+    transition: color 300ms;
+  }
+</style>
+
 <div class="" style="padding-top: 32px"></div>
 <% if has_company_access? %>
 <div class="row">
@@ -247,85 +254,85 @@
 
   <script>
 
-      $("#timecard_table input").focusout(function(){
-          this.value = zero_pad(this.value, 2);
-      });
-
-      $("#timecard_table input[id*='hour']").focusout(function(){
-          if (parseInt(this.value) > 8 && parseInt(this.value) < 12) {
-              $(this).siblings("div[id*='am_pm']").children(".am-btn").addClass("theia_text_blue");
-          } else {
-              $(this).siblings("div[id*='am_pm']").children(".pm-btn").addClass("theia_text_blue");
-          }
-      });
-
       function zero_pad(n, width, z) {
           z = z || '0';
           n = n + '';
           return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
       }
 
-      function toggle_am(elem){
-          $(elem).addClass("theia_text_blue");
-          $(elem).siblings().removeClass("theia_text_blue");
+      function toggle_am_pm(elem) {
+          $(elem).addClass("animate_theia_text_blue");
+          $(elem).siblings().removeClass("animate_theia_text_blue");
       }
 
+      $("#timecard_table input").focusout(function(){
+          this.value = zero_pad(this.value, 2);
+      });
+
+      $("#timecard_table input[id*='hour']").focusout(function(){
+          if (parseInt(this.value) > 8 && parseInt(this.value) < 12) {
+              toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".am-btn"));
+          } else {
+              toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".pm-btn"));
+          }
+      });
+
+      $("#timecard_table input[id*='break_minute']").focusout(function () {
+
+      });
 
       $(".am-btn").click(function(){
-          $(this).addClass("theia_text_blue");
-          $(this).siblings().removeClass("theia_text_blue");
+          toggle_am_pm($(this));
       });
 
       $(".pm-btn").click(function(){
-          $(this).addClass("theia_text_blue");
-          $(this).siblings().removeClass("theia_text_blue");
+          toggle_am_pm($(this));
       });
 
-      $('#submit_hours').click(function () {
-
+      $("#submit_hours").click(function(){
           // language=JQuery-CSS
           var n = $('.invalid').length;
 
-          if (n > 0){
-              console.log("error");
+          if (n > 0) {
+              console.log(n, "Errors");
+              console.log($('.invalid'));
               return;
           }
 
           var data = {
               timecard: {
-                  sat_start: ($('#sat_start_hour').val() == "" || $('#sat_start_minute').val() == "") ? "" : "<%= @timecard.sat_start.strftime("%Y-%m-%d") %> " + (($("#sat_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#sat_start_hour').val()) + 12 : $('#sat_start_hour').val()) + ":" + $('#sat_start_minute').val() + ":00",
-                  sat_end: ($('#sat_end_hour').val() == "" || $('#sat_end_minute').val() == "") ? "" : "<%= @timecard.sat_end.strftime("%Y-%m-%d") %> " + (($("#sat_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#sat_end_hour').val()) + 12 : $('#sat_end_hour').val()) + ":" + $('#sat_end_minute').val() + ":00",
+                  sat_start: ($('#sat_start_hour').val() == "" || $('#sat_start_minute').val() == "") ? "" : "<%= @timecard.sat_start.strftime("%Y-%m-%d") %> " + (($("#sat_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#sat_start_hour').val()) + 12 : $('#sat_start_hour').val()) + ":" + $('#sat_start_minute').val() + ":00",
+                  sat_end: ($('#sat_end_hour').val() == "" || $('#sat_end_minute').val() == "") ? "" : "<%= @timecard.sat_end.strftime("%Y-%m-%d") %> " + (($("#sat_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#sat_end_hour').val()) + 12 : $('#sat_end_hour').val()) + ":" + $('#sat_end_minute').val() + ":00",
                   sat_break_hours: $('#sat_break_hour').val(),
                   sat_break_minutes: $('#sat_break_minute').val(),
-                  sun_start: ($('#sun_start_hour').val() == "" || $('#sun_start_minute').val() == "") ? "" : "<%= @timecard.sun_start.strftime("%Y-%m-%d") %> " + (($("#sun_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#sun_start_hour').val()) + 12 : $('#sun_start_hour').val()) + ":" + $('#sun_start_minute').val() + ":00",
-                  sun_end: ($('#sun_end_hour').val() == "" || $('#sun_end_minute').val() == "") ? "" : "<%= @timecard.sun_end.strftime("%Y-%m-%d") %> " + (($("#sun_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#sun_end_hour').val()) + 12 : $('#sun_end_hour').val()) + ":" + $('#sun_end_minute').val() + ":00",
+                  sun_start: ($('#sun_start_hour').val() == "" || $('#sun_start_minute').val() == "") ? "" : "<%= @timecard.sun_start.strftime("%Y-%m-%d") %> " + (($("#sun_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#sun_start_hour').val()) + 12 : $('#sun_start_hour').val()) + ":" + $('#sun_start_minute').val() + ":00",
+                  sun_end: ($('#sun_end_hour').val() == "" || $('#sun_end_minute').val() == "") ? "" : "<%= @timecard.sun_end.strftime("%Y-%m-%d") %> " + (($("#sun_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#sun_end_hour').val()) + 12 : $('#sun_end_hour').val()) + ":" + $('#sun_end_minute').val() + ":00",
                   sun_break_hours: $('#sun_break_hour').val(),
                   sun_break_minutes: $('#sun_break_minute').val(),
-                  mon_start: ($('#mon_start_hour').val() == "" || $('#mon_start_minute').val() == "") ? "" : "<%= @timecard.mon_start.strftime("%Y-%m-%d") %> " + (($("#mon_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#mon_start_hour').val()) + 12 : $('#mon_start_hour').val()) + ":" + $('#mon_start_minute').val() + ":00",
-                  mon_end: ($('#mon_end_hour').val() == "" || $('#mon_end_minute').val() == "") ? "" : "<%= @timecard.mon_end.strftime("%Y-%m-%d") %> " + (($("#mon_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#mon_end_hour').val()) + 12 : $('#mon_end_hour').val()) + ":" + $('#mon_end_minute').val() + ":00",
+                  mon_start: ($('#mon_start_hour').val() == "" || $('#mon_start_minute').val() == "") ? "" : "<%= @timecard.mon_start.strftime("%Y-%m-%d") %> " + (($("#mon_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#mon_start_hour').val()) + 12 : $('#mon_start_hour').val()) + ":" + $('#mon_start_minute').val() + ":00",
+                  mon_end: ($('#mon_end_hour').val() == "" || $('#mon_end_minute').val() == "") ? "" : "<%= @timecard.mon_end.strftime("%Y-%m-%d") %> " + (($("#mon_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#mon_end_hour').val()) + 12 : $('#mon_end_hour').val()) + ":" + $('#mon_end_minute').val() + ":00",
                   mon_break_hours: $('#mon_break_hour').val(),
                   mon_break_minutes: $('#mon_break_minute').val(),
-                  tue_start: ($('#tue_start_hour').val() == "" || $('#tue_start_minute').val() == "") ? "" : "<%= @timecard.tue_start.strftime("%Y-%m-%d") %> " + (($("#tue_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#tue_start_hour').val()) + 12 : $('#tue_start_hour').val()) + ":" + $('#tue_start_minute').val() + ":00",
-                  tue_end: ($('#tue_end_hour').val() == "" || $('#tue_end_minute').val() == "") ? "" : "<%= @timecard.tue_end.strftime("%Y-%m-%d") %> " + (($("#tue_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#tue_end_hour').val()) + 12 : $('#tue_end_hour').val()) + ":" + $('#tue_end_minute').val() + ":00",
+                  tue_start: ($('#tue_start_hour').val() == "" || $('#tue_start_minute').val() == "") ? "" : "<%= @timecard.tue_start.strftime("%Y-%m-%d") %> " + (($("#tue_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#tue_start_hour').val()) + 12 : $('#tue_start_hour').val()) + ":" + $('#tue_start_minute').val() + ":00",
+                  tue_end: ($('#tue_end_hour').val() == "" || $('#tue_end_minute').val() == "") ? "" : "<%= @timecard.tue_end.strftime("%Y-%m-%d") %> " + (($("#tue_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#tue_end_hour').val()) + 12 : $('#tue_end_hour').val()) + ":" + $('#tue_end_minute').val() + ":00",
                   tue_break_hours: $('#tue_break_hour').val(),
                   tue_break_minutes: $('#tue_break_minute').val(),
-                  wed_start: ($('#wed_start_hour').val() == "" || $('#wed_start_minute').val() == "") ? "" : "<%= @timecard.wed_start.strftime("%Y-%m-%d") %> " + (($("#wed_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#wed_start_hour').val()) + 12 : $('#wed_start_hour').val()) + ":" + $('#wed_start_minute').val() + ":00",
-                  wed_end: ($('#wed_end_hour').val() == "" || $('#wed_end_minute').val() == "") ? "" : "<%= @timecard.wed_end.strftime("%Y-%m-%d") %> " + (($("#wed_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#wed_end_hour').val()) + 12 : $('#wed_end_hour').val()) + ":" + $('#wed_end_minute').val() + ":00",
+                  wed_start: ($('#wed_start_hour').val() == "" || $('#wed_start_minute').val() == "") ? "" : "<%= @timecard.wed_start.strftime("%Y-%m-%d") %> " + (($("#wed_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#wed_start_hour').val()) + 12 : $('#wed_start_hour').val()) + ":" + $('#wed_start_minute').val() + ":00",
+                  wed_end: ($('#wed_end_hour').val() == "" || $('#wed_end_minute').val() == "") ? "" : "<%= @timecard.wed_end.strftime("%Y-%m-%d") %> " + (($("#wed_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#wed_end_hour').val()) + 12 : $('#wed_end_hour').val()) + ":" + $('#wed_end_minute').val() + ":00",
                   wed_break_hours: $('#wed_break_hour').val(),
                   wed_break_minutes: $('#wed_break_minute').val(),
-                  thu_start: ($('#thu_start_hour').val() == "" || $('#thu_start_minute').val() == "") ? "" : "<%= @timecard.thu_start.strftime("%Y-%m-%d") %> " + (($("#thu_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#thu_start_hour').val()) + 12 : $('#thu_start_hour').val()) + ":" + $('#thu_start_minute').val() + ":00",
-                  thu_end: ($('#thu_end_hour').val() == "" || $('#thu_end_minute').val() == "") ? "" : "<%= @timecard.thu_end.strftime("%Y-%m-%d") %> " + (($("#thu_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#thu_end_hour').val()) + 12 : $('#thu_end_hour').val()) + ":" + $('#thu_end_minute').val() + ":00",
+                  thu_start: ($('#thu_start_hour').val() == "" || $('#thu_start_minute').val() == "") ? "" : "<%= @timecard.thu_start.strftime("%Y-%m-%d") %> " + (($("#thu_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#thu_start_hour').val()) + 12 : $('#thu_start_hour').val()) + ":" + $('#thu_start_minute').val() + ":00",
+                  thu_end: ($('#thu_end_hour').val() == "" || $('#thu_end_minute').val() == "") ? "" : "<%= @timecard.thu_end.strftime("%Y-%m-%d") %> " + (($("#thu_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#thu_end_hour').val()) + 12 : $('#thu_end_hour').val()) + ":" + $('#thu_end_minute').val() + ":00",
                   thu_break_hours: $('#thu_break_hour').val(),
                   thu_break_minutes: $('#thu_break_minute').val(),
-                  fri_start: ($('#fri_start_hour').val() == "" || $('#fri_start_minute').val() == "") ? "" : "<%= @timecard.fri_start.strftime("%Y-%m-%d") %> " + (($("#fri_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#fri_start_hour').val()) + 12 : $('#fri_start_hour').val()) + ":" + $('#fri_start_minute').val() + ":00",
-                  fri_end: ($('#fri_end_hour').val() == "" || $('#fri_end_minute').val() == "") ? "" : "<%= @timecard.fri_end.strftime("%Y-%m-%d") %> " + (($("#fri_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#fri_end_hour').val()) + 12 : $('#fri_end_hour').val()) + ":" + $('#fri_end_minute').val() + ":00",
+                  fri_start: ($('#fri_start_hour').val() == "" || $('#fri_start_minute').val() == "") ? "" : "<%= @timecard.fri_start.strftime("%Y-%m-%d") %> " + (($("#fri_start_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#fri_start_hour').val()) + 12 : $('#fri_start_hour').val()) + ":" + $('#fri_start_minute').val() + ":00",
+                  fri_end: ($('#fri_end_hour').val() == "" || $('#fri_end_minute').val() == "") ? "" : "<%= @timecard.fri_end.strftime("%Y-%m-%d") %> " + (($("#fri_end_am_pm .pm-btn.animate_theia_text_blue").length) ? parseInt($('#fri_end_hour').val()) + 12 : $('#fri_end_hour').val()) + ":" + $('#fri_end_minute').val() + ":00",
                   fri_break_hours: $('#fri_break_hour').val(),
                   fri_break_minutes: $('#fri_break_minute').val()
               }
           };
           console.log(data);
 
-          /*
           $.ajax({
               type: 'PUT'
               , url: '<%= timecard_path(@timecard) %>'
@@ -337,7 +344,6 @@
                   console.log('Upload error: ' + XMLHttpRequest.responseText);
               }
           });
-          */
       });
   </script>
 
