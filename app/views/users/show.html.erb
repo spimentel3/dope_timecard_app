@@ -53,133 +53,189 @@
       <tr id="sat_row">
         <td>Saturday</td>
         <td>
-          <input id="sat_start_hour" type="text" style="width: 20px">
+          <input id="sat_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="sat_start_minute" type="text" style="width: 20px">
+          <input id="sat_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="sat_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="sat_end_hour" type="text" style="width: 20px">
+          <input id="sat_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="sat_end_minute" type="text" style="width: 20px">
+          <input id="sat_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="sat_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="sat_break_hour" type="text" style="width: 20px">
+          <input id="sat_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           h
-          <input id="sat_break_minute" type="text" style="width: 20px">
+          <input id="sat_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
           m
         </td>
       </tr>
       <tr id="sun_row">
         <td>Sunday</td>
         <td>
-          <input id="sun_start_hour" type="text" style="width: 20px">
+          <input id="sun_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="sun_start_minute" type="text" style="width: 20px">
+          <input id="sun_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="sun_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="sun_end_hour" type="text" style="width: 20px">
+          <input id="sun_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="sun_end_minute" type="text" style="width: 20px">
+          <input id="sun_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="sun_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="sun_break_hour" type="text" style="width: 20px">
+          <input id="sun_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           h
-          <input id="sun_break_minute" type="text" style="width: 20px">
+          <input id="sun_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
           m
         </td>
       </tr>
       <tr id="mon_row">
         <td>Monday</td>
         <td>
-          <input id="mon_start_hour" type="text" style="width: 20px">
+          <input id="mon_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="mon_start_minute" type="text" style="width: 20px">
+          <input id="mon_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="mon_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="mon_end_hour" type="text" style="width: 20px">
+          <input id="mon_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="mon_end_minute" type="text" style="width: 20px">
+          <input id="mon_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="mon_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="mon_break_hour" type="text" style="width: 20px">
+          <input id="mon_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           h
-          <input id="mon_break_minute" type="text" style="width: 20px">
+          <input id="mon_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
           m
         </td>
       </tr>
       <tr id="tue_row">
         <td>Tuesday</td>
         <td>
-          <input id="tue_start_hour" type="text" style="width: 20px">
+          <input id="tue_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="tue_start_minute" type="text" style="width: 20px">
+          <input id="tue_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="tue_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="tue_end_hour" type="text" style="width: 20px">
+          <input id="tue_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="tue_end_minute" type="text" style="width: 20px">
+          <input id="tue_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="tue_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="tue_break_hour" type="text" style="width: 20px">
+          <input id="tue_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           h
-          <input id="tue_break_minute" type="text" style="width: 20px">
+          <input id="tue_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
           m
         </td>
       </tr>
       <tr id="wed_row">
         <td>Wednesday</td>
         <td>
-          <input id="wed_start_hour" type="text" style="width: 20px">
+          <input id="wed_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="wed_start_minute" type="text" style="width: 20px">
+          <input id="wed_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="wed_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="wed_end_hour" type="text" style="width: 20px">
+          <input id="wed_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="wed_end_minute" type="text" style="width: 20px">
+          <input id="wed_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="wed_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="wed_break_hour" type="text" style="width: 20px">
+          <input id="wed_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           h
-          <input id="wed_break_minute" type="text" style="width: 20px">
+          <input id="wed_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
           m
         </td>
       </tr>
       <tr id="thu_row">
         <td>Thursday</td>
         <td>
-          <input id="thu_start_hour" type="text" style="width: 20px">
+          <input id="thu_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="thu_start_minute" type="text" style="width: 20px">
+          <input id="thu_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="thu_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="thu_end_hour" type="text" style="width: 20px">
+          <input id="thu_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="thu_end_minute" type="text" style="width: 20px">
+          <input id="thu_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="thu_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="thu_break_hour" type="text" style="width: 20px">
+          <input id="thu_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           h
-          <input id="thu_break_minute" type="text" style="width: 20px">
+          <input id="thu_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
           m
         </td>
       </tr>
       <tr id="fri_row">
         <td>Friday</td>
         <td>
-          <input id="fri_start_hour" type="text" style="width: 20px">
+          <input id="fri_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="fri_start_minute" type="text" style="width: 20px">
+          <input id="fri_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="fri_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="fri_end_hour" type="text" style="width: 20px">
+          <input id="fri_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           :
-          <input id="fri_end_minute" type="text" style="width: 20px">
+          <input id="fri_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
+          <div id="fri_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn">AM</div>
+            <div class="pm-btn">PM</div>
+          </div>
         </td>
         <td>
-          <input id="fri_break_hour" type="text" style="width: 20px">
+          <input id="fri_break_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}">
           h
-          <input id="fri_break_minute" type="text" style="width: 20px">
+          <input id="fri_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}">
           m
         </td>
       </tr>
@@ -201,41 +257,62 @@
           return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
       }
 
+
+      $(".am-btn").click(function(){
+          $(this).addClass("theia_text_blue");
+          $(this).siblings().removeClass("theia_text_blue");
+      });
+
+      $(".pm-btn").click(function(){
+          $(this).addClass("theia_text_blue");
+          $(this).siblings().removeClass("theia_text_blue");
+      });
+
       $('#submit_hours').click(function () {
+
+          // language=JQuery-CSS
+          var n = $('.invalid').length;
+
+          if (n > 0){
+              console.log("error");
+              return;
+          }
+
           var data = {
               timecard: {
-                  sat_start: ($('#sat_start_hour').val() == "" || $('#sat_start_minute').val() == "") ? "" : "<%= @timecard.sat_start.strftime("%Y-%m-%d") %> " + $('#sat_start_hour').val() + ":" + $('#sat_start_minute').val() + ":00",
-                  sat_end: ($('#sat_end_hour').val() == "" || $('#sat_end_minute').val() == "") ? "" : "<%= @timecard.sat_end.strftime("%Y-%m-%d") %> " + $('#sat_end_hour').val() + ":" + $('#sat_end_minute').val() + ":00",
+                  sat_start: ($('#sat_start_hour').val() == "" || $('#sat_start_minute').val() == "") ? "" : "<%= @timecard.sat_start.strftime("%Y-%m-%d") %> " + (($("#sat_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#sat_start_hour').val()) + 12 : $('#sat_start_hour').val()) + ":" + $('#sat_start_minute').val() + ":00",
+                  sat_end: ($('#sat_end_hour').val() == "" || $('#sat_end_minute').val() == "") ? "" : "<%= @timecard.sat_end.strftime("%Y-%m-%d") %> " + (($("#sat_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#sat_end_hour').val()) + 12 : $('#sat_end_hour').val()) + ":" + $('#sat_end_minute').val() + ":00",
                   sat_break_hours: $('#sat_break_hour').val(),
                   sat_break_minutes: $('#sat_break_minute').val(),
-                  sun_start: ($('#sun_start_hour').val() == "" || $('#sun_start_minute').val() == "") ? "" : "<%= @timecard.sun_start.strftime("%Y-%m-%d") %> " + $('#sun_start_hour').val() + ":" + $('#sun_start_minute').val() + ":00",
-                  sun_end: ($('#sun_end_hour').val() == "" || $('#sun_end_minute').val() == "") ? "" : "<%= @timecard.sun_end.strftime("%Y-%m-%d") %> " + $('#sun_end_hour').val() + ":" + $('#sun_end_minute').val() + ":00",
+                  sun_start: ($('#sun_start_hour').val() == "" || $('#sun_start_minute').val() == "") ? "" : "<%= @timecard.sun_start.strftime("%Y-%m-%d") %> " + (($("#sun_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#sun_start_hour').val()) + 12 : $('#sun_start_hour').val()) + ":" + $('#sun_start_minute').val() + ":00",
+                  sun_end: ($('#sun_end_hour').val() == "" || $('#sun_end_minute').val() == "") ? "" : "<%= @timecard.sun_end.strftime("%Y-%m-%d") %> " + (($("#sun_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#sun_end_hour').val()) + 12 : $('#sun_end_hour').val()) + ":" + $('#sun_end_minute').val() + ":00",
                   sun_break_hours: $('#sun_break_hour').val(),
                   sun_break_minutes: $('#sun_break_minute').val(),
-                  mon_start: ($('#mon_start_hour').val() == "" || $('#mon_start_minute').val() == "") ? "" : "<%= @timecard.mon_start.strftime("%Y-%m-%d") %> " + $('#mon_start_hour').val() + ":" + $('#mon_start_minute').val() + ":00",
-                  mon_end: ($('#mon_end_hour').val() == "" || $('#mon_end_minute').val() == "") ? "" : "<%= @timecard.mon_end.strftime("%Y-%m-%d") %> " + $('#mon_end_hour').val() + ":" + $('#mon_end_minute').val() + ":00",
+                  mon_start: ($('#mon_start_hour').val() == "" || $('#mon_start_minute').val() == "") ? "" : "<%= @timecard.mon_start.strftime("%Y-%m-%d") %> " + (($("#mon_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#mon_start_hour').val()) + 12 : $('#mon_start_hour').val()) + ":" + $('#mon_start_minute').val() + ":00",
+                  mon_end: ($('#mon_end_hour').val() == "" || $('#mon_end_minute').val() == "") ? "" : "<%= @timecard.mon_end.strftime("%Y-%m-%d") %> " + (($("#mon_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#mon_end_hour').val()) + 12 : $('#mon_end_hour').val()) + ":" + $('#mon_end_minute').val() + ":00",
                   mon_break_hours: $('#mon_break_hour').val(),
                   mon_break_minutes: $('#mon_break_minute').val(),
-                  tue_start: ($('#tue_start_hour').val() == "" || $('#tue_start_minute').val() == "") ? "" : "<%= @timecard.tue_start.strftime("%Y-%m-%d") %> " + $('#tue_start_hour').val() + ":" + $('#tue_start_minute').val() + ":00",
-                  tue_end: ($('#tue_end_hour').val() == "" || $('#tue_end_minute').val() == "") ? "" : "<%= @timecard.tue_end.strftime("%Y-%m-%d") %> " + $('#tue_end_hour').val() + ":" + $('#tue_end_minute').val() + ":00",
+                  tue_start: ($('#tue_start_hour').val() == "" || $('#tue_start_minute').val() == "") ? "" : "<%= @timecard.tue_start.strftime("%Y-%m-%d") %> " + (($("#tue_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#tue_start_hour').val()) + 12 : $('#tue_start_hour').val()) + ":" + $('#tue_start_minute').val() + ":00",
+                  tue_end: ($('#tue_end_hour').val() == "" || $('#tue_end_minute').val() == "") ? "" : "<%= @timecard.tue_end.strftime("%Y-%m-%d") %> " + (($("#tue_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#tue_end_hour').val()) + 12 : $('#tue_end_hour').val()) + ":" + $('#tue_end_minute').val() + ":00",
                   tue_break_hours: $('#tue_break_hour').val(),
                   tue_break_minutes: $('#tue_break_minute').val(),
-                  wed_start: ($('#wed_start_hour').val() == "" || $('#wed_start_minute').val() == "") ? "" : "<%= @timecard.wed_start.strftime("%Y-%m-%d") %> " + $('#wed_start_hour').val() + ":" + $('#wed_start_minute').val() + ":00",
-                  wed_end: ($('#wed_end_hour').val() == "" || $('#wed_end_minute').val() == "") ? "" : "<%= @timecard.wed_end.strftime("%Y-%m-%d") %> " + $('#wed_end_hour').val() + ":" + $('#wed_end_minute').val() + ":00",
+                  wed_start: ($('#wed_start_hour').val() == "" || $('#wed_start_minute').val() == "") ? "" : "<%= @timecard.wed_start.strftime("%Y-%m-%d") %> " + (($("#wed_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#wed_start_hour').val()) + 12 : $('#wed_start_hour').val()) + ":" + $('#wed_start_minute').val() + ":00",
+                  wed_end: ($('#wed_end_hour').val() == "" || $('#wed_end_minute').val() == "") ? "" : "<%= @timecard.wed_end.strftime("%Y-%m-%d") %> " + (($("#wed_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#wed_end_hour').val()) + 12 : $('#wed_end_hour').val()) + ":" + $('#wed_end_minute').val() + ":00",
                   wed_break_hours: $('#wed_break_hour').val(),
                   wed_break_minutes: $('#wed_break_minute').val(),
-                  thu_start: ($('#thu_start_hour').val() == "" || $('#thu_start_minute').val() == "") ? "" : "<%= @timecard.thu_start.strftime("%Y-%m-%d") %> " + $('#thu_start_hour').val() + ":" + $('#thu_start_minute').val() + ":00",
-                  thu_end: ($('#thu_end_hour').val() == "" || $('#thu_end_minute').val() == "") ? "" : "<%= @timecard.thu_end.strftime("%Y-%m-%d") %> " + $('#thu_end_hour').val() + ":" + $('#thu_end_minute').val() + ":00",
+                  thu_start: ($('#thu_start_hour').val() == "" || $('#thu_start_minute').val() == "") ? "" : "<%= @timecard.thu_start.strftime("%Y-%m-%d") %> " + (($("#thu_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#thu_start_hour').val()) + 12 : $('#thu_start_hour').val()) + ":" + $('#thu_start_minute').val() + ":00",
+                  thu_end: ($('#thu_end_hour').val() == "" || $('#thu_end_minute').val() == "") ? "" : "<%= @timecard.thu_end.strftime("%Y-%m-%d") %> " + (($("#thu_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#thu_end_hour').val()) + 12 : $('#thu_end_hour').val()) + ":" + $('#thu_end_minute').val() + ":00",
                   thu_break_hours: $('#thu_break_hour').val(),
                   thu_break_minutes: $('#thu_break_minute').val(),
-                  fri_start: ($('#fri_start_hour').val() == "" || $('#fri_start_minute').val() == "") ? "" : "<%= @timecard.fri_start.strftime("%Y-%m-%d") %> " + $('#fri_start_hour').val() + ":" + $('#fri_start_minute').val() + ":00",
-                  fri_end: ($('#fri_end_hour').val() == "" || $('#fri_end_minute').val() == "") ? "" : "<%= @timecard.fri_end.strftime("%Y-%m-%d") %> " + $('#fri_end_hour').val() + ":" + $('#fri_end_minute').val() + ":00",
+                  fri_start: ($('#fri_start_hour').val() == "" || $('#fri_start_minute').val() == "") ? "" : "<%= @timecard.fri_start.strftime("%Y-%m-%d") %> " + (($("#fri_start_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#fri_start_hour').val()) + 12 : $('#fri_start_hour').val()) + ":" + $('#fri_start_minute').val() + ":00",
+                  fri_end: ($('#fri_end_hour').val() == "" || $('#fri_end_minute').val() == "") ? "" : "<%= @timecard.fri_end.strftime("%Y-%m-%d") %> " + (($("#fri_end_am_pm .pm-btn.theia_text_blue").length)? parseInt($('#fri_end_hour').val()) + 12 : $('#fri_end_hour').val()) + ":" + $('#fri_end_minute').val() + ":00",
                   fri_break_hours: $('#fri_break_hour').val(),
                   fri_break_minutes: $('#fri_break_minute').val()
               }
           };
           console.log(data);
-
+          
+          /*
           $.ajax({
               type: 'PUT'
               , url: '<%= timecard_path(@timecard) %>'
@@ -247,6 +324,7 @@
                   console.log('Upload error: ' + XMLHttpRequest.responseText);
               }
           });
+          */
       });
   </script>
 
