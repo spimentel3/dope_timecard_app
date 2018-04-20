@@ -1,15 +1,15 @@
 class Timecard < ApplicationRecord
   include TimecardHelper
 
-  def set_up_timecard
+  def set_up_timecard(date = Date.today)
 
-    timecard_friday = get_this_weeks_friday(Date.today)
-    timecard_thursday = get_this_weeks_thursday(Date.today)
-    timecard_wednesday = get_this_weeks_wednesday(Date.today)
-    timecard_tuesday = get_this_weeks_tuesday(Date.today)
-    timecard_monday = get_this_weeks_monday(Date.today)
-    timecard_saturday = get_this_weeks_saturday(Date.today)
-    timecard_sunday = get_this_weeks_sunday(Date.today)
+    timecard_friday = get_this_weeks_friday(date)
+    timecard_thursday = get_this_weeks_thursday(date)
+    timecard_wednesday = get_this_weeks_wednesday(date)
+    timecard_tuesday = get_this_weeks_tuesday(date)
+    timecard_monday = get_this_weeks_monday(date)
+    timecard_saturday = get_this_weeks_saturday(date)
+    timecard_sunday = get_this_weeks_sunday(date)
 
     self.end_date = Time.utc(timecard_friday.year, timecard_friday.month, timecard_friday.day, 13)
 

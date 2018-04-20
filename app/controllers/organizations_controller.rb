@@ -28,6 +28,28 @@ class OrganizationsController < ApplicationController
     @employees = @organization.employees
   end
 
+  def notify_users_timecards_are_due
+    organization = Organization.find(params[:organization_id])
+
+    organization.employees.each do |employee|
+      organization.send_reminder_email(employee.user)
+    end
+  end
+
+  def collect_timecards
+    organization = Organization.find(params[:organization_id])
+
+    organization.employees.each do |employee|
+      timecard = Timecard.new
+      timecard.set_up_timecard(Date.today + 7)
+      timecard.save
+
+      timebook_entry = Timebook.new(organization: organization, timecard: timecard, user: employee.user)
+      timebook_entry.save
+    end
+
+  end
+
   # noinspection RailsChecklist01
   def send_invites
     @organization = Organization.find(params[:organization_id])

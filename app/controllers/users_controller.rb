@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     # @users = User.all
-    @owned_organizations = @user.owned_organizations.all
+    @owned_organization = @user.owned_organization
     @timecard = @user.timecards.last
 
   end

@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]
   resources :organizations,       only: [:new, :create, :show, :destroy] do
-    post  'send_invites',         to: 'organizations#send_invites'
+    post  'send_invites',                   to: 'organizations#send_invites'
+    post  'collect_timecards',              to: 'organizations#collect_timecards'
+    post  'notify_users_timecards_are_due', to: 'organizations#notify_users_timecards_are_due'
     resources :timebook,          only: [:show, :new, :index]
     resources :timecard,          only: [:edit]
   end

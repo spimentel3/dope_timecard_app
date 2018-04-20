@@ -10,29 +10,52 @@
 <div class="" style="padding-top: 32px"></div>
 <% if has_company_access? %>
 <div class="row">
-  <div class="z-depth-2 white col s12 m3 offset-m1">
-    <div class="row">
-      <div class="col s12">
-        <%= image_tag("icon_only_100.png", alt: @user.name, class:"circle left", style: "margin: 0.75rem 0.75rem 0 0")%>
-        <h5 style="margin-bottom: 0"><%= @user.name %></h5>
-      </div>
-    </div>
-    <div class="center">
-      <%=	 link_to "New Organization", new_organization_path, class: "btn theia_blue", style: "margin-bottom: 16px;"  %>
-    </div>
-  </div>
-  <div class="col s12 m6 offset-m1">
-    <% @owned_organizations.each do |org| %>
+<!--  <div class="z-depth-2 white col s12 m3 offset-m1">-->
+<!--    <div class="row">-->
+<!--      <div class="col s12">-->
+        <%#= image_tag("icon_only_100.png", alt: @user.name, class:"circle left", style: "margin: 0.75rem 0.75rem 0 0")%>
+<!--        <h5 style="margin-bottom: 0"><%#= @user.name %></h5>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="center">-->
+      <%#=	 link_to "New Organization", new_organization_path, class: "btn theia_blue", style: "margin-bottom: 16px;"  %>
+<!--    </div>-->
+<!--  </div>-->
+    <% if @owned_organization %>
       <div class="row">
-        <div class="col s7 offset-s1">
-          <h4><%= org.name %></h4>
+        <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3" style="padding-bottom: 1rem">
+          <h4><%= @owned_organization.name %></h4>
+          <%= link_to organization_notify_users_timecards_are_due_path(@owned_organization), method: :post, class: "btn-small theia_blue waves-effect waves-light" do %>
+            <i class="material-icons right">notifications_active</i>Notify
+          <% end %>
+          <%= link_to organization_collect_timecards_path(@owned_organization), method: :post, class: "btn-small theia_blue waves-effect waves-light" do %>
+            <i class="material-icons right">collections</i>Collect
+          <% end %>
+          <%= link_to "Manage", @owned_organization, class: "btn-small theia_blue waves-effect waves-light" %>
         </div>
-        <div class="col s4 center" style="margin-top: 24px">
-          <%= link_to "Manage", org, class: "btn-small theia_blue"%>
-        </div>
+      </div>
+      <div class="row">
+        <% @owned_organization.employees.each do |employee| %>
+          <div class="col s12 m4 l3">
+            <div class="card">
+              <div class="card-content">
+                <span class="card-title"><%= (employee.user.name)? employee.user.name : "Pending Invite" %></span>
+                <p><%= employee.user.email %></p>
+              </div>
+              <div class="card-action">
+                <%= link_to "View", employee.user.timecards.last, class: "theia_text_blue" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3 animated fadeInUp">
+        <h4 class="center" style="margin: 1rem 0 1rem 0">Welcome to Timecard Buddy!</h4>
+        <p class="flow-text">Thank you for signing up with timecard buddy. Please create your own organization here: </p>
+        <%=	 link_to "New Organization", new_organization_path, class: "btn-large theia_blue", style: "margin-bottom: 16px"  %>
       </div>
     <% end %>
-  </div>
 </div>
 <% elsif is_company_user? %>
 <div class="row">
@@ -321,7 +344,7 @@
                   fri_start: ($('#fri_start_hour').val() == "" || $('#fri_start_minute').val() == "") ? "" : "<%= @timecard.fri_start.strftime("%Y-%m-%d") %> " + (($("#fri_start_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#fri_start_hour').val()) != 12) ? parseInt($('#fri_start_hour').val()) + 12 : ($("#fri_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#fri_start_hour').val()) == 12) ? parseInt($('#fri_start_hour').val()) - 12 : $('#fri_start_hour').val()) + ":" + $('#fri_start_minute').val() + ":00",
                   fri_end: ($('#fri_end_hour').val() == "" || $('#fri_end_minute').val() == "") ? "" : "<%= @timecard.fri_end.strftime("%Y-%m-%d") %> " + (($("#fri_end_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#fri_end_hour').val()) != 12) ? parseInt($('#fri_end_hour').val()) + 12 : ($("#fri_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#fri_end_hour').val()) == 12) ? parseInt($('#fri_end_hour').val()) - 12 : $('#fri_end_hour').val()) + ":" + $('#fri_end_minute').val() + ":00",
                   fri_break_hours: $('#fri_break_hour').val(),
-                  fri_break_minutes: $('#fri_break_minute').val(),
+                  fri_break_minutes: $('#fri_break_minute').val()
               }
           };
 

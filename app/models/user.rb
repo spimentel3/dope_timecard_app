@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  has_many    :owned_organizations,   :class_name => 'Organization', :foreign_key => 'owner_id'
+  has_one     :owned_organization,    :class_name => 'Organization', :foreign_key => 'owner_id'
   has_one     :employer,              :class_name => 'Employee'
   has_many    :timebooks
   has_many    :timecards,   through: :timebooks
