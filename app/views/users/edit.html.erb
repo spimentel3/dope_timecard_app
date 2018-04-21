@@ -7,6 +7,17 @@
     <div class="center">
       <h2>Update Profile</h2>
     </div>
+    <% if @user.needs_to_update_account %>
+      <div class="row">
+        <p class="col s12 m10 offset-m1">
+          This account was automatically created for you by someone who invited you to their organization.
+          <br>
+          <br>
+          Please verify your account is set up correctly and <b>set a new password</b> by typing one in and hitting <b>Save
+          Changes.</b>
+        </p>
+      </div>
+    <% end %>
     <div class="row" style="padding-bottom: 16px">
       <div class="col s12 m8 offset-m2">
         <%= form_for @user do |f| %>

@@ -10,4 +10,10 @@ class OrganizationMailer < ApplicationMailer
     @organization = organization
     mail to: user.email, subject: "Timecards are due!"
   end
+
+  def timecard_invitation(user, organization)
+    @user = user
+    @organization = organization
+    mail to: user.email, subject: "#{organization.name} wants your time!"
+  end
 end

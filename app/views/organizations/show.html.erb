@@ -41,8 +41,6 @@
                 <a href="javascript:" id="add_new_email_mobile" class="btn-floating btn-large waves-effect waves-light red hide-on-med-and-up"><i class="material-icons">add</i></a>
               </div>
             </div>
-            <div class="col s2 offset-s2">
-            </div>
           </div>
           <br>
         <% end %>
@@ -53,21 +51,33 @@
 </div>
 
 <div class="hide" id="new_emails_form">
-  <div class="input-field col s12 m8 offset-m2 l6">
-    <%= text_field_tag 'emails[]', nil, class:"email_input_field" %>
+  <div class="input-field col s11 m8 offset-m2 l6">
+    <%= text_field_tag 'emails[]', nil, class:"email_input_field", autocomplete: "off" %>
     <%= label_tag 'Email' %>
+    <i class="material-icons clear_email right">clear</i>
   </div>
 </div>
 
 <script>
     $(document).ready(function(){
+
+        function key_press_check(e) {
+            if (e.keyCode == 9){
+                add_field();
+                update_form();
+            }
+        }
+
         $("#add_new_email").click(function(){
             add_field();
             update_form();
+            $("#emails_form .input-field:last input").focus();
         });
 
         $("#add_new_email_mobile").click(function(){
-            $("#emails_form").append($("#new_emails_form").html());
+            add_field();
+            update_form();
+            $("#emails_form .input-field:last input").focus();
         });
 
         function add_field(){
@@ -75,12 +85,14 @@
         }
 
         function update_form(){
-            $(".email_input_field:last")
-                .on('keydown', function(e){
-                    if( e.which === 9 ){
-                        alert("hello");
-                    }
-                });
+            $("#emails_form .input-field:nth-last-child(2)")
+                .unbind('keydown', key_press_check);
+            $("#emails_form .input-field:last")
+                .bind('keydown', key_press_check);
+            $('.clear_email').click(function () {
+                console.log("clicked");
+                $(this).parent().remove();
+            });
         }
     });
 </script>
