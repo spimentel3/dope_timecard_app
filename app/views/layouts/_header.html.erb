@@ -6,9 +6,14 @@
 <% end %>
 <nav class="theia_air">
   <div class="nav-wrapper container">
-    <a data-target="slide-out" class="sidenav-trigger hide-on-med-and-up" id="side_nav_trigger"><i class="material-icons">menu</i></a>
-    <%= link_to(image_tag("icon_only_100.png", size: 64), @current_user, class: "hide-on-small-and-down") %>
-    <%= link_to(image_tag("icon_only_100.png", size: 54), @current_user, class: "hide-on-med-and-up right") %>
+    <% if logged_in? %>
+      <a data-target="slide-out" class="sidenav-trigger hide-on-med-and-up" id="side_nav_trigger"><i class="material-icons">menu</i></a>
+      <%= link_to(image_tag("icon_only_100.png", size: 64), @current_user, class: "hide-on-small-and-down") %>
+      <%= link_to(image_tag("icon_only_100.png", size: 54), @current_user, class: "hide-on-med-and-up right") %>
+    <% else %>
+      <%= link_to(image_tag("icon_only_100.png", size: 64), login_path, class: "hide-on-small-and-down") %>
+      <%= link_to(image_tag("icon_only_100.png", size: 54), login_path, class: "hide-on-med-and-up right") %>
+    <% end %>
     <ul class="right">
       <% if logged_in? %>
         <% if is_company_user? %>
