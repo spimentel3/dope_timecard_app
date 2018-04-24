@@ -125,7 +125,7 @@ ActiveRecord::Schema.define(version: 20180424212255) do
     t.string "reset_digest"
     t.datetime "reset_sent_at"
     t.boolean "needs_to_update_account", default: false
-    t.string "user_image_link"
+    t.string "user_image_link", default: ""
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
