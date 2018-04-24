@@ -35,6 +35,9 @@
           var side_nav = document.querySelector('.sidenav');
           var side_nav_instance = M.Sidenav.init(side_nav, side_nav_options);
 
+          $("#side_nav_trigger").click(function () {
+              side_nav_instance.open();
+          });
       });
   </script>
 
