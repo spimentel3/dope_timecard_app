@@ -26,8 +26,13 @@
       <% @owned_organization.employees.each do |employee| %>
         <div class="col s12 m4 l3">
           <div class="card">
-            <div class="card-content">
+            <div class="card-content" style="position:relative">
               <span class="card-title"><%= (employee.user.name)? employee.user.name : "Pending Invite" %></span>
+              <% if employee.user.user_image_link %>
+                <img src="<%= employee.user.user_image_link %>" class="circle" width="50" height="50" style="position: absolute; top: 16px; right: 16px">
+              <% else %>
+                <%= image_tag("icon_only_100.png", size: 100) %>
+              <% end %>
               <p class="ellipse_text"><%= employee.user.email %></p>
             </div>
             <div class="card-action">
@@ -300,6 +305,20 @@
       });
 
       $("#timecard_table input, input#sick_hours").focusout(function () {
+          update_timecard();
+      });
+
+      $(".am-btn").click(function(){
+          toggle_am_pm($(this));
+          update_timecard();
+      });
+
+      $(".pm-btn").click(function(){
+          toggle_am_pm($(this));
+          update_timecard();
+      });
+
+      function update_timecard(){
           // language=JQuery-CSS
           var n = $('.invalid').length;
 
@@ -355,15 +374,7 @@
                   console.log('Upload error: ' + XMLHttpRequest.responseText);
               }
           });
-      });
-
-      $(".am-btn").click(function(){
-          toggle_am_pm($(this));
-      });
-
-      $(".pm-btn").click(function(){
-          toggle_am_pm($(this));
-      });
+      }
   </script>
 
 <% end %>
