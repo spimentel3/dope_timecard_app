@@ -97,7 +97,7 @@ class OrganizationsController < ApplicationController
       @user = current_user
       @organization = Organization.find(params[:id])
       if helpers.user_is_part_of_org?(@user) == false
-        flash[:danger] = "Wrong user access for organization, please try something else"
+        flash[:danger] = "Wrong user access for organization"
         redirect_to(@user)
       end
     end

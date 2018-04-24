@@ -1,0 +1,23 @@
+<%= provide(:title, @user.name) %>
+
+
+<div class="row">
+<% @timecards.each do |timecard| %>
+  <div class="col s12 m4">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">End Date:  <%= timecard.timecard.end_date.strftime("%m/%d") %> </span>
+        <p>Work Hours: <%= timecard.timecard.total_hours %></p>
+        <p>Sick Hours: <%= timecard.timecard.sick_hours %></p>
+        <div class="divider" style="max-width: 130px"></div>
+        <p>Total Hours: <%= timecard.timecard.total_hours + timecard.timecard.sick_hours %></p>
+      </div>
+      <div class="card-action">
+        <%= link_to "View Timecard", timecard.timecard, class: "theia_text_blue" %>
+<!--        <a href="" class="theia_text_blue">View Timecard</a>-->
+      </div>
+    </div>
+  </div>
+
+<% end %>
+</div>

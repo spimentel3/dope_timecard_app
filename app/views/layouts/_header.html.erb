@@ -6,40 +6,38 @@
 <% end %>
 <nav class="theia_air">
   <div class="nav-wrapper container">
-    <a data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    <a data-target="slide-out" class="sidenav-trigger hide-on-med-and-up" id="side_nav_trigger"><i class="material-icons">menu</i></a>
     <%= link_to(image_tag("icon_only_100.png", size: 64), @current_user, class: "hide-on-small-and-down") %>
-    <%= link_to(image_tag("icon_only_100.png", size: 54), @current_user, class: "hide-on-med-and-up") %>
+    <%= link_to(image_tag("icon_only_100.png", size: 54), @current_user, class: "hide-on-med-and-up right") %>
     <ul class="right">
       <% if logged_in? %>
-        <li><a class="dropdown-trigger theia_text_blue" href="" data-target="account_dropdown"><%= @current_user.name %><i class="material-icons right">arrow_drop_down</i></a></li>
+        <% if is_company_user? %>
+          <li><%= link_to "Timecards", user_timecard_collection_path(@current_user), class: "theia_text_blue hide-on-small-and-down" %></li>
+        <% end %>
+        <li><a class="dropdown-trigger theia_text_blue hide-on-small-and-down" href="" data-target="account_dropdown"><%= @current_user.name %><i class="material-icons right">arrow_drop_down</i></a></li>
       <% end %>
     </ul>
     <% if logged_in? %>
       <ul id="slide-out" class="sidenav">
-        <li><div class="user-view">
-          <div class="background theia_blue">
+        <li>
+          <div class="user-view">
+            <div class="background theia_blue"></div>
+            <a href=""><%= image_tag(gravatar_for(@current_user, 100), alt: @current_user.name, class: "circle")%></a>
+            <a href=""><span class="white-text name"><%= @current_user.name %></span></a>
+            <a href=""><span class="white-text email"><%= @current_user.email %></span></a>
           </div>
-          <a href=""><%= image_tag(gravatar_for(@current_user, 100), alt: @current_user.name, class: "circle")%></a>
-          <a href=""><span class="white-text name">John Doe</span></a>
-          <a href=""><span class="white-text email">jdandturk@gmail.com</span></a>
-        </div></li>
-        <li><a href=""><i class="material-icons">cloud</i>First Link With Icon</a></li>
-        <li><a href="">Second Link</a></li>
-        <li><div class="divider"></div></li>
-        <li><a class="subheader">Subheader</a></li>
-        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+        </li>
+        <% if is_company_user? %>
+          <li><%= link_to "Timecards", user_timecard_collection_path(@current_user), class: "theia_text_blue" %></li>
+        <% end %>
+        <li><%= link_to "Profile", edit_user_path(@current_user), class: "theia_text_blue" %></li>
+        <li><%= link_to "Logout", logout_path, method: :delete, class: "theia_text_blue" %></li>
+<!--        <li><a href=""><i class="material-icons">cloud</i>First Link With Icon</a></li>-->
+<!--        <li><a href="">Second Link</a></li>-->
+<!--        <li><div class="divider"></div></li>-->
+<!--        <li><a class="subheader">Subheader</a></li>-->
+<!--        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>-->
       </ul>
     <% end %>
-    <!--<ul class="sidenav" id="side-nav">-->
-      <!--<% if logged_in? %>-->
-        <!---->
-        <!--<div class="divider"></div>-->
-        <!--<li><%= link_to "Settings",   edit_user_path(@current_user), class: "theia_text_blue" %></li>-->
-        <!--<li><%= link_to "Logout",     logout_path, method: :delete, class: "theia_text_blue" %></li>-->
-      <!--<% else %>-->
-        <!--<li><%= link_to "Login",      login_path,   class: "theia_text_blue" %></li>-->
-        <!--<li><%= link_to "Signup",     signup_path,  class: "theia_text_blue" %></li>-->
-      <!--<% end %>-->
-    <!--</ul>-->
   </div>
 </nav>

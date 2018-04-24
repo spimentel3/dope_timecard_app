@@ -4,7 +4,7 @@
 <div class="row">
   <div class="z-depth-2 white col s12 m10 offset-m1 l6 offset-l3" style="position: relative">
     <div class="center">
-      <h2>Invites Sent</h2>
+      <h4>Invites Sent</h4>
     </div>
 
     <ul class="collection">
@@ -35,5 +35,8 @@
       <% end %>
     </ul>
 
+    <%= link_to @current_user, class: "theia_text_blue", style: "font-size: large; margin-bottom: 16px" do %>
+      <i class="material-icons" style="position: relative; top: 6px">arrow_back</i>Back to organization
+    <% end %>
   </div>
 </div>

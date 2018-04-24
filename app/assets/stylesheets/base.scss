@@ -48,6 +48,10 @@ body{
   cursor: pointer
 }
 
+#side_nav_trigger{
+  color: $theia_blue;
+}
+
 .debug_dump {
   clear: both;
   float: left;

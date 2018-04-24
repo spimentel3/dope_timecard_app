@@ -1,8 +1,12 @@
 class TimecardController < ApplicationController
+  before_action :logged_in_user
+
   def new
   end
 
   def show
+    @timecard = Timecard.find(params[:id])
+    @user = (Timebook.find_by timecard: @timecard).user
   end
 
   def create
@@ -131,12 +135,16 @@ class TimecardController < ApplicationController
       @timecard.fri_break_minutes_is_set = true
     end
 
+    if params[:timecard][:sick_hours] != ""
+      @timecard.sick_hours = params[:timecard][:sick_hours]
+    end
+
     @timecard.gather_all_hours
     @timecard.total_hours
 
     @timecard.save
 
-    render json: {total_hours: @timecard.total_hours}
+    render json: {total_hours: @timecard.total_hours + @timecard.sick_hours }
 
   end
 
@@ -145,8 +153,16 @@ class TimecardController < ApplicationController
 
   private
 
+    def logged_in_user
+      unless logged_in?
+        store_location
+        flash[:danger] = "Please Log In"
+        redirect_to login_url
+      end
+    end
+
     def timecard_params
-      params.require(:timecard).permit(:sat_hours, :sat_break_hours, :sat_break_minutes, :sat_start, :sat_end, :sun_hours, :sun_break_hours, :sun_break_minutes, :sun_start, :sun_end, :mon_hours, :mon_break_hours, :mon_break_minutes, :mon_start, :mon_end, :tue_hours, :tue_break_hours, :tue_break_minutes, :tue_start, :tue_end, :wed_hours, :wed_break_hours, :wed_break_minutes, :wed_start, :wed_end, :thu_hours, :thu_break_hours, :thu_break_minutes, :thu_start, :thu_end, :fri_hours, :fri_break_hours, :fri_break_minutes, :fri_start, :fri_end)
+      params.require(:timecard).permit(:sick_hours, :sat_hours, :sat_break_hours, :sat_break_minutes, :sat_start, :sat_end, :sun_hours, :sun_break_hours, :sun_break_minutes, :sun_start, :sun_end, :mon_hours, :mon_break_hours, :mon_break_minutes, :mon_start, :mon_end, :tue_hours, :tue_break_hours, :tue_break_minutes, :tue_start, :tue_end, :wed_hours, :wed_break_hours, :wed_break_minutes, :wed_start, :wed_end, :thu_hours, :thu_break_hours, :thu_break_minutes, :thu_start, :thu_end, :fri_hours, :fri_break_hours, :fri_break_minutes, :fri_start, :fri_end)
     end
 
 end

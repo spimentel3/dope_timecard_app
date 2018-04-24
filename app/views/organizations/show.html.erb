@@ -8,35 +8,26 @@
 
     <div class="row">
       <div class="col s12">
-        <!--<%= render "shared/grid_helper" %>-->
-        <h4>Current Members:</h4>
-        <ul class="collection">
-          <% @employees.each do |user| %>
-            <li class="collection-item avatar">
-              <img src="http://placekitten.com/g/50/50" alt="" class="circle">
-              <span class="title"></span>
-              <p><%= User.find(user.user_id).email %>
-              </p>
-            </li>
-          <% end %>
-        </ul>
-        <div class="divider"></div>
-
-        <h4>Invite New Members</h4>
-        <p class="flow-text">Emails placed here will be automatically sent an email inviting them to join this organization</p>
+        <h5>Invite New Members</h5>
+        <p class="flow-text">Emails placed here will be automatically sent an email inviting them to join this
+          organization</p>
         <%= form_tag organization_send_invites_path(@organization) do %>
           <div class="row">
+            <div id="invite_progress_bar" class="progress hiddendiv">
+              <div class="indeterminate"></div>
+            </div>
             <div class="col s6 center">
-              <a href="javascript:" id="add_new_email" class="hide-on-small-and-down"><i class="material-icons" style="position: relative; top: 6px; padding-bottom: 4px">add</i>Add Invite</a>
+              <a href="javascript:" id="add_new_email" class="hide-on-small-and-down"><i class="material-icons" style="position: relative; top: 6px; padding-bottom: 4px">add</i>Add
+                Invite</a>
             </div>
             <div class="col s6">
-              <%= submit_tag "Send Invites", class: "btn-small theia_blue right hide-on-small-and-down"%>
+              <%= submit_tag "Send Invites", class: "btn-small theia_blue right hide-on-small-and-down send_invites" %>
             </div>
             <br>
             <div id="emails_form">
             </div>
             <div class="col s12 center">
-              <%= submit_tag "Send Invites", class: "btn-large theia_blue hide-on-med-and-up"%>
+              <%= submit_tag "Send Invites", class: "btn-large theia_blue hide-on-med-and-up send_invites" %>
               <div class="fixed-action-btn">
                 <a href="javascript:" id="add_new_email_mobile" class="btn-floating btn-large waves-effect waves-light red hide-on-med-and-up"><i class="material-icons">add</i></a>
               </div>
@@ -44,14 +35,37 @@
           </div>
           <br>
         <% end %>
+
         <div class="divider"></div>
+
+        <h5>Current Members:</h5>
+        <ul class="collection">
+          <% @employees.each do |user| %>
+            <li class="collection-item">
+              <%= user.user.email %> -
+              <% if user.user.name %>
+                Active
+              <% else %>
+                Pending
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+
+        <div class="divider"></div>
+
+        <h5>Future Settings:</h5>
+        <ul>
+          <li>Invite co-managers</li>
+          <li>Remove users</li>
+        </ul>
       </div>
     </div>
   </div>
 </div>
 
 <div class="hide" id="new_emails_form">
-  <div class="input-field col s11 m8 offset-m2 l6">
+  <div class="input-field col s12 m6 offset-m3 l4">
     <%= text_field_tag 'emails[]', nil, class:"email_input_field", autocomplete: "off" %>
     <%= label_tag 'Email' %>
     <i class="material-icons clear_email right">clear</i>
@@ -60,6 +74,10 @@
 
 <script>
     $(document).ready(function(){
+
+        $(".send_invites").click(function(){
+            $("#invite_progress_bar").removeClass("hiddendiv");
+        });
 
         function key_press_check(e) {
             if (e.keyCode == 9){

@@ -8,7 +8,9 @@ Rails.application.routes.draw do
 
   get     '/signup',              to: 'users#new'
   post    '/signup',              to: 'users#create'
-  resources :users
+  resources :users do
+    get   '/timecard_collection', to: 'users#timecard_collection'
+  end
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]
   resources :organizations,       only: [:new, :create, :show, :destroy] do

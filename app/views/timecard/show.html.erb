@@ -1,2 +1,91 @@
-<h1>Timecard#show</h1>
-<p>Find me in app/views/timecard/show.html.erb</p>
+<%= provide(:title, @user.name) %>
+
+<div class="" style="padding-top: 32px"></div>
+
+
+<div class="row">
+  <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3" style="position: relative">
+    <div class="row">
+      <div class="col s6">
+        <h5>Timecard</h5>
+        <p><%= @user.name %></p>
+      </div>
+      <div class="col s6 right">
+        <p class="right">Due at: <%= @timecard.end_date.strftime("%m/%d %I:%M %p") %></p>
+      </div>
+    </div>
+    <div class="divider" style="margin-bottom: 16px"></div>
+    <table>
+      <thead>
+      <tr>
+        <th>Date</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Hours Worked</th>
+        <th>Break Hours</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr>
+        <td><%= @timecard.sat_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.sat_start.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.sat_end.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.sat_hours %></td>
+        <td><%= @timecard.sat_break_hours + (@timecard.sat_break_minutes / 60.0) %></td>
+      </tr>
+      <tr>
+        <td><%= @timecard.sun_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.sun_start.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.sun_end.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.sun_hours %></td>
+        <td><%= @timecard.sun_break_hours + (@timecard.sun_break_minutes / 60.0) %></td>
+      </tr>
+      <tr>
+        <td><%= @timecard.mon_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.mon_start.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.mon_end.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.mon_hours %></td>
+        <td><%= @timecard.mon_break_hours + (@timecard.mon_break_minutes / 60.0) %></td>
+      </tr>
+      <tr>
+        <td><%= @timecard.tue_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.tue_start.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.tue_end.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.tue_hours %></td>
+        <td><%= @timecard.tue_break_hours + (@timecard.tue_break_minutes / 60.0) %></td>
+      </tr>
+      <tr>
+        <td><%= @timecard.wed_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.wed_start.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.wed_end.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.wed_hours %></td>
+        <td><%= @timecard.wed_break_hours + (@timecard.wed_break_minutes / 60.0) %></td>
+      </tr>
+      <tr>
+        <td><%= @timecard.thu_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.thu_start.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.thu_end.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.thu_hours %></td>
+        <td><%= @timecard.thu_break_hours + (@timecard.thu_break_minutes / 60.0) %></td>
+      </tr>
+      <tr>
+        <td><%= @timecard.fri_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.fri_start.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.fri_end.strftime("%I:%M %p") %></td>
+        <td><%= @timecard.fri_hours %></td>
+        <td><%= @timecard.fri_break_hours + (@timecard.fri_break_minutes / 60.0) %></td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="row">
+      <div class="col s6">
+        <h5 style="margin-bottom: 0px">Total Time: <%= @timecard.total_hours + @timecard.sick_hours %></h5>
+        <p style="margin-top: 0px">(includes sick hours)</p>
+      </div>
+      <div class="col s6">
+        <h5>Sick Hours: <%= @timecard.sick_hours %></h5>
+      </div>
+    </div>
+  </div>
+</div>

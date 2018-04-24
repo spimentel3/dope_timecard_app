@@ -29,6 +29,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def timecard_collection
+    @user = User.find params[:user_id]
+    @timecards = Timebook.where(user: @user).order("id DESC")
+  end
+
   def edit
   end
 
