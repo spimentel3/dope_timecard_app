@@ -1,14 +1,11 @@
 <%= provide(:title, @organization.name) %>
 
 <div class="hide-on-small-and-down" style="padding-top: 32px"></div>
-<div class="hide-on-small-and-down" style="padding-top: 32px"></div>
 <div class="row">
   <div class="z-depth-2 white col s12 m10 offset-m1 l6 offset-l3" style="position: relative">
-
-
     <div class="row">
       <div class="col s12">
-        <h5>Invite New Members</h5>
+        <h4>Invite New Members:</h4>
         <p class="flow-text">Emails placed here will be automatically sent an email inviting them to join this
           organization</p>
         <%= form_tag organization_send_invites_path(@organization) do %>
@@ -16,12 +13,9 @@
             <div id="invite_progress_bar" class="progress hiddendiv">
               <div class="indeterminate"></div>
             </div>
-            <div class="col s6 center">
+            <div class="col s12 center">
               <a href="javascript:" id="add_new_email" class="hide-on-small-and-down"><i class="material-icons" style="position: relative; top: 6px; padding-bottom: 4px">add</i>Add
                 Invite</a>
-            </div>
-            <div class="col s6">
-              <%= submit_tag "Send Invites", class: "btn-small theia_blue right hide-on-small-and-down send_invites" %>
             </div>
             <br>
             <div id="emails_form">
@@ -33,12 +27,22 @@
               </div>
             </div>
           </div>
+          <%= submit_tag "Send Invites", class: "btn-small theia_blue right hide-on-small-and-down send_invites" %>
           <br>
         <% end %>
 
-        <div class="divider"></div>
-
-        <h5>Current Members:</h5>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="z-depth-2 white col s12 m10 offset-m1 l6 offset-l3" style="position: relative">
+    <div class="row">
+      <div class="col s12">
+        <h4>Current Members:</h4>
+        <% if @employees.count == 0 %>
+          <p>No users yet</p>
+        <% else %>
         <ul class="collection">
           <% @employees.each do |user| %>
             <li class="collection-item">
@@ -51,21 +55,29 @@
             </li>
           <% end %>
         </ul>
-
-        <div class="divider"></div>
-
-        <h5>Future Settings:</h5>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="z-depth-2 white col s12 m10 offset-m1 l6 offset-l3" style="position: relative">
+    <div class="row">
+      <div class="col s12">
+        <h4>Future Settings:</h4>
         <ul>
           <li>Invite co-managers</li>
           <li>Remove users</li>
+          <li>Delete Organization</li>
         </ul>
       </div>
     </div>
   </div>
 </div>
 
+
 <div class="hide" id="new_emails_form">
-  <div class="input-field col s12 m6 offset-m3 l4">
+  <div class="input-field col s12 m6 offset-m3 l4 animated fadeIn">
     <%= text_field_tag 'emails[]', nil, class:"email_input_field", autocomplete: "off" %>
     <%= label_tag 'Email' %>
     <i class="material-icons clear_email right">clear</i>
@@ -80,7 +92,7 @@
         });
 
         function key_press_check(e) {
-            if (e.keyCode == 9){
+            if (e.keyCode == 9 && !e.shiftKey){
                 add_field();
                 update_form();
             }

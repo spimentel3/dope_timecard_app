@@ -57,6 +57,9 @@ class OrganizationsController < ApplicationController
     @successful_invites = []
     @unsuccessful_invites = []
     @invites.each do |email|
+      if email == ""
+        next
+      end
       password = SecureRandom.urlsafe_base64
       user = User.new(email: email, password: password, password_confirmation: password)
       user.needs_to_update_account = true

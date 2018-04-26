@@ -16,4 +16,11 @@ class OrganizationMailer < ApplicationMailer
     @organization = organization
     mail to: user.email, subject: "#{organization.name} wants your time!"
   end
+
+  def invite_comanager(user, organization)
+    @user = user
+    @organization = organization
+    mail to: user.email, subject: "You've been invited to manage timecards for #{organization.name}"
+  end
+
 end

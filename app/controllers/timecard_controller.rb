@@ -16,6 +16,10 @@ class TimecardController < ApplicationController
   def update
     @timecard = Timecard.find(params[:id])
 
+    if @timecard.active == false
+      return render json: { error: "New Timecard Aavailable" }
+    end
+
     if params[:timecard][:sat_start] != ""
       @timecard.sat_start = Time.zone.parse("#{params[:timecard][:sat_start]}").utc
       @timecard.sat_start_is_set = true

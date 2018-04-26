@@ -9,11 +9,16 @@ class OrganizationMailerPreview < ActionMailer::Preview
   end
 
   def timecard_invitation
-    # user = User.new name: "Stephen Phillips", email: "stephen@theia.io"
-    user = User.third
+    user = User.new name: "Stephen Phillips", email: "stephen@theia.io"
     user.activation_token = User.new_token
     organization = Organization.new name: "Theia Interactive"
     OrganizationMailer.timecard_invitation(user, organization)
+  end
+
+  def invite_comanager
+    user = User.new name: "Stephen Phillips"
+    organization = Organization.new name: "Theia Interactive"
+    OrganizationMailer.invite_comanager(user, organization)
   end
 
 end

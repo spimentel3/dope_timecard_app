@@ -60,6 +60,27 @@ body{
   @include box_sizing;
 }
 
+.tap-target{
+  background-color: $theia_blue_l2 !important;
+}
+
+.progress .indeterminate{
+  background-color: $theia_blue !important;
+}
+
+.progress{
+  background-color: $theia_air_d1 !important;
+}
+
+.material-tooltip{
+  color: white !important;
+  background-color: $theia_blue !important;
+}
+
+.tap-target-wrapper.open .tap-target{
+  opacity: .6 !important;
+}
+
 #side_nav:hover {
   cursor: pointer;
 }

@@ -27,6 +27,7 @@ class Timecard < ApplicationRecord
     self.sun_end = Time.utc(timecard_sunday.year, timecard_sunday.month, timecard_sunday.day, 0)
     self.sat_start = Time.utc(timecard_saturday.year, timecard_saturday.month, timecard_saturday.day, 0)
     self.sat_end = Time.utc(timecard_saturday.year, timecard_saturday.month, timecard_saturday.day, 0)
+    self.active = true
 
   end
 

@@ -13,13 +13,13 @@
     <div class="row">
       <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3" style="padding-bottom: 1rem">
         <h4><%= @owned_organization.name %></h4>
-        <%= link_to organization_notify_users_timecards_are_due_path(@owned_organization), method: :post, class: "btn-small theia_blue waves-effect waves-light" do %>
+        <%= link_to organization_notify_users_timecards_are_due_path(@owned_organization), method: :post, id: "notify_btn_tt", class: "btn-small theia_blue waves-effect waves-light tooltipped", "data-position": "bottom", "data-delay": "50", "data-tooltip": "Sends email to user saying timecards are due" do %>
           <i class="material-icons right">notifications_active</i>Notify
         <% end %>
-        <%= link_to organization_collect_timecards_path(@owned_organization), method: :post, class: "btn-small theia_blue waves-effect waves-light" do %>
+        <%= link_to organization_collect_timecards_path(@owned_organization), method: :post, id: "collect_btn_tt", class: "btn-small theia_blue waves-effect waves-light tooltipped", "data-position": "bottom", "data-delay": "50", "data-tooltip": "Collects current timecards and issues out new ones" do %>
           <i class="material-icons right">collections</i>Collect
         <% end %>
-        <%= link_to "Manage", @owned_organization, class: "btn-small theia_blue waves-effect waves-light" %>
+        <%= link_to "Manage", @owned_organization, class: "btn-small theia_blue waves-effect waves-light", id: "add_new_users_fd" %>
       </div>
     </div>
     <div class="row">
@@ -50,10 +50,46 @@
       <%=	 link_to "New Organization", new_organization_path, class: "btn-large theia_blue right", style: "margin-bottom: 16px"  %>
     </div>
     <% end %>
+
+  <% if @owned_organization and @owned_organization.employees.count == 0 %>
+  <div class="tap-target" data-target="add_new_users_fd">
+    <div class="tap-target-content">
+      <h5>Add Users</h5>
+      <p>To get started:<br> click on Manage to add some users</p>
+    </div>
   </div>
+
+  </div>
+
+  <script>
+    var add_user_fd_options = {};
+    var add_user_fd = document.querySelector('.tap-target');
+    var add_user_fd_instance = M.FeatureDiscovery.init(add_user_fd, add_user_fd_options);
+    $(document).ready(function(){
+        add_user_fd_instance.open();
+
+        $(document).click(function(){
+            add_user_fd_instance.close();
+        });
+    });
+  </script>
+  <% end %>
+
+  <script>
+    var notify_tooltip_options = {
+        enterDelay: 300
+    };
+    var notify_tooltip = document.querySelector('#notify_btn_tt');
+    var notify_tooltip_instance = M.Tooltip.init(notify_tooltip , notify_tooltip_options);
+    var collect_tooltip_options = {
+        enterDelay: 300
+    };
+    var collect_tooltip = document.querySelector('#collect_btn_tt');
+    var collect_tooltip_instance = M.Tooltip.init(collect_tooltip , collect_tooltip_options);
+  </script>
 <% elsif is_company_user? %>
   <div class="row">
-    <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3" style="position: relative">
+    <div class="z-depth-2 white col s12 m10 offset-m1 l8 offset-l2" style="position: relative">
       <div class="row">
         <div class="col s6">
           <h5>Timecard</h5>
@@ -71,6 +107,7 @@
           <th>Starting Time</th>
           <th>Ending Time</th>
           <th>Break Duration</th>
+          <th>Week Total</th>
         </tr>
         </thead>
         <tbody id="timecard_table">
@@ -100,6 +137,11 @@
             <input id="sat_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sat_break_hours_is_set)? @timecard.sat_break_minutes : "" %>">
             m
           </td>
+          <td>
+            <h6>
+              <%= @timecard.sat_hours %>
+            </h6>
+          </td>
         </tr>
         <tr id="sun_row">
           <td>Sunday <%= @timecard.sun_start.strftime("%m/%d") %></td>
@@ -126,6 +168,11 @@
             h
             <input id="sun_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sun_break_hours_is_set) ? @timecard.sun_break_minutes : "" %>">
             m
+          </td>
+          <td>
+            <h6>
+              <%= @timecard.sun_hours %>
+            </h6>
           </td>
         </tr>
         <tr id="mon_row">
@@ -154,6 +201,11 @@
             <input id="mon_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.mon_break_hours_is_set) ? @timecard.mon_break_minutes : "" %>">
             m
           </td>
+          <td>
+            <h6>
+              <%= @timecard.mon_hours %>
+            </h6>
+          </td>
         </tr>
         <tr id="tue_row">
           <td>Tuesday <%= @timecard.tue_start.strftime("%m/%d") %></td>
@@ -180,6 +232,11 @@
             h
             <input id="tue_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.tue_break_hours_is_set) ? @timecard.tue_break_minutes : "" %>">
             m
+          </td>
+          <td>
+            <h6>
+              <%= @timecard.tue_hours %>
+            </h6>
           </td>
         </tr>
         <tr id="wed_row">
@@ -208,6 +265,11 @@
             <input id="wed_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.wed_break_hours_is_set) ? @timecard.wed_break_minutes : "" %>">
             m
           </td>
+          <td>
+            <h6>
+              <%= @timecard.wed_hours %>
+            </h6>
+          </td>
         </tr>
         <tr id="thu_row">
           <td>Thursday <%= @timecard.thu_start.strftime("%m/%d") %></td>
@@ -235,6 +297,11 @@
             <input id="thu_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.thu_break_hours_is_set) ? @timecard.thu_break_minutes : "" %>">
             m
           </td>
+          <td>
+            <h6>
+              <%= @timecard.thu_hours %>
+            </h6>
+          </td>
         </tr>
         <tr id="fri_row">
           <td>Friday <%= @timecard.fri_start.strftime("%m/%d") %></td>
@@ -261,6 +328,11 @@
             h
             <input id="fri_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.fri_break_hours_is_set) ? @timecard.fri_break_minutes : "" %>">
             m
+          </td>
+          <td>
+            <h6>
+              <%= @timecard.fri_hours %>
+            </h6>
           </td>
         </tr>
         </tbody>
@@ -296,7 +368,8 @@
             this.value = zero_pad(this.value, 2);
       });
 
-      $("#timecard_table input[id*='hour']").focusout(function(){
+
+      $("#timecard_table input[id*='hour']").focusout(function () {
           if (parseInt(this.value) > 8 && parseInt(this.value) < 12) {
               toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".am-btn"));
           } else {
@@ -324,9 +397,17 @@
 
           if (n > 0) {
               console.log(n, "Errors");
-              console.log($('.invalid'));
               return;
           }
+
+<!--          var sat_start = ($('#sat_start_hour').val() == "" || $('#sat_start_minute').val() == "") ? "" : "<%= @timecard.sat_start.strftime("%Y-%m-%d") %> " + (($("#sat_start_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#sat_start_hour').val()) != 12) ? parseInt($('#sat_start_hour').val()) + 12 : ($("#sat_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#sat_start_hour').val()) == 12) ? parseInt($('#sat_start_hour').val()) - 12 : $('#sat_start_hour').val()) + ":" + $('#sat_start_minute').val() + ":00";-->
+<!--          var sat_end = ($('#sat_end_hour').val() == "" || $('#sat_end_minute').val() == "") ? "" : "<%= @timecard.sat_end.strftime("%Y-%m-%d") %> " + (($("#sat_end_am_pm .pm-btn.animate_theia_text_blue").length && parseInt($('#sat_end_hour').val()) != 12) ? parseInt($('#sat_end_hour').val()) + 12 : ($("#sat_start_am_pm .am-btn.animate_theia_text_blue").length && parseInt($('#sat_end_hour').val()) == 12) ? parseInt($('#sat_end_hour').val()) - 12 : $('#sat_end_hour').val()) + ":" + $('#sat_end_minute').val() + ":00";-->
+<!--          console.log(sat_start, sat_end);-->
+<!--          var sat_hours = moment.utc(moment(sat_end,"YYYY-MM-DD HH:mm:ss").diff(moment(sat_start,"YYYY-MM-DD HH:mm:ss"))).format("HH:mm:ss");-->
+<!--          var sat_break_hours = $('#sat_break_hour').val();-->
+<!--          var sat_break_minutes = $('#sat_break_minute').val();-->
+
+<!--          console.log(sat_hours);-->
 
           var data = {
               timecard: {
