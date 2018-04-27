@@ -21,60 +21,60 @@
         <th>Date</th>
         <th>Start Time</th>
         <th>End Time</th>
-        <th>Hours Worked</th>
         <th>Break Hours</th>
+        <th>Hours Worked</th>
       </tr>
       </thead>
 
       <tbody>
       <tr>
-        <td><%= @timecard.sat_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.sat_start.strftime("%A") %><p class="right" style="margin: 0"><%= @timecard.sat_start.strftime("%m/%d")  %></p></td>
         <td><%= @timecard.sat_start.strftime("%I:%M %p") %></td>
         <td><%= @timecard.sat_end.strftime("%I:%M %p") %></td>
-        <td><%= @timecard.sat_hours %></td>
         <td><%= @timecard.sat_break_hours + (@timecard.sat_break_minutes / 60.0) %></td>
+        <td><%= @timecard.sat_hours %></td>
       </tr>
       <tr>
-        <td><%= @timecard.sun_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.sun_start.strftime("%A") %><p class="right" style="margin: 0"><%= @timecard.sun_start.strftime("%m/%d") %></p></td>
         <td><%= @timecard.sun_start.strftime("%I:%M %p") %></td>
         <td><%= @timecard.sun_end.strftime("%I:%M %p") %></td>
-        <td><%= @timecard.sun_hours %></td>
         <td><%= @timecard.sun_break_hours + (@timecard.sun_break_minutes / 60.0) %></td>
+        <td><%= @timecard.sun_hours %></td>
       </tr>
       <tr>
-        <td><%= @timecard.mon_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.mon_start.strftime("%A") %><p class="right" style="margin: 0"><%= @timecard.mon_start.strftime("%m/%d") %></p></td>
         <td><%= @timecard.mon_start.strftime("%I:%M %p") %></td>
         <td><%= @timecard.mon_end.strftime("%I:%M %p") %></td>
-        <td><%= @timecard.mon_hours %></td>
         <td><%= @timecard.mon_break_hours + (@timecard.mon_break_minutes / 60.0) %></td>
+        <td><%= @timecard.mon_hours %></td>
       </tr>
       <tr>
-        <td><%= @timecard.tue_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.tue_start.strftime("%A") %><p class="right" style="margin: 0"><%= @timecard.tue_start.strftime("%m/%d") %></p></td>
         <td><%= @timecard.tue_start.strftime("%I:%M %p") %></td>
         <td><%= @timecard.tue_end.strftime("%I:%M %p") %></td>
-        <td><%= @timecard.tue_hours %></td>
         <td><%= @timecard.tue_break_hours + (@timecard.tue_break_minutes / 60.0) %></td>
+        <td><%= @timecard.tue_hours %></td>
       </tr>
       <tr>
-        <td><%= @timecard.wed_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.wed_start.strftime("%A") %><p class="right" style="margin: 0"><%= @timecard.wed_start.strftime("%m/%d") %></p></td>
         <td><%= @timecard.wed_start.strftime("%I:%M %p") %></td>
         <td><%= @timecard.wed_end.strftime("%I:%M %p") %></td>
-        <td><%= @timecard.wed_hours %></td>
         <td><%= @timecard.wed_break_hours + (@timecard.wed_break_minutes / 60.0) %></td>
+        <td><%= @timecard.wed_hours %></td>
       </tr>
       <tr>
-        <td><%= @timecard.thu_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.thu_start.strftime("%A") %><p class="right" style="margin: 0"><%= @timecard.thu_start.strftime("%m/%d") %></p></td>
         <td><%= @timecard.thu_start.strftime("%I:%M %p") %></td>
         <td><%= @timecard.thu_end.strftime("%I:%M %p") %></td>
-        <td><%= @timecard.thu_hours %></td>
         <td><%= @timecard.thu_break_hours + (@timecard.thu_break_minutes / 60.0) %></td>
+        <td><%= @timecard.thu_hours %></td>
       </tr>
       <tr>
-        <td><%= @timecard.fri_start.strftime("%A %m/%d") %></td>
+        <td><%= @timecard.fri_start.strftime("%A") %><p class="right" style="margin: 0"><%= @timecard.fri_start.strftime("%m/%d") %></p></td>
         <td><%= @timecard.fri_start.strftime("%I:%M %p") %></td>
         <td><%= @timecard.fri_end.strftime("%I:%M %p") %></td>
-        <td><%= @timecard.fri_hours %></td>
         <td><%= @timecard.fri_break_hours + (@timecard.fri_break_minutes / 60.0) %></td>
+        <td><%= @timecard.fri_hours %></td>
       </tr>
       </tbody>
     </table>
