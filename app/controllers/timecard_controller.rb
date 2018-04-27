@@ -148,7 +148,15 @@ class TimecardController < ApplicationController
 
     @timecard.save
 
-    render json: {total_hours: @timecard.total_hours + @timecard.sick_hours }
+    render json: {total_hours: @timecard.total_hours + @timecard.sick_hours,
+                  sat_total: "#{@timecard.sat_hours}",
+                  sun_total: "#{@timecard.sun_hours}",
+                  mon_total: "#{@timecard.mon_hours}",
+                  tue_total: "#{@timecard.tue_hours}",
+                  wed_total: "#{@timecard.wed_hours}",
+                  thu_total: "#{@timecard.thu_hours}",
+                  fri_total: "#{@timecard.fri_hours}"
+                  }
 
   end
 
