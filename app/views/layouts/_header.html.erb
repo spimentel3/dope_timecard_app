@@ -8,8 +8,15 @@
   <div class="nav-wrapper container">
     <% if logged_in? %>
       <a data-target="slide-out" class="sidenav-trigger hide-on-med-and-up" id="side_nav_trigger"><i class="material-icons">menu</i></a>
-      <%= link_to(image_tag("icon_only_100.png", size: 64), @current_user, class: "hide-on-small-and-down") %>
-      <%= link_to(image_tag("icon_only_100.png", size: 54), @current_user, class: "hide-on-med-and-up right") %>
+      <% if @current_user.user_image_link != "" %>
+        <%= link_to @current_user do %>
+          <img src="<%= @current_user.user_image_link %>" class="circle hide-on-small-and-down" width="64" height="64">
+          <img src="<%= @current_user.user_image_link %>" class="circle hide-on-med-and-up right" width="54" height="54">
+        <% end %>
+      <% else %>
+        <%= link_to(image_tag("icon_only_100.png", size: 64), @current_user, class: "hide-on-small-and-down") %>
+        <%= link_to(image_tag("icon_only_100.png", size: 54), @current_user, class: "hide-on-med-and-up right") %>
+      <% end %>
     <% else %>
       <%= link_to(image_tag("icon_only_100.png", size: 64), login_path, class: "hide-on-small-and-down") %>
       <%= link_to(image_tag("icon_only_100.png", size: 54), login_path, class: "hide-on-med-and-up right") %>
@@ -41,11 +48,6 @@
         <% end %>
         <li><%= link_to "Profile", edit_user_path(@current_user), class: "theia_text_blue" %></li>
         <li><%= link_to "Logout", logout_path, method: :delete, class: "theia_text_blue" %></li>
-<!--        <li><a href=""><i class="material-icons">cloud</i>First Link With Icon</a></li>-->
-<!--        <li><a href="">Second Link</a></li>-->
-<!--        <li><div class="divider"></div></li>-->
-<!--        <li><a class="subheader">Subheader</a></li>-->
-<!--        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>-->
       </ul>
     <% end %>
   </div>

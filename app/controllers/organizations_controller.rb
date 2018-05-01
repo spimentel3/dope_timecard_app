@@ -40,6 +40,9 @@ class OrganizationsController < ApplicationController
     organization = Organization.find(params[:organization_id])
 
     organization.employees.each do |employee|
+      timecard = employee.user.timecards.last
+      timecard.active = false
+      timecard.save
       timecard = Timecard.new
       timecard.set_up_timecard(Date.today + 7)
       timecard.save

@@ -73,7 +73,7 @@ class CreateTimecards < ActiveRecord::Migration[5.1]
       t.boolean   :fri_start_is_set,          default: false
       t.datetime  :fri_end
       t.boolean   :fri_end_is_set,            default: false
-      t.float :overtime_hours
+      t.float :overtime_hours,                default: 0.0
       t.datetime :end_date
       t.string :stephens_quote
       t.float :total_hours

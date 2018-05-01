@@ -85,6 +85,11 @@ body{
   cursor: pointer;
 }
 
+.toast{
+  background-color: $theia_air !important;
+  color: $theia_slate !important;
+}
+
 input label{
   font-size: 12pt !important;
 }

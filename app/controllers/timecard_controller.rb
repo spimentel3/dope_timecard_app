@@ -16,6 +16,10 @@ class TimecardController < ApplicationController
   def update
     @timecard = Timecard.find(params[:id])
 
+    if @timecard.locked || !@timecard.active
+      return
+    end
+
     if @timecard.active == false
       return render json: { error: "New Timecard Aavailable" }
     end
@@ -143,6 +147,37 @@ class TimecardController < ApplicationController
       @timecard.sick_hours = params[:timecard][:sick_hours]
     end
 
+    if params[:clear]
+      @timecard.sat_start_is_set = false
+      @timecard.sat_end_is_set = false
+      @timecard.sat_break_hours_is_set = false
+      @timecard.sat_break_minutes_is_set = false
+      @timecard.sun_start_is_set = false
+      @timecard.sun_end_is_set = false
+      @timecard.sun_break_hours_is_set = false
+      @timecard.sun_break_minutes_is_set = false
+      @timecard.mon_start_is_set = false
+      @timecard.mon_end_is_set = false
+      @timecard.mon_break_hours_is_set = false
+      @timecard.mon_break_minutes_is_set = false
+      @timecard.tue_start_is_set = false
+      @timecard.tue_end_is_set = false
+      @timecard.tue_break_hours_is_set = false
+      @timecard.tue_break_minutes_is_set = false
+      @timecard.wed_start_is_set = false
+      @timecard.wed_end_is_set = false
+      @timecard.wed_break_hours_is_set = false
+      @timecard.wed_break_minutes_is_set = false
+      @timecard.thu_start_is_set = false
+      @timecard.thu_end_is_set = false
+      @timecard.thu_break_hours_is_set = false
+      @timecard.thu_break_minutes_is_set = false
+      @timecard.fri_start_is_set = false
+      @timecard.fri_end_is_set = false
+      @timecard.fri_break_hours_is_set = false
+      @timecard.fri_break_minutes_is_set = false
+    end
+
     @timecard.gather_all_hours
     @timecard.total_hours
 
@@ -155,9 +190,23 @@ class TimecardController < ApplicationController
                   tue_total: "#{@timecard.tue_hours}",
                   wed_total: "#{@timecard.wed_hours}",
                   thu_total: "#{@timecard.thu_hours}",
-                  fri_total: "#{@timecard.fri_hours}"
+                  fri_total: "#{@timecard.fri_hours}",
+                  overtime_total: "#{@timecard.overtime_hours}",
+                  sick_hours: "#{@timecard.sick_hours}"
                   }
 
+  end
+
+  def lock
+    timecard = Timecard.find(params[:timecard_id])
+    timecard.locked = true
+    timecard.save
+  end
+
+  def unlock
+    timecard = Timecard.find(params[:timecard_id])
+    timecard.locked = false
+    timecard.save
   end
 
   def edit

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180426213839) do
+ActiveRecord::Schema.define(version: 20180501172930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(version: 20180426213839) do
     t.boolean "fri_start_is_set", default: false
     t.datetime "fri_end"
     t.boolean "fri_end_is_set", default: false
-    t.float "overtime_hours"
+    t.float "overtime_hours", default: 0.0
     t.datetime "end_date"
     t.string "stephens_quote"
     t.float "total_hours"
@@ -110,7 +110,14 @@ ActiveRecord::Schema.define(version: 20180426213839) do
     t.datetime "updated_at", null: false
     t.integer "sick_hours", default: 0
     t.boolean "active", default: false
-    t.integer "overtime", default: 0
+    t.boolean "locked", default: false
+    t.float "sat_overtime", default: 0.0
+    t.float "sun_overtime", default: 0.0
+    t.float "mon_overtime", default: 0.0
+    t.float "tue_overtime", default: 0.0
+    t.float "wed_overtime", default: 0.0
+    t.float "thu_overtime", default: 0.0
+    t.float "fri_overtime", default: 0.0
   end
 
   create_table "users", force: :cascade do |t|
