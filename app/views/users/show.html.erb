@@ -499,15 +499,21 @@
       });
 
       $("#timecard_table input").focusout(function(){
-          this.value = zero_pad(this.value, 2);
+          if (this.value != "")
+            this.value = zero_pad(this.value, 2);
       });
 
 
       $("#timecard_table input[id*='hour']").focusout(function () {
-          if (parseInt(this.value) >= 8 && parseInt(this.value) < 12) {
-              toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".am-btn"));
+          if (this.value !== "") {
+              if (parseInt(this.value) >= 8 && parseInt(this.value) < 12) {
+                  toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".am-btn"));
+              } else {
+                  toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".pm-btn"));
+              }
           } else {
-              toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".pm-btn"));
+              $(this).parent().find(".am-btn").removeClass("animate_theia_text_blue");
+              $(this).parent().find(".pm-btn").removeClass("animate_theia_text_blue");
           }
       });
 
