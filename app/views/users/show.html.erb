@@ -505,7 +505,7 @@
 
       $("#timecard_table input[id*='hour']").focusout(function () {
           if (parseInt(this.value) >= 8 && parseInt(this.value) < 12) {
-              toggle_am_pm($(this).siblings(0"div[id*='am_pm']").children(".am-btn"));
+              toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".am-btn"));
           } else {
               toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".pm-btn"));
           }
