@@ -1,10 +1,7 @@
 <%= provide(:title, @user.name) %>
 
 <style>
-  .animate_theia_text_blue{
-    color: #3A96D1 !important;
-    transition: color 300ms;
-  }
+
 </style>
 
 <div class="" style="padding-top: 32px"></div>
@@ -13,14 +10,16 @@
     <div class="row">
       <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3">
         <h4><%= @owned_organization.name %></h4>
-        <%= link_to organization_notify_users_timecards_are_due_path(@owned_organization), method: :post, id: "notify_btn_tt", class: "btn-small theia_blue waves-effect waves-light tooltipped", "data-position": "bottom", "data-delay": "50", "data-tooltip": "Sends email to user saying timecards are due", style:"margin-bottom: 1rem" do %>
-          <i class="material-icons right">notifications_active</i>Notify
-        <% end %>
-        <%= link_to organization_collect_timecards_path(@owned_organization), method: :post, id: "collect_btn_tt", class: "btn-small theia_blue waves-effect waves-light tooltipped", "data-position": "bottom", "data-delay": "50", "data-tooltip": "Collects current timecards and issues out new ones", style:"margin-bottom: 1rem" do %>
-          <i class="material-icons right">collections</i>Collect
-        <% end %>
+        <a id="notify_btn_tt" class="btn-small theia_blue waves-effect waves-light tooltipped" data-position="bottom" data-delay="50" data-tooltip="Sends email to user saying timecards are due" style="margin-bottom: 1rem">
+          <i class="material-icons right">notifications_active</i>
+          Notify
+        </a>
+        <a id="collect_btn_tt" class="btn-small theia_blue waves-effect waves-light tooltipped" data-position="bottom" data-delay="50" data-tooltip="Collects current timecards and issues out new ones" style="margin-bottom: 1rem">
+          <i class="material-icons right">collections</i>
+          Collect
+        </a>
         <%= link_to "Manage", @owned_organization, class: "btn-small theia_blue waves-effect waves-light", id: "add_new_users_fd", style:"margin-bottom: 1rem" %>
-        <div id="manager_action_progress" class="progress">
+        <div id="manager_action_progress" class="progress hiddendiv">
           <div class="indeterminate"></div>
         </div>
       </div>
@@ -61,7 +60,6 @@
         <p>To get started:<br> click on Manage to add some users</p>
       </div>
     </div>
-
   </div>
 
   <script>
@@ -89,6 +87,32 @@
     };
     var collect_tooltip = document.querySelector('#collect_btn_tt');
     var collect_tooltip_instance = M.Tooltip.init(collect_tooltip , collect_tooltip_options);
+
+    <% if @owned_organization %>
+    $("#notify_btn_tt").click(function () {
+        $("#manager_action_progress").removeClass("hiddendiv");
+        $.ajax({
+            url: "<%= organization_notify_users_timecards_are_due_url(@owned_organization) %>",
+            type: "POST",
+            success: function () {
+                $("#manager_action_progress").addClass("hiddendiv");
+                M.toast({html: 'Notified Users', displayLength: "8000"});
+            }
+        })
+    });
+
+    $("#collect_btn_tt").click(function () {
+        $("#manager_action_progress").removeClass("hiddendiv");
+        $.ajax({
+            url: "<%= organization_collect_timecards_url(@owned_organization) %>",
+            type: "POST",
+            success: function (json) {
+                $("#manager_action_progress").addClass("hiddendiv");
+                M.toast({html: json["message"], displayLength: "8000"});
+            }
+        })
+    });
+    <% end %>
   </script>
 <% elsif is_company_user? %>
   <div class="row">
@@ -481,7 +505,7 @@
 
       $("#timecard_table input[id*='hour']").focusout(function () {
           if (parseInt(this.value) >= 8 && parseInt(this.value) < 12) {
-              toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".am-btn"));
+              toggle_am_pm($(this).siblings(0"div[id*='am_pm']").children(".am-btn"));
           } else {
               toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".pm-btn"));
           }
@@ -643,6 +667,8 @@
                   $("#wed_hours").html(json["wed_total"]);
                   $("#thu_hours").html(json["thu_total"]);
                   $("#fri_hours").html(json["fri_total"]);
+                  $("input").removeClass("valid invalid");
+                  $("#sick_hours_input").val("0");
               }
               , error: function (XMLHttpRequest, textStatus, errorThrown) {
                   console.log('Upload error: ' + XMLHttpRequest.responseText);

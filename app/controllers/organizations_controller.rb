@@ -1,6 +1,6 @@
 class OrganizationsController < ApplicationController
   before_action :logged_in_user
-  before_action :correct_user,    only: [:show, :destroy]
+  before_action :correct_user,    only: [:show, :destroy, :notify_users_timecards_are_due, :collect_timecards, :send_invites]
 
   def new
     @organization = Organization.new
@@ -39,6 +39,16 @@ class OrganizationsController < ApplicationController
   def collect_timecards
     organization = Organization.find(params[:organization_id])
 
+    if Date.today.wday != 4
+      render json: {message: "Failed to collect, can only collect on Friday"}
+      return
+    end
+
+    if organization.employees.first.user.timecards.last.end_date.to_date == (DateTime.now + 8).to_date
+      render json: {message: "Already collected for this week"}
+      return
+    end
+
     organization.employees.each do |employee|
       timecard = employee.user.timecards.last
       timecard.active = false
@@ -50,6 +60,8 @@ class OrganizationsController < ApplicationController
       timebook_entry = Timebook.new(organization: organization, timecard: timecard, user: employee.user)
       timebook_entry.save
     end
+
+    render json: {message: "Collected timecards and issued out new ones"}
 
   end
 
@@ -100,9 +112,12 @@ class OrganizationsController < ApplicationController
     end
 
     def correct_user
-      @user = current_user
-      @organization = Organization.find(params[:id])
-      if helpers.user_is_part_of_org?(@user) == false
+      if params[:id]
+        @organization = Organization.find(params[:id])
+      elsif params[:organization_id]
+        @organization = Organization.find(params[:organization_id])
+      end
+      if helpers.user_is_part_of_org?(current_user) == false
         flash[:danger] = "Wrong user access for organization"
         redirect_to(@user)
       end
