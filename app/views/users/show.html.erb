@@ -103,9 +103,6 @@
             <div class="col s12">
               <p class="right">Due at: <%= @user.timecards.last.end_date.strftime("%m/%d %I:%M %p") %></p>
             </div>
-            <div class="col s12">
-              <i id="timecard_lock" class="material-icons small right" style="cursor: pointer"><%= (@timecard.locked)? "lock" : "lock_open" %></i>
-            </div>
           </div>
         </div>
       </div>
@@ -118,33 +115,34 @@
           <th>Ending Time</th>
           <th>Break Duration</th>
           <th>Day Total</th>
+          <th></th>
         </tr>
         </thead>
         <tbody id="timecard_table">
           <tr id="sat_row">
             <td>Saturday <%= @timecard.sat_start.strftime("%m/%d") %></td>
             <td>
-              <input id="sat_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sat_start_is_set) ? @timecard.sat_start.strftime("%I") : "" %>">
+              <input id="sat_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sat_start_is_set) ? @timecard.sat_start.strftime("%I") : "" %>">
               :
-              <input id="sat_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sat_start_is_set) ? @timecard.sat_start.strftime("%M") : "" %>">
+              <input id="sat_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sat_start_is_set) ? @timecard.sat_start.strftime("%M") : "" %>">
               <div id="sat_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.sat_start_is_set and @timecard.sat_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.sat_start_is_set and @timecard.sat_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="sat_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sat_end_is_set) ? @timecard.sat_end.strftime("%I") : "" %>">
+              <input id="sat_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sat_end_is_set) ? @timecard.sat_end.strftime("%I") : "" %>">
               :
-              <input id="sat_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sat_end_is_set) ? @timecard.sat_end.strftime("%M") : "" %>">
+              <input id="sat_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sat_end_is_set) ? @timecard.sat_end.strftime("%M") : "" %>">
               <div id="sat_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.sat_end_is_set and @timecard.sat_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.sat_end_is_set and @timecard.sat_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="sat_break_hour" type="text" style="width: 20px" class="validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.sat_break_hours_is_set) ? @timecard.sat_break_hours : "" %>">
+              <input id="sat_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.sat_break_hours_is_set) ? @timecard.sat_break_hours : "" %>">
               h
-              <input id="sat_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sat_break_minutes_is_set) ? @timecard.sat_break_minutes : "" %>">
+              <input id="sat_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sat_break_minutes_is_set) ? @timecard.sat_break_minutes : "" %>">
               m
             </td>
             <td>
@@ -152,31 +150,35 @@
                 <%= @timecard.sat_hours %>
               </h6>
             </td>
+            <td class="copy_time_down" style="cursor: pointer">
+              <i class="material-icons">content_copy</i>
+              <i class="material-icons">arrow_downward</i>
+            </td>
           </tr>
           <tr id="sun_row">
             <td>Sunday <%= @timecard.sun_start.strftime("%m/%d") %></td>
             <td>
-              <input id="sun_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sun_start_is_set) ? @timecard.sun_start.strftime("%I") : "" %>">
+              <input id="sun_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sun_start_is_set) ? @timecard.sun_start.strftime("%I") : "" %>">
               :
-              <input id="sun_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sun_start_is_set) ? @timecard.sun_start.strftime("%M") : "" %>">
+              <input id="sun_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sun_start_is_set) ? @timecard.sun_start.strftime("%M") : "" %>">
               <div id="sun_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.sun_start_is_set and @timecard.sun_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.sun_start_is_set and @timecard.sun_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="sun_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sun_end_is_set) ? @timecard.sun_end.strftime("%I") : "" %>">
+              <input id="sun_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sun_end_is_set) ? @timecard.sun_end.strftime("%I") : "" %>">
               :
-              <input id="sun_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sun_end_is_set) ? @timecard.sun_end.strftime("%M") : "" %>">
+              <input id="sun_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sun_end_is_set) ? @timecard.sun_end.strftime("%M") : "" %>">
               <div id="sun_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.sun_end_is_set and @timecard.sun_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.sun_end_is_set and @timecard.sun_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="sun_break_hour" type="text" style="width: 20px" class="validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.sun_break_hours_is_set) ? @timecard.sun_break_hours : "" %>">
+              <input id="sun_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.sun_break_hours_is_set) ? @timecard.sun_break_hours : "" %>">
               h
-              <input id="sun_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sun_break_minutes_is_set) ? @timecard.sun_break_minutes : "" %>">
+              <input id="sun_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sun_break_minutes_is_set) ? @timecard.sun_break_minutes : "" %>">
               m
             </td>
             <td>
@@ -184,31 +186,35 @@
                 <%= @timecard.sun_hours %>
               </h6>
             </td>
+            <td class="copy_time_down" style="cursor: pointer">
+              <i class="material-icons">content_copy</i>
+              <i class="material-icons">arrow_downward</i>
+            </td>
           </tr>
           <tr id="mon_row">
             <td>Monday <%= @timecard.mon_start.strftime("%m/%d") %></td>
             <td>
-              <input id="mon_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.mon_start_is_set) ? @timecard.mon_start.strftime("%I") : "" %>">
+              <input id="mon_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.mon_start_is_set) ? @timecard.mon_start.strftime("%I") : "" %>">
               :
-              <input id="mon_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.mon_start_is_set) ? @timecard.mon_start.strftime("%M") : "" %>">
+              <input id="mon_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.mon_start_is_set) ? @timecard.mon_start.strftime("%M") : "" %>">
               <div id="mon_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.mon_start_is_set and @timecard.mon_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.mon_start_is_set and @timecard.mon_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="mon_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.mon_end_is_set) ? @timecard.mon_end.strftime("%I") : "" %>">
+              <input id="mon_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.mon_end_is_set) ? @timecard.mon_end.strftime("%I") : "" %>">
               :
-              <input id="mon_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.mon_end_is_set) ? @timecard.mon_end.strftime("%M") : "" %>">
+              <input id="mon_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.mon_end_is_set) ? @timecard.mon_end.strftime("%M") : "" %>">
               <div id="mon_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.mon_end_is_set and @timecard.mon_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.mon_end_is_set and @timecard.mon_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="mon_break_hour" type="text" style="width: 20px" class="validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.mon_break_hours_is_set) ? @timecard.mon_break_hours : "" %>">
+              <input id="mon_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.mon_break_hours_is_set) ? @timecard.mon_break_hours : "" %>">
               h
-              <input id="mon_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.mon_break_minutes_is_set) ? @timecard.mon_break_minutes : "" %>">
+              <input id="mon_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.mon_break_minutes_is_set) ? @timecard.mon_break_minutes : "" %>">
               m
             </td>
             <td>
@@ -216,31 +222,35 @@
                 <%= @timecard.mon_hours %>
               </h6>
             </td>
+            <td class="copy_time_down" style="cursor: pointer">
+              <i class="material-icons">content_copy</i>
+              <i class="material-icons">arrow_downward</i>
+            </td>
           </tr>
           <tr id="tue_row">
             <td>Tuesday <%= @timecard.tue_start.strftime("%m/%d") %></td>
             <td>
-              <input id="tue_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.tue_start_is_set) ? @timecard.tue_start.strftime("%I") : "" %>">
+              <input id="tue_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.tue_start_is_set) ? @timecard.tue_start.strftime("%I") : "" %>">
               :
-              <input id="tue_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.tue_start_is_set) ? @timecard.tue_start.strftime("%M") : "" %>">
+              <input id="tue_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.tue_start_is_set) ? @timecard.tue_start.strftime("%M") : "" %>">
               <div id="tue_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.tue_start_is_set and @timecard.tue_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.tue_start_is_set and @timecard.tue_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="tue_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.tue_end_is_set) ? @timecard.tue_end.strftime("%I") : "" %>">
+              <input id="tue_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.tue_end_is_set) ? @timecard.tue_end.strftime("%I") : "" %>">
               :
-              <input id="tue_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.tue_end_is_set) ? @timecard.tue_end.strftime("%M") : "" %>">
+              <input id="tue_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.tue_end_is_set) ? @timecard.tue_end.strftime("%M") : "" %>">
               <div id="tue_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.tue_end_is_set and @timecard.tue_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.tue_end_is_set and @timecard.tue_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="tue_break_hour" type="text" style="width: 20px" class="validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.tue_break_hours_is_set) ? @timecard.tue_break_hours : "" %>">
+              <input id="tue_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.tue_break_hours_is_set) ? @timecard.tue_break_hours : "" %>">
               h
-              <input id="tue_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.tue_break_minutes_is_set) ? @timecard.tue_break_minutes : "" %>">
+              <input id="tue_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.tue_break_minutes_is_set) ? @timecard.tue_break_minutes : "" %>">
               m
             </td>
             <td>
@@ -248,31 +258,35 @@
                 <%= @timecard.tue_hours %>
               </h6>
             </td>
+            <td class="copy_time_down" style="cursor: pointer">
+              <i class="material-icons">content_copy</i>
+              <i class="material-icons">arrow_downward</i>
+            </td>
           </tr>
           <tr id="wed_row">
             <td>Wednesday <%= @timecard.wed_start.strftime("%m/%d") %></td>
             <td>
-              <input id="wed_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.wed_start_is_set) ? @timecard.wed_start.strftime("%I") : "" %>">
+              <input id="wed_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.wed_start_is_set) ? @timecard.wed_start.strftime("%I") : "" %>">
               :
-              <input id="wed_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.wed_start_is_set) ? @timecard.wed_start.strftime("%M") : "" %>">
+              <input id="wed_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.wed_start_is_set) ? @timecard.wed_start.strftime("%M") : "" %>">
               <div id="wed_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.wed_start_is_set and @timecard.wed_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.wed_start_is_set and @timecard.wed_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="wed_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.wed_end_is_set) ? @timecard.wed_end.strftime("%I") : "" %>">
+              <input id="wed_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.wed_end_is_set) ? @timecard.wed_end.strftime("%I") : "" %>">
               :
-              <input id="wed_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.wed_end_is_set) ? @timecard.wed_end.strftime("%M") : "" %>">
+              <input id="wed_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.wed_end_is_set) ? @timecard.wed_end.strftime("%M") : "" %>">
               <div id="wed_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.wed_end_is_set and @timecard.wed_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.wed_end_is_set and @timecard.wed_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="wed_break_hour" type="text" style="width: 20px" class="validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.wed_break_hours_is_set) ? @timecard.wed_break_hours : "" %>">
+              <input id="wed_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.wed_break_hours_is_set) ? @timecard.wed_break_hours : "" %>">
               h
-              <input id="wed_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.wed_break_minutes_is_set) ? @timecard.wed_break_minutes : "" %>">
+              <input id="wed_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.wed_break_minutes_is_set) ? @timecard.wed_break_minutes : "" %>">
               m
             </td>
             <td>
@@ -280,31 +294,35 @@
                 <%= @timecard.wed_hours %>
               </h6>
             </td>
+            <td class="copy_time_down" style="cursor: pointer">
+              <i class="material-icons">content_copy</i>
+              <i class="material-icons">arrow_downward</i>
+            </td>
           </tr>
           <tr id="thu_row">
             <td>Thursday <%= @timecard.thu_start.strftime("%m/%d") %></td>
             <td>
-              <input id="thu_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.thu_start_is_set) ? @timecard.thu_start.strftime("%I") : "" %>">
+              <input id="thu_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.thu_start_is_set) ? @timecard.thu_start.strftime("%I") : "" %>">
               :
-              <input id="thu_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.thu_start_is_set) ? @timecard.thu_start.strftime("%M") : "" %>">
+              <input id="thu_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.thu_start_is_set) ? @timecard.thu_start.strftime("%M") : "" %>">
               <div id="thu_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.thu_start_is_set and @timecard.thu_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.thu_start_is_set and @timecard.thu_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="thu_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.thu_end_is_set) ? @timecard.thu_end.strftime("%I") : "" %>">
+              <input id="thu_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.thu_end_is_set) ? @timecard.thu_end.strftime("%I") : "" %>">
               :
-              <input id="thu_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.thu_end_is_set) ? @timecard.thu_end.strftime("%M") : "" %>">
+              <input id="thu_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.thu_end_is_set) ? @timecard.thu_end.strftime("%M") : "" %>">
               <div id="thu_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.thu_end_is_set and @timecard.thu_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.thu_end_is_set and @timecard.thu_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="thu_break_hour" type="text" style="width: 20px" class="validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.thu_break_hours_is_set) ? @timecard.thu_break_hours : "" %>">
+              <input id="thu_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.thu_break_hours_is_set) ? @timecard.thu_break_hours : "" %>">
               h
-              <input id="thu_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.thu_break_minutes_is_set) ? @timecard.thu_break_minutes : "" %>">
+              <input id="thu_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.thu_break_minutes_is_set) ? @timecard.thu_break_minutes : "" %>">
               m
             </td>
             <td>
@@ -312,31 +330,35 @@
                 <%= @timecard.thu_hours %>
               </h6>
             </td>
+            <td class="copy_time_down" style="cursor: pointer">
+              <i class="material-icons">content_copy</i>
+              <i class="material-icons">arrow_downward</i>
+            </td>
           </tr>
           <tr id="fri_row">
             <td>Friday <%= @timecard.fri_start.strftime("%m/%d") %></td>
             <td>
-              <input id="fri_start_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.fri_start_is_set) ? @timecard.fri_start.strftime("%I") : "" %>">
+              <input id="fri_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.fri_start_is_set) ? @timecard.fri_start.strftime("%I") : "" %>">
               :
-              <input id="fri_start_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.fri_start_is_set) ? @timecard.fri_start.strftime("%M") : "" %>">
+              <input id="fri_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.fri_start_is_set) ? @timecard.fri_start.strftime("%M") : "" %>">
               <div id="fri_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.fri_start_is_set and @timecard.fri_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.fri_start_is_set and @timecard.fri_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="fri_end_hour" type="text" style="width: 20px" class="validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.fri_end_is_set) ? @timecard.fri_end.strftime("%I") : "" %>">
+              <input id="fri_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.fri_end_is_set) ? @timecard.fri_end.strftime("%I") : "" %>">
               :
-              <input id="fri_end_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.fri_end_is_set) ? @timecard.fri_end.strftime("%M") : "" %>">
+              <input id="fri_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.fri_end_is_set) ? @timecard.fri_end.strftime("%M") : "" %>">
               <div id="fri_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
                 <div class="am-btn <%= (@timecard.fri_end_is_set and @timecard.fri_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
                 <div class="pm-btn <%= (@timecard.fri_end_is_set and @timecard.fri_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
               </div>
             </td>
             <td>
-              <input id="fri_break_hour" type="text" style="width: 20px" class="validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.fri_break_hours_is_set) ? @timecard.fri_break_hours : "" %>">
+              <input id="fri_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.fri_break_hours_is_set) ? @timecard.fri_break_hours : "" %>">
               h
-              <input id="fri_break_minute" type="text" style="width: 20px" class="validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.fri_break_minutes_is_set) ? @timecard.fri_break_minutes : "" %>">
+              <input id="fri_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.fri_break_minutes_is_set) ? @timecard.fri_break_minutes : "" %>">
               m
             </td>
             <td>
@@ -348,12 +370,30 @@
         </tbody>
       </table>
       <div class="row">
-        <div class="col s6">
-          Sick Hours:
-          <input id="sick_hours_input" type="text" style="width: 20px; margin-top: 8px" class="validate" pattern="[0-9]*" value="<%= @timecard.sick_hours %>">
+        <div class="col s6 m4">
+          <div class="row" style="margin: 0">
+            <div class="col s12">
+              Sick Hours:
+              <input id="sick_hours_input" type="text" style="width: 20px; margin-top: 8px" class="validate" pattern="[0-9]*" value="<%= @timecard.sick_hours %>">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <button class="btn waves-effec waves-light center theia_blue" id="btn_clear" style="margin-top: 8px">Clear
+                Card
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="col s6">
-          <button class="btn waves-effec waves-light right theia_blue" id="btn_clear" style="margin-top: 8px">Clear Card</button>
+        <div class="col s6 m4 offset-m4">
+          <div class="row">
+            <div class="col s7 m8 l9">
+              <p class="hide-on-small-and-down">Lock timecard to signify confirmation of your hours.</p>
+            </div>
+            <div class="col s5 m4 l3">
+              <i id="timecard_lock" class="material-icons small left" style="cursor: pointer; display: inline; margin: 14px 0 0 0"><%= (@timecard.locked) ? "lock" : "lock_open" %></i>
+            </div>
+          </div>
         </div>
       </div>
       <div class="divider" style="margin: 16px 0 16px 0"></div>
@@ -440,7 +480,7 @@
 
 
       $("#timecard_table input[id*='hour']").focusout(function () {
-          if (parseInt(this.value) > 8 && parseInt(this.value) < 12) {
+          if (parseInt(this.value) >= 8 && parseInt(this.value) < 12) {
               toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".am-btn"));
           } else {
               toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".pm-btn"));
@@ -460,6 +500,10 @@
       $(".pm-btn").click(function(){
           toggle_am_pm($(this));
           update_timecard();
+      });
+
+      $(".copy_time_down").click(function(){
+          copy_row_to_next_day(this);
       });
 
       $("#timecard_lock").click(function(){
@@ -509,6 +553,45 @@
           $("input").removeAttr("disabled");
       }
 
+      function copy_row_to_next_day(elem){
+          var start_hour = $(elem).parent().find("input.start_hour").val();
+          var start_min = $(elem).parent().find("input.start_min").val();
+          var start_am_pm = $(elem).parent().find("input.start_hour").parent().find(".pm-btn.animate_theia_text_blue").length;
+          var end_hour = $(elem).parent().find("input.end_hour").val();
+          var end_min = $(elem).parent().find("input.end_min").val();
+          var end_am_pm = $(elem).parent().find("input.end_hour").parent().find(".pm-btn.animate_theia_text_blue").length;
+          var break_hour = $(elem).parent().find("input.break_hour").val();
+          var break_min = $(elem).parent().find("input.break_min").val();
+
+          var next = $(elem).parent().next();
+
+          console.log(next.find("input.start_hour").parent().find(".pm-btn").length);
+
+          next.find("input.start_hour").val(start_hour);
+          next.find("input.start_min").val(start_min);
+          if (start_am_pm){
+              var pm_ele = next.find("input.start_hour").parent().find(".pm-btn");
+              var am_ele = next.find("input.start_hour").parent().find(".am-btn");
+              am_ele.removeClass("animate_theia_text_blue");
+              pm_ele.addClass("animate_theia_text_blue");
+          } else {
+              var pm_ele = next.find("input.start_hour").parent().find(".pm-btn");
+              var am_ele = next.find("input.start_hour").parent().find(".am-btn");
+              pm_ele.removeClass("animate_theia_text_blue");
+              am_ele.addClass("animate_theia_text_blue");
+          }
+          next.find("input.end_hour").val(end_hour);
+          next.find("input.end_min").val(end_min);
+          if (end_am_pm) {
+              next.find("input.end_hour").parent().find(".pm-btn").addClass("animate_theia_text_blue");
+          } else {
+              next.find("input.end_hour").parent().find(".am-btn").addClass("animate_theia_text_blue");
+          }
+          next.find("input.break_hour").val(break_hour);
+          next.find("input.break_min").val(break_min);
+          update_timecard();
+      }
+
       function clear_timecard() {
           var data = {
               timecard: {
@@ -550,9 +633,16 @@
               , url: '<%= timecard_path(@timecard) %>'
               , data: data
               , success: function (json) {
-                  // console.log("Updated timecard");
-                  // console.log(json["total_hours"]);
-                  $("#total_hours").html("Total Hours: " + json["total_hours"])
+                  $("#total_hours").html("Total Hours: " + json["total_hours"]);
+                  $("#overtime_hours").html("Overtime Hours: " + json["overtime_total"]);
+                  $("#sick_hours").html("Sick Hours: " + json["sick_hours"]);
+                  $("#sat_hours").html(json["sat_total"]);
+                  $("#sun_hours").html(json["sun_total"]);
+                  $("#mon_hours").html(json["mon_total"]);
+                  $("#tue_hours").html(json["tue_total"]);
+                  $("#wed_hours").html(json["wed_total"]);
+                  $("#thu_hours").html(json["thu_total"]);
+                  $("#fri_hours").html(json["fri_total"]);
               }
               , error: function (XMLHttpRequest, textStatus, errorThrown) {
                   console.log('Upload error: ' + XMLHttpRequest.responseText);
@@ -672,8 +762,6 @@
               , url: '<%= timecard_url(@timecard) %>'
               , data: data
               , success: function (json) {
-                  // console.log("Updated timecard");
-                  // console.log(json);
                   $("#total_hours").html("Total Hours: " + json["total_hours"]);
                   $("#overtime_hours").html("Overtime Hours: " + json["overtime_total"]);
                   $("#sick_hours").html("Sick Hours: " + json["sick_hours"]);

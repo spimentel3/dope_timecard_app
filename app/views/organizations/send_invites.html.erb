@@ -7,6 +7,7 @@
       <h4>Invites Sent</h4>
     </div>
 
+    <% if @successful_invites.count > 0 %>
     <ul class="collection">
       <% @successful_invites.each do |user| %>
         <li class="collection-item avatar">
@@ -18,7 +19,9 @@
         </li>
       <% end %>
     </ul>
+    <% end %>
 
+    <% if @unsuccessful_invites.count > 0 %>
     <ul class="collection">
       <% @unsuccessful_invites.each do |user| %>
         <li class="collection-item avatar">
@@ -34,8 +37,9 @@
         </li>
       <% end %>
     </ul>
+    <% end %>
 
-    <%= link_to @current_user, class: "theia_text_blue", style: "font-size: large; margin-bottom: 16px" do %>
+    <%= link_to @current_user, class: "theia_text_blue", style: "font-size: large; position: relative; top: -8px" do %>
       <i class="material-icons" style="position: relative; top: 6px">arrow_back</i>Back to organization
     <% end %>
   </div>
