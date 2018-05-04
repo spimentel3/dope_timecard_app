@@ -39,12 +39,12 @@ class OrganizationsController < ApplicationController
   def collect_timecards
     organization = Organization.find(params[:organization_id])
 
-    if Date.today.wday != 4
+    if Date.today.wday != 5
       render json: {message: "Failed to collect, can only collect on Friday"}
       return
     end
 
-    if organization.employees.first.user.timecards.last.end_date.to_date == (DateTime.now + 8).to_date
+    if organization.employees.first.user.timecards.last.end_date.to_date == (DateTime.now + 7).to_date
       render json: {message: "Already collected for this week"}
       return
     end

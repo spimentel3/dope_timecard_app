@@ -13,7 +13,7 @@ User.create!(name:  "theia-root",
              activated: true,
              activated_at: Time.zone.now)
 
-if Rails.env.development
+if Rails.env.development?
   User.create!(name:  "Stephen Phillips",
                email: "stephen@theia.io",
                password: "theia123",
