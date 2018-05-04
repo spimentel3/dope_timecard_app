@@ -387,7 +387,7 @@
             </td>
             <td>
               <h6 id="fri_hours">
-                <%= @timecard.thu_hours %>
+                <%= @timecard.fri_hours %>
               </h6>
             </td>
           </tr>
@@ -788,6 +788,8 @@
                   sick_hours: $('#sick_hours_input').val()
               }
           };
+
+          console.log(data);
 
           $.ajax({
               type: 'PUT'
