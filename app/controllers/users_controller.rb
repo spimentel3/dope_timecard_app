@@ -7,10 +7,12 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    # @users = User.all
-    @owned_organization = @user.owned_organization
-    @timecard = @user.timecards.last
-
+    if @user.owned_organization
+      @owned_organization = @user.owned_organization
+      @unique_dates = Timecard.where(id: Timebook.where(organization_id: @owned_organization).pluck(:timecard_id)).distinct(:end_date).pluck(:end_date)
+    else
+      @timecard = @user.timecards.last
+    end
   end
 
   def new

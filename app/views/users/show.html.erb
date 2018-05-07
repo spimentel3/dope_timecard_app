@@ -1,9 +1,4 @@
 <%= provide(:title, @user.name) %>
-
-<style>
-
-</style>
-
 <div class="" style="padding-top: 32px"></div>
 <% if has_company_access? %>
   <% if @owned_organization %>
@@ -14,7 +9,7 @@
           <i class="material-icons right">notifications_active</i>
           Notify
         </a>
-        <a id="collect_btn_tt" class="btn-small theia_blue waves-effect waves-light tooltipped" data-position="bottom" data-delay="50" data-tooltip="Collects current timecards and issues out new ones" style="margin-bottom: 1rem">
+        <a id="collect_btn_tt" class="btn-small theia_blue waves-effect waves-light tooltipped" data-target="collect_hours_modal" data-position="bottom" data-delay="50" data-tooltip="Collects current timecards and issues out new ones" style="margin-bottom: 1rem">
           <i class="material-icons right">collections</i>
           Collect
         </a>
@@ -22,6 +17,19 @@
         <div id="manager_action_progress" class="progress hiddendiv">
           <div class="indeterminate"></div>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3">
+        <ul class="collection with-header">
+            <li class="collection-header"><h5>Past Weeks</h5></li>
+          <% @unique_dates.each do |date|%>
+            <li class="collection-item">
+              <%= date.strftime("%m/%d") %>
+              <span class="right theia_text_blue"><%= link_to "View Week", organization_view_week_path(organization_id: @owned_organization, end_date: date) %></span>
+            </li>
+          <% end %>
+        </ul>
       </div>
     </div>
     <div class="row">
@@ -36,6 +44,7 @@
                 <%= image_tag("icon_only_100.png", size: 50, style: "position: absolute; top: 16px; right: 16px") %>
               <% end %>
               <p class="ellipse_text"><%= employee.user.email %></p>
+              <p>Hours worked this week: <%= employee.user.timecards.last.total_hours %></p>
             </div>
             <div class="card-action">
               <%= link_to "View", user_timecard_collection_path(employee.user), class: "theia_text_blue" %>
@@ -49,6 +58,7 @@
         </div>
       <% end %>
     </div>
+
   <% else %>
   <div class="row">
     <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3 animated fadeInUp">
@@ -56,7 +66,7 @@
       <p class="flow-text">Thank you for signing up with timecard buddy. Please create your own organization here: </p>
       <%=	 link_to "New Organization", new_organization_path, class: "btn-large theia_blue right", style: "margin-bottom: 16px"  %>
     </div>
-    <% end %>
+  <% end %>
 
   <% if @owned_organization and @owned_organization.employees.count == 0 %>
     <div class="tap-target" data-target="add_new_users_fd">
@@ -79,6 +89,21 @@
         });
     });
   </script>
+  <% elsif @owned_organization and @owned_organization.employees.count >= 1 %>
+    <div id="collect_hours_modal" class="modal">
+      <div class="modal-content">
+        <h4>Collecting time for week ending on: <span id="ending_date"><%= @owned_organization.employees.first.user.timecards.last.end_date.strftime("%m/%d") %></span></h4>
+        <p>Are you sure you want to collect the hours for this week?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="accept_and_collect" class="modal-close waves-effect waves-green btn-flat">Collect Timecards</button>
+      </div>
+    </div>
+
+    <script>
+
+    </script>
+
   <% end %>
 
   <script>
@@ -93,7 +118,12 @@
     var collect_tooltip = document.querySelector('#collect_btn_tt');
     var collect_tooltip_instance = M.Tooltip.init(collect_tooltip , collect_tooltip_options);
 
-    <% if @owned_organization %>
+    <% if @owned_organization and @owned_organization.employees.count >= 1%>
+
+    var collect_modal_options = {};
+    var collect_modal = document.querySelector('#collect_hours_modal');
+    var collect_modal_instance = M.Modal.init(collect_modal, collect_modal_options);
+
     $("#notify_btn_tt").click(function () {
         $("#manager_action_progress").removeClass("hiddendiv");
         $.ajax({
@@ -107,6 +137,10 @@
     });
 
     $("#collect_btn_tt").click(function () {
+        collect_modal_instance.open();
+    });
+
+    $("#accept_and_collect").click(function(){
         $("#manager_action_progress").removeClass("hiddendiv");
         $.ajax({
             url: "<%= organization_collect_timecards_url(@owned_organization) %>",
@@ -114,8 +148,9 @@
             success: function (json) {
                 $("#manager_action_progress").addClass("hiddendiv");
                 M.toast({html: json["message"], displayLength: "8000"});
+                $("#ending_date").html(json["end_date"]);
             }
-        })
+        });
     });
     <% end %>
   </script>
@@ -144,6 +179,7 @@
           <th>Ending Time</th>
           <th>Break Duration</th>
           <th>Day Total</th>
+          <th>Overtime</th>
           <th></th>
         </tr>
         </thead>
@@ -177,6 +213,11 @@
             <td>
               <h6 id="sat_hours">
                 <%= @timecard.sat_hours %>
+              </h6>
+            </td>
+            <td>
+              <h6 id="sat_overtime">
+                <%= @timecard.sat_overtime %>
               </h6>
             </td>
             <td class="copy_time_down" style="cursor: pointer">
@@ -215,6 +256,11 @@
                 <%= @timecard.sun_hours %>
               </h6>
             </td>
+            <td>
+              <h6 id="sun_overtime">
+                <%= @timecard.sun_overtime %>
+              </h6>
+            </td>
             <td class="copy_time_down" style="cursor: pointer">
               <i class="material-icons">content_copy</i>
               <i class="material-icons">arrow_downward</i>
@@ -249,6 +295,11 @@
             <td>
               <h6 id="mon_hours">
                 <%= @timecard.mon_hours %>
+              </h6>
+            </td>
+            <td>
+              <h6 id="mon_overtime">
+                <%= @timecard.mon_overtime %>
               </h6>
             </td>
             <td class="copy_time_down" style="cursor: pointer">
@@ -287,6 +338,11 @@
                 <%= @timecard.tue_hours %>
               </h6>
             </td>
+            <td>
+              <h6 id="tue_overtime">
+                <%= @timecard.tue_overtime %>
+              </h6>
+            </td>
             <td class="copy_time_down" style="cursor: pointer">
               <i class="material-icons">content_copy</i>
               <i class="material-icons">arrow_downward</i>
@@ -321,6 +377,11 @@
             <td>
               <h6 id="wed_hours">
                 <%= @timecard.wed_hours %>
+              </h6>
+            </td>
+            <td>
+              <h6 id="wed_overtime">
+                <%= @timecard.wed_overtime %>
               </h6>
             </td>
             <td class="copy_time_down" style="cursor: pointer">
@@ -359,6 +420,11 @@
                 <%= @timecard.thu_hours %>
               </h6>
             </td>
+            <td>
+              <h6 id="thu_overtime">
+                <%= @timecard.thu_overtime %>
+              </h6>
+            </td>
             <td class="copy_time_down" style="cursor: pointer">
               <i class="material-icons">content_copy</i>
               <i class="material-icons">arrow_downward</i>
@@ -393,6 +459,11 @@
             <td>
               <h6 id="fri_hours">
                 <%= @timecard.fri_hours %>
+              </h6>
+            </td>
+            <td>
+              <h6 id="fri_overtime">
+                <%= @timecard.fri_overtime %>
               </h6>
             </td>
           </tr>
@@ -441,66 +512,72 @@
     </div>
   </div>
   <script>
+
+    var locked = false;
+
       $(function(){
           if ($("#timecard_lock").html() === "lock"){
               lock_timecard();
+              locked = true;
           }
       });
 
       $("#btn_clear").click(function(){
-          $('#sat_start_hour').val("");
-          $('#sat_start_minute').val("");
-          $('#sat_end_hour').val("");
-          $('#sat_end_minute').val("");
-          $('#sat_break_hour').val("");
-          $('#sat_break_minute').val("");
+          if (!locked) {
+              $('#sat_start_hour').val("");
+              $('#sat_start_minute').val("");
+              $('#sat_end_hour').val("");
+              $('#sat_end_minute').val("");
+              $('#sat_break_hour').val("");
+              $('#sat_break_minute').val("");
 
-          $('#sun_start_hour').val("");
-          $('#sun_start_minute').val("");
-          $('#sun_end_hour').val("");
-          $('#sun_end_minute').val("");
-          $('#sun_break_hour').val("");
-          $('#sun_break_minute').val("");
+              $('#sun_start_hour').val("");
+              $('#sun_start_minute').val("");
+              $('#sun_end_hour').val("");
+              $('#sun_end_minute').val("");
+              $('#sun_break_hour').val("");
+              $('#sun_break_minute').val("");
 
-          $('#mon_start_hour').val("");
-          $('#mon_start_minute').val("");
-          $('#mon_end_hour').val("");
-          $('#mon_end_minute').val("");
-          $('#mon_break_hour').val("");
-          $('#mon_break_minute').val("");
+              $('#mon_start_hour').val("");
+              $('#mon_start_minute').val("");
+              $('#mon_end_hour').val("");
+              $('#mon_end_minute').val("");
+              $('#mon_break_hour').val("");
+              $('#mon_break_minute').val("");
 
-          $('#tue_start_hour').val("");
-          $('#tue_start_minute').val("");
-          $('#tue_end_hour').val("");
-          $('#tue_end_minute').val("");
-          $('#tue_break_hour').val("");
-          $('#tue_break_minute').val("");
+              $('#tue_start_hour').val("");
+              $('#tue_start_minute').val("");
+              $('#tue_end_hour').val("");
+              $('#tue_end_minute').val("");
+              $('#tue_break_hour').val("");
+              $('#tue_break_minute').val("");
 
-          $('#wed_start_hour').val("");
-          $('#wed_start_minute').val("");
-          $('#wed_end_hour').val("");
-          $('#wed_end_minute').val("");
-          $('#wed_break_hour').val("");
-          $('#wed_break_minute').val("");
+              $('#wed_start_hour').val("");
+              $('#wed_start_minute').val("");
+              $('#wed_end_hour').val("");
+              $('#wed_end_minute').val("");
+              $('#wed_break_hour').val("");
+              $('#wed_break_minute').val("");
 
-          $('#thu_start_hour').val("");
-          $('#thu_start_minute').val("");
-          $('#thu_end_hour').val("");
-          $('#thu_end_minute').val("");
-          $('#thu_break_hour').val("");
-          $('#thu_break_minute').val("");
+              $('#thu_start_hour').val("");
+              $('#thu_start_minute').val("");
+              $('#thu_end_hour').val("");
+              $('#thu_end_minute').val("");
+              $('#thu_break_hour').val("");
+              $('#thu_break_minute').val("");
 
-          $('#fri_start_hour').val("");
-          $('#fri_start_minute').val("");
-          $('#fri_end_hour').val("");
-          $('#fri_end_minute').val("");
-          $('#fri_break_hour').val("");
-          $('#fri_break_minute').val("");
+              $('#fri_start_hour').val("");
+              $('#fri_start_minute').val("");
+              $('#fri_end_hour').val("");
+              $('#fri_end_minute').val("");
+              $('#fri_break_hour').val("");
+              $('#fri_break_minute').val("");
 
-          $('.am-btn').removeClass("animate_theia_text_blue");
-          $('.pm-btn').removeClass("animate_theia_text_blue");
+              $('.am-btn').removeClass("animate_theia_text_blue");
+              $('.pm-btn').removeClass("animate_theia_text_blue");
 
-          clear_timecard();
+              clear_timecard();
+          }
       });
 
       $("#timecard_table input").focusout(function(){
@@ -528,17 +605,23 @@
       });
 
       $(".am-btn").click(function(){
-          toggle_am_pm($(this));
-          update_timecard();
+          if (!locked) {
+              toggle_am_pm($(this));
+              update_timecard();
+          }
       });
 
       $(".pm-btn").click(function(){
-          toggle_am_pm($(this));
-          update_timecard();
+          if (!locked) {
+              toggle_am_pm($(this));
+              update_timecard();
+          }
       });
 
       $(".copy_time_down").click(function(){
-          copy_row_to_next_day(this);
+          if (!locked) {
+              copy_row_to_next_day(this);
+          }
       });
 
       $("#timecard_lock").click(function(){
@@ -582,10 +665,12 @@
 
       function lock_timecard() {
           $("input").attr("disabled", true);
+          locked = true;
       }
 
       function unlock_timecard() {
           $("input").removeAttr("disabled");
+          locked = false
       }
 
       function copy_row_to_next_day(elem){
@@ -678,6 +763,13 @@
                   $("#wed_hours").html(json["wed_total"]);
                   $("#thu_hours").html(json["thu_total"]);
                   $("#fri_hours").html(json["fri_total"]);
+                  $("#sat_overtime").html(json["sat_overtime"]);
+                  $("#sun_overtime").html(json["sun_overtime"]);
+                  $("#mon_overtime").html(json["mon_overtime"]);
+                  $("#tue_overtime").html(json["tue_overtime"]);
+                  $("#wed_overtime").html(json["wed_overtime"]);
+                  $("#thu_overtime").html(json["thu_overtime"]);
+                  $("#fri_overtime").html(json["fri_overtime"]);
                   $("input").removeClass("valid invalid");
                   $("#sick_hours_input").val("0");
               }
@@ -811,6 +903,13 @@
                   $("#wed_hours").html(json["wed_total"]);
                   $("#thu_hours").html(json["thu_total"]);
                   $("#fri_hours").html(json["fri_total"]);
+                  $("#sat_overtime").html(json["sat_overtime"]);
+                  $("#sun_overtime").html(json["sun_overtime"]);
+                  $("#mon_overtime").html(json["mon_overtime"]);
+                  $("#tue_overtime").html(json["tue_overtime"]);
+                  $("#wed_overtime").html(json["wed_overtime"]);
+                  $("#thu_overtime").html(json["thu_overtime"]);
+                  $("#fri_overtime").html(json["fri_overtime"]);
               }
               , error: function (XMLHttpRequest, textStatus, errorThrown) {
                   console.log('Upload error: ' + XMLHttpRequest.responseText);

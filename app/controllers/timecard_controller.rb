@@ -275,6 +275,13 @@ class TimecardController < ApplicationController
                   wed_total: "#{@timecard.wed_hours}",
                   thu_total: "#{@timecard.thu_hours}",
                   fri_total: "#{@timecard.fri_hours}",
+                  sat_overtime: "#{@timecard.sat_overtime}",
+                  sun_overtime: "#{@timecard.sun_overtime}",
+                  mon_overtime: "#{@timecard.mon_overtime}",
+                  tue_overtime: "#{@timecard.tue_overtime}",
+                  wed_overtime: "#{@timecard.wed_overtime}",
+                  thu_overtime: "#{@timecard.thu_overtime}",
+                  fri_overtime: "#{@timecard.fri_overtime}",
                   overtime_total: "#{@timecard.overtime_hours}",
                   sick_hours: "#{@timecard.sick_hours}"
                   }

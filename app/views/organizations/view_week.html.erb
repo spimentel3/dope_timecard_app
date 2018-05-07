@@ -1,0 +1,34 @@
+<%= provide(:title, params[:end_date]) %>
+
+<div class="" style="padding-top: 32px"></div>
+
+<div class="row">
+  <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3">
+    <h4>Viewing week of: <%= DateTime.parse(params[:end_date]).strftime("%m/%d")%></h4>
+  </div>
+</div>
+
+<div class="row">
+  <% @week_timecards.each do |timecard| %>
+    <div class="col s12 m4 l3">
+      <div class="card">
+        <div class="card-content" style="position:relative">
+          <span class="card-title"><%= (timecard.get_owner.name)? timecard.get_owner.name : "No name set" %></span>
+          <% if timecard.get_owner.user_image_link != "" %>
+            <img src="<%= timecard.get_owner.user_image_link %>" class="circle" width="50" height="50" style="position: absolute; top: 16px; right: 16px">
+          <% else %>
+            <%= image_tag("icon_only_100.png", size: 50, style: "position: absolute; top: 16px; right: 16px") %>
+          <% end %>
+          <p class="ellipse_text"><%= timecard.get_owner.email %></p>
+          <br>
+          <p>Sick Hours: <%= timecard.sick_hours %></p>
+          <p>Overtime Hours: <%= timecard.overtime_hours %></p>
+          <p>Total Hours: <%= timecard.total_hours %></p>
+        </div>
+        <div class="card-action">
+          <%= link_to "View Timecard", timecard, class: "theia_text_blue" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -39,29 +39,23 @@ class OrganizationsController < ApplicationController
   def collect_timecards
     organization = Organization.find(params[:organization_id])
 
-    if Date.today.wday != 5
-      render json: {message: "Failed to collect, can only collect on Friday"}
-      return
-    end
-
-    if organization.employees.first.user.timecards.last.end_date.to_date == (DateTime.now + 7).to_date
-      render json: {message: "Already collected for this week"}
-      return
-    end
+    previous_timecard_date = organization.employees.first.user.timecards.last.end_date.to_date
 
     organization.employees.each do |employee|
       timecard = employee.user.timecards.last
       timecard.active = false
       timecard.save
       timecard = Timecard.new
-      timecard.set_up_timecard(Date.today + 7)
+      timecard.set_up_timecard(previous_timecard_date + 7)
       timecard.save
 
       timebook_entry = Timebook.new(organization: organization, timecard: timecard, user: employee.user)
       timebook_entry.save
     end
 
-    render json: {message: "Collected timecards and issued out new ones"}
+    current_timecard_date = organization.employees.first.user.timecards.last.end_date
+
+    render json: {message: "Collected timecards and issued out new ones", end_date: current_timecard_date.strftime("%m/%d") }
 
   end
 
@@ -98,6 +92,13 @@ class OrganizationsController < ApplicationController
     end
   end
 
+
+  def view_week
+    @organization = Organization.find(params[:organization_id])
+    date = DateTime.parse(params[:end_date])
+    @week_timecards = Timecard.where(id: (Timebook.where(organization_id: @organization).pluck(:timecard_id)), end_date: date)
+  end
+
   def destroy
   end
 
@@ -124,7 +125,7 @@ class OrganizationsController < ApplicationController
     end
 
     def organization_params
-      params.require(:organization).permit(:name, :owner_id)
+      params.require(:organization).permit(:name, :owner_id, :end_date)
     end
 
 end

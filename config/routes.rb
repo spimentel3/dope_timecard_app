@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     post  'send_invites',                   to: 'organizations#send_invites'
     post  'collect_timecards',              to: 'organizations#collect_timecards'
     post  'notify_users_timecards_are_due', to: 'organizations#notify_users_timecards_are_due'
+    get   'view_week',                      to: 'organizations#view_week'
+
     resources :timebook,          only: [:show, :new, :index]
     resources :timecard,          only: [:edit]
   end
