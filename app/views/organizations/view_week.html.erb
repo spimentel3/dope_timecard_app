@@ -5,6 +5,9 @@
 <div class="row">
   <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3">
     <h4>Viewing week of: <%= DateTime.parse(params[:end_date]).strftime("%m/%d")%></h4>
+
+    <h6>Week Total Hours: <span id="total_week_hours"></span></h6>
+    <h6>Week Total Overtime: <span id="total_week_overtime"></span></h6>
   </div>
 </div>
 
@@ -30,5 +33,14 @@
         </div>
       </div>
     </div>
+    <% @total_week_hours += timecard.total_hours %>
+    <% @total_week_overtime += timecard.overtime_hours %>
   <% end %>
 </div>
+
+<script>
+  $(function(){
+      $('#total_week_hours').html("<%= @total_week_hours %>");
+      $('#total_week_overtime').html("<%= @total_week_overtime%>");
+  });
+</script>
