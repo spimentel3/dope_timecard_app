@@ -16,6 +16,10 @@
       <% else %>
         <%= link_to(image_tag("icon_only_100.png", size: 64), @current_user, class: "hide-on-small-and-down") %>
         <%= link_to(image_tag("icon_only_100.png", size: 54), @current_user, class: "hide-on-med-and-up right") %>
+        <% if @current_user.owned_organization != nil %>
+          <%= link_to("#{@current_user.owned_organization.name}", @current_user, class: "brand-logo theia_text_slate hide-on-small-and-down") %>
+          <%= link_to("#{@current_user.owned_organization.name}", @current_user, class: "brand-logo theia_text_slate hide-on-med-and-up", style: "font-size: 1.4rem") %>
+        <% end %>
       <% end %>
     <% else %>
       <%= link_to(image_tag("icon_only_100.png", size: 64), login_path, class: "hide-on-small-and-down") %>

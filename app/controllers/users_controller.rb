@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.owned_organization
       @owned_organization = @user.owned_organization
-      @unique_dates = Timecard.where(id: Timebook.where(organization_id: @owned_organization).pluck(:timecard_id)).distinct(:end_date).limit(4).pluck(:end_date)
+      @unique_dates = Timecard.where(id: Timebook.where(organization_id: @owned_organization).pluck(:timecard_id)).order(end_date: :desc).distinct(:end_date).pluck(:end_date)
     else
       @timecard = @user.timecards.last
     end

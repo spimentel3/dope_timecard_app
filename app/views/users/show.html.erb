@@ -4,61 +4,64 @@
   <% if @owned_organization %>
     <div class="row">
       <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3">
-        <h4><%= @owned_organization.name %></h4>
-        <a id="notify_btn_tt" class="btn-small theia_blue waves-effect waves-light tooltipped" data-position="bottom" data-delay="50" data-tooltip="Sends email to user saying timecards are due" style="margin-bottom: 1rem">
-          <i class="material-icons right">notifications_active</i>
-          Notify
-        </a>
-        <a id="collect_btn_tt" class="btn-small theia_blue waves-effect waves-light tooltipped" data-target="collect_hours_modal" data-position="bottom" data-delay="50" data-tooltip="Collects current timecards and issues out new ones" style="margin-bottom: 1rem">
-          <i class="material-icons right">collections</i>
-          Collect
-        </a>
-        <%= link_to "Manage", @owned_organization, class: "btn-small theia_blue waves-effect waves-light", id: "add_new_users_fd", style:"margin-bottom: 1rem" %>
-        <div id="manager_action_progress" class="progress hiddendiv">
-          <div class="indeterminate"></div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3">
         <ul class="collection with-header">
-            <li class="collection-header"><h5>Past Weeks</h5></li>
-          <% @unique_dates.each do |date|%>
+            <li class="collection-header">
+              <div class="row" style="margin-bottom: 0">
+                <div class="col s6">
+                  <h5>Time Card Weeks</h5>
+                </div>
+                <div class="col s6">
+                  <%= link_to "Manage", @owned_organization, class: "btn-small theia_blue waves-effect waves-light right", id: "add_new_users_fd", style: "margin-top: 8px" %>
+                </div>
+              </div>
+            </li>
+          <% @unique_dates.each_with_index do |date, index|%>
             <li class="collection-item">
-              <%= date.strftime("%m/%d") %>
-              <span class="right theia_text_blue"><%= link_to "View Week", organization_view_week_path(organization_id: @owned_organization, end_date: date) %></span>
+              <div class="row" style="margin: 0">
+                <div class="col s1">
+                  <h6><%= date.strftime("%m/%d") %></h6>
+                </div>
+                <div class="col s11 hide-on-med-and-up">
+                  <span class="secondary-content theia_text_blue" style="margin-top: 8px"><%= link_to "View Week", organization_view_week_path(organization_id: @owned_organization, end_date: date) %></span>
+                </div>
+                <div class="col s12 m8 center">
+                  <% if index == 0 %>
+                    <a id="notify_btn_tt" class="btn-small theia_blue waves-effect waves-light tooltipped" data-position="bottom" data-delay="50" data-tooltip="Sends email to user saying timecards are due">
+                      <i class="material-icons right">notifications_active</i>
+                      Notify
+                    </a>
+                    <a id="collect_btn_tt" class="btn-small theia_blue waves-effect waves-light tooltipped" data-target="collect_hours_modal" data-position="bottom" data-delay="50" data-tooltip="Collects current timecards and issues out new ones">
+                      <i class="material-icons right">collections</i>
+                      Collect
+                    </a>
+                    <div id="manager_action_progress" class="progress hiddendiv">
+                      <div class="indeterminate"></div>
+                    </div>
+                  <% end %>
+                </div>
+                <div class="col s3 hide-on-small-and-down">
+                  <span class="secondary-content theia_text_blue" style="margin-top: 8px"><%= link_to "View Week", organization_view_week_path(organization_id: @owned_organization, end_date: date) %></span>
+                </div>
+              </div>
+              <div class="row weekly-stats hiddendiv" style="margin-bottom: 0">
+                <div class="col s12 m2">
+                  <h6>Week Stats:</h6>
+                </div>
+                <div class="col s12 m3">
+                  <h6>Week Hours: <span class="total_week_hours">240.0</span></h6>
+                </div>
+                <div class="col s12 m3">
+                  <h6>Overtime Hours: <span class="total_week_overtime">14.5</span></h6>
+                </div>
+                <div class="col s12 m3">
+                  <h6>Sick Hours: <span class="total_week_sick">2.4</span></h6>
+                </div>
+              </div>
             </li>
           <% end %>
         </ul>
       </div>
     </div>
-    <div class="row">
-      <% @owned_organization.employees.each do |employee| %>
-        <div class="col s12 m4 l3">
-          <div class="card">
-            <div class="card-content" style="position:relative">
-              <span class="card-title"><%= (employee.user.name)? employee.user.name : "Pending Invite" %></span>
-              <% if employee.user.user_image_link != "" %>
-                <img src="<%= employee.user.user_image_link %>" class="circle" width="50" height="50" style="position: absolute; top: 16px; right: 16px">
-              <% else %>
-                <%= image_tag("icon_only_100.png", size: 50, style: "position: absolute; top: 16px; right: 16px") %>
-              <% end %>
-              <p class="ellipse_text"><%= employee.user.email %></p>
-              <p>Hours worked this week: <%= employee.user.timecards.last.total_hours %></p>
-            </div>
-            <div class="card-action">
-              <%= link_to "View", user_timecard_collection_path(employee.user), class: "theia_text_blue" %>
-              <% if employee.user.timecards.last.locked %>
-                <i class="material-icons right">check</i>
-              <% else %>
-                <p class="right" style="margin-top: 0">Not Confirmed</p>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-
   <% else %>
   <div class="row">
     <div class="z-depth-2 white col s12 m8 offset-m2 l6 offset-l3 animated fadeInUp">
@@ -99,11 +102,6 @@
         <button id="accept_and_collect" class="modal-close waves-effect waves-green btn-flat">Collect Timecards</button>
       </div>
     </div>
-
-    <script>
-
-    </script>
-
   <% end %>
 
   <script>
@@ -133,7 +131,7 @@
                 $("#manager_action_progress").addClass("hiddendiv");
                 M.toast({html: 'Notified Users', displayLength: "8000"});
             }
-        })
+        });
     });
 
     $("#collect_btn_tt").click(function () {
@@ -148,7 +146,7 @@
             success: function (json) {
                 $("#manager_action_progress").addClass("hiddendiv");
                 M.toast({html: json["message"], displayLength: "8000"});
-                $("#ending_date").html(json["end_date"]);
+                location.reload();
             }
         });
     });

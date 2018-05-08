@@ -10,8 +10,11 @@
     <div class="row" style="padding-bottom: 16px">
       <div class="col s12 m8 offset-m2">
         <%= form_for(:password_reset, url: password_resets_path) do |f| %>
-          <%= f.email_field :email%>
-          <%= f.label :email %>
+
+          <div class="input-field">
+            <%= f.email_field :email%>
+            <%= f.label :email %>
+          </div>
 
           <%= f.submit "Reset", class: "btn theia_blue", style: "margin-top: 16px;"%>
         <% end %>

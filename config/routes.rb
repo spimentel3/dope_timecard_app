@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     post  'collect_timecards',              to: 'organizations#collect_timecards'
     post  'notify_users_timecards_are_due', to: 'organizations#notify_users_timecards_are_due'
     get   'view_week',                      to: 'organizations#view_week'
+    get   'get_week_stats',                 to: 'organizations#get_week_stats'
 
     resources :timebook,          only: [:show, :new, :index]
     resources :timecard,          only: [:edit]

@@ -101,6 +101,26 @@ class OrganizationsController < ApplicationController
     @total_week_overtime = 0
   end
 
+  def get_week_stats
+    organization = Organization.find(params[:organization_id])
+    date = DateTime.parse(params[:end_date])
+    week_timecards = Timecard.where(id: (Timebook.where(organization_id: organization ).pluck(:timecard_id)), end_date: date)
+    total_week_hours = 0
+    total_week_overtime = 0
+    total_week_sick = 0
+
+    week_timecards.each do |timecard|
+      total_week_hours += timecard.total_hours
+      total_week_overtime += timecard.overtime_hours
+      total_week_sick += timecard.sick_hours
+    end
+
+    render json: {total_week_hours: total_week_hours,
+                  total_week_overtime: total_week_overtime,
+                  total_week_sick: total_week_sick}
+
+  end
+
   def destroy
   end
 
