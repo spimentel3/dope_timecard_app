@@ -1,0 +1,802 @@
+<div class="row">
+  <div class="z-depth-2 white col s12 m10 offset-m1 l8 offset-l2" style="position: relative">
+    <div class="row">
+      <div class="col s6">
+        <h5>Timecard</h5>
+        <p><%= @user.name %></p>
+      </div>
+      <div class="col s6 right">
+        <div class="row">
+          <div class="col s12">
+            <p class="right">Due at: <%= @user.timecards.last.end_date.strftime("%m/%d %I:%M %p") %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <table class="striped centered">
+      <thead>
+      <tr>
+        <th>Day</th>
+        <th>Starting Time</th>
+        <th>Ending Time</th>
+        <th>Break Duration</th>
+        <th>Day Total</th>
+        <th>Overtime</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody id="timecard_table">
+      <tr id="sat_row">
+        <td>Saturday <%= @timecard.sat_start.strftime("%m/%d") %></td>
+        <td>
+          <input id="sat_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sat_start_is_set) ? @timecard.sat_start.strftime("%I") : "" %>">
+          :
+          <input id="sat_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sat_start_is_set) ? @timecard.sat_start.strftime("%M") : "" %>">
+          <div id="sat_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.sat_start_is_set and @timecard.sat_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.sat_start_is_set and @timecard.sat_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="sat_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sat_end_is_set) ? @timecard.sat_end.strftime("%I") : "" %>">
+          :
+          <input id="sat_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sat_end_is_set) ? @timecard.sat_end.strftime("%M") : "" %>">
+          <div id="sat_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.sat_end_is_set and @timecard.sat_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.sat_end_is_set and @timecard.sat_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="sat_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.sat_break_hours_is_set) ? @timecard.sat_break_hours : "" %>">
+          h
+          <input id="sat_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sat_break_minutes_is_set) ? @timecard.sat_break_minutes : "" %>">
+          m
+        </td>
+        <td>
+          <h6 id="sat_hours">
+            <%= @timecard.sat_hours %>
+          </h6>
+        </td>
+        <td>
+          <h6 id="sat_overtime">
+            <%= @timecard.sat_overtime %>
+          </h6>
+        </td>
+        <td class="copy_time_down" style="cursor: pointer">
+          <i class="material-icons">content_copy</i>
+          <i class="material-icons">arrow_downward</i>
+        </td>
+      </tr>
+      <tr id="sun_row">
+        <td>Sunday <%= @timecard.sun_start.strftime("%m/%d") %></td>
+        <td>
+          <input id="sun_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sun_start_is_set) ? @timecard.sun_start.strftime("%I") : "" %>">
+          :
+          <input id="sun_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sun_start_is_set) ? @timecard.sun_start.strftime("%M") : "" %>">
+          <div id="sun_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.sun_start_is_set and @timecard.sun_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.sun_start_is_set and @timecard.sun_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="sun_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.sun_end_is_set) ? @timecard.sun_end.strftime("%I") : "" %>">
+          :
+          <input id="sun_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sun_end_is_set) ? @timecard.sun_end.strftime("%M") : "" %>">
+          <div id="sun_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.sun_end_is_set and @timecard.sun_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.sun_end_is_set and @timecard.sun_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="sun_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.sun_break_hours_is_set) ? @timecard.sun_break_hours : "" %>">
+          h
+          <input id="sun_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.sun_break_minutes_is_set) ? @timecard.sun_break_minutes : "" %>">
+          m
+        </td>
+        <td>
+          <h6 id="sun_hours">
+            <%= @timecard.sun_hours %>
+          </h6>
+        </td>
+        <td>
+          <h6 id="sun_overtime">
+            <%= @timecard.sun_overtime %>
+          </h6>
+        </td>
+        <td class="copy_time_down" style="cursor: pointer">
+          <i class="material-icons">content_copy</i>
+          <i class="material-icons">arrow_downward</i>
+        </td>
+      </tr>
+      <tr id="mon_row">
+        <td>Monday <%= @timecard.mon_start.strftime("%m/%d") %></td>
+        <td>
+          <input id="mon_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.mon_start_is_set) ? @timecard.mon_start.strftime("%I") : "" %>">
+          :
+          <input id="mon_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.mon_start_is_set) ? @timecard.mon_start.strftime("%M") : "" %>">
+          <div id="mon_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.mon_start_is_set and @timecard.mon_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.mon_start_is_set and @timecard.mon_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="mon_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.mon_end_is_set) ? @timecard.mon_end.strftime("%I") : "" %>">
+          :
+          <input id="mon_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.mon_end_is_set) ? @timecard.mon_end.strftime("%M") : "" %>">
+          <div id="mon_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.mon_end_is_set and @timecard.mon_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.mon_end_is_set and @timecard.mon_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="mon_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.mon_break_hours_is_set) ? @timecard.mon_break_hours : "" %>">
+          h
+          <input id="mon_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.mon_break_minutes_is_set) ? @timecard.mon_break_minutes : "" %>">
+          m
+        </td>
+        <td>
+          <h6 id="mon_hours">
+            <%= @timecard.mon_hours %>
+          </h6>
+        </td>
+        <td>
+          <h6 id="mon_overtime">
+            <%= @timecard.mon_overtime %>
+          </h6>
+        </td>
+        <td class="copy_time_down" style="cursor: pointer">
+          <i class="material-icons">content_copy</i>
+          <i class="material-icons">arrow_downward</i>
+        </td>
+      </tr>
+      <tr id="tue_row">
+        <td>Tuesday <%= @timecard.tue_start.strftime("%m/%d") %></td>
+        <td>
+          <input id="tue_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.tue_start_is_set) ? @timecard.tue_start.strftime("%I") : "" %>">
+          :
+          <input id="tue_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.tue_start_is_set) ? @timecard.tue_start.strftime("%M") : "" %>">
+          <div id="tue_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.tue_start_is_set and @timecard.tue_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.tue_start_is_set and @timecard.tue_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="tue_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.tue_end_is_set) ? @timecard.tue_end.strftime("%I") : "" %>">
+          :
+          <input id="tue_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.tue_end_is_set) ? @timecard.tue_end.strftime("%M") : "" %>">
+          <div id="tue_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.tue_end_is_set and @timecard.tue_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.tue_end_is_set and @timecard.tue_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="tue_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.tue_break_hours_is_set) ? @timecard.tue_break_hours : "" %>">
+          h
+          <input id="tue_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.tue_break_minutes_is_set) ? @timecard.tue_break_minutes : "" %>">
+          m
+        </td>
+        <td>
+          <h6 id="tue_hours">
+            <%= @timecard.tue_hours %>
+          </h6>
+        </td>
+        <td>
+          <h6 id="tue_overtime">
+            <%= @timecard.tue_overtime %>
+          </h6>
+        </td>
+        <td class="copy_time_down" style="cursor: pointer">
+          <i class="material-icons">content_copy</i>
+          <i class="material-icons">arrow_downward</i>
+        </td>
+      </tr>
+      <tr id="wed_row">
+        <td>Wednesday <%= @timecard.wed_start.strftime("%m/%d") %></td>
+        <td>
+          <input id="wed_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.wed_start_is_set) ? @timecard.wed_start.strftime("%I") : "" %>">
+          :
+          <input id="wed_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.wed_start_is_set) ? @timecard.wed_start.strftime("%M") : "" %>">
+          <div id="wed_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.wed_start_is_set and @timecard.wed_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.wed_start_is_set and @timecard.wed_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="wed_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.wed_end_is_set) ? @timecard.wed_end.strftime("%I") : "" %>">
+          :
+          <input id="wed_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.wed_end_is_set) ? @timecard.wed_end.strftime("%M") : "" %>">
+          <div id="wed_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.wed_end_is_set and @timecard.wed_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.wed_end_is_set and @timecard.wed_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="wed_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.wed_break_hours_is_set) ? @timecard.wed_break_hours : "" %>">
+          h
+          <input id="wed_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.wed_break_minutes_is_set) ? @timecard.wed_break_minutes : "" %>">
+          m
+        </td>
+        <td>
+          <h6 id="wed_hours">
+            <%= @timecard.wed_hours %>
+          </h6>
+        </td>
+        <td>
+          <h6 id="wed_overtime">
+            <%= @timecard.wed_overtime %>
+          </h6>
+        </td>
+        <td class="copy_time_down" style="cursor: pointer">
+          <i class="material-icons">content_copy</i>
+          <i class="material-icons">arrow_downward</i>
+        </td>
+      </tr>
+      <tr id="thu_row">
+        <td>Thursday <%= @timecard.thu_start.strftime("%m/%d") %></td>
+        <td>
+          <input id="thu_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.thu_start_is_set) ? @timecard.thu_start.strftime("%I") : "" %>">
+          :
+          <input id="thu_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.thu_start_is_set) ? @timecard.thu_start.strftime("%M") : "" %>">
+          <div id="thu_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.thu_start_is_set and @timecard.thu_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.thu_start_is_set and @timecard.thu_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="thu_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.thu_end_is_set) ? @timecard.thu_end.strftime("%I") : "" %>">
+          :
+          <input id="thu_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.thu_end_is_set) ? @timecard.thu_end.strftime("%M") : "" %>">
+          <div id="thu_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.thu_end_is_set and @timecard.thu_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.thu_end_is_set and @timecard.thu_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="thu_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.thu_break_hours_is_set) ? @timecard.thu_break_hours : "" %>">
+          h
+          <input id="thu_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.thu_break_minutes_is_set) ? @timecard.thu_break_minutes : "" %>">
+          m
+        </td>
+        <td>
+          <h6 id="thu_hours">
+            <%= @timecard.thu_hours %>
+          </h6>
+        </td>
+        <td>
+          <h6 id="thu_overtime">
+            <%= @timecard.thu_overtime %>
+          </h6>
+        </td>
+        <td class="copy_time_down" style="cursor: pointer">
+          <i class="material-icons">content_copy</i>
+          <i class="material-icons">arrow_downward</i>
+        </td>
+      </tr>
+      <tr id="fri_row">
+        <td>Friday <%= @timecard.fri_start.strftime("%m/%d") %></td>
+        <td>
+          <input id="fri_start_hour" type="text" style="width: 20px" class="start_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.fri_start_is_set) ? @timecard.fri_start.strftime("%I") : "" %>">
+          :
+          <input id="fri_start_minute" type="text" style="width: 20px" class="start_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.fri_start_is_set) ? @timecard.fri_start.strftime("%M") : "" %>">
+          <div id="fri_start_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.fri_start_is_set and @timecard.fri_start.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.fri_start_is_set and @timecard.fri_start.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="fri_end_hour" type="text" style="width: 20px" class="end_hour validate" pattern="[0-1]{1}[0-9]{1}" value="<%= (@timecard.fri_end_is_set) ? @timecard.fri_end.strftime("%I") : "" %>">
+          :
+          <input id="fri_end_minute" type="text" style="width: 20px" class="end_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.fri_end_is_set) ? @timecard.fri_end.strftime("%M") : "" %>">
+          <div id="fri_end_am_pm" class="timepicker-span-am-pm" style="display:inline-block; position: relative; top: 8px">
+            <div class="am-btn <%= (@timecard.fri_end_is_set and @timecard.fri_end.strftime("%H").to_i < 12) ? "animate_theia_text_blue" : "" %>">AM</div>
+            <div class="pm-btn <%= (@timecard.fri_end_is_set and @timecard.fri_end.strftime("%H").to_i >= 12) ? "animate_theia_text_blue" : "" %>">PM</div>
+          </div>
+        </td>
+        <td>
+          <input id="fri_break_hour" type="text" style="width: 20px" class="break_hour validate" pattern="([0-1]{1}[0-9]{1}|[0-9]{1})" value="<%= (@timecard.fri_break_hours_is_set) ? @timecard.fri_break_hours : "" %>">
+          h
+          <input id="fri_break_minute" type="text" style="width: 20px" class="break_min validate" pattern="[0-5]{1}[0-9]{1}" value="<%= (@timecard.fri_break_minutes_is_set) ? @timecard.fri_break_minutes : "" %>">
+          m
+        </td>
+        <td>
+          <h6 id="fri_hours">
+            <%= @timecard.fri_hours %>
+          </h6>
+        </td>
+        <td>
+          <h6 id="fri_overtime">
+            <%= @timecard.fri_overtime %>
+          </h6>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="row">
+      <div class="col s6 m4">
+        <div class="row" style="margin: 0">
+          <div class="col s12">
+            Sick Hours:
+            <input id="sick_hours_input" type="text" style="width: 20px; margin-top: 8px" class="validate" pattern="[0-9]*" value="<%= @timecard.sick_hours %>">
+          </div>
+        </div>
+      </div>
+      <div class="col s6 m4 offset-m4">
+        <div class="row">
+          <div class="col s7 m8 l9">
+            <p class="hide-on-small-and-down">Lock timecard to signify confirmation of your hours.</p>
+          </div>
+          <div class="col s5 m4 l3">
+            <i id="timecard_lock" class="material-icons small left" style="cursor: pointer; display: inline; margin: 14px 0 0 0"><%= (@timecard.locked) ? "lock" : "lock_open" %></i>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6 m5 offset-m1">
+          <button class="btn waves-effec waves-light theia_blue" id="btn_clear" style="margin-top: 8px">Clear
+            Card
+          </button>
+        </div>
+        <% if has_company_access? %>
+        <div class="col s6 m5">
+          <%= link_to "Save Edits", timecard_lock_and_deactivate_path(@timecard), class: "btn theia_blue right" %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="divider" style="margin: 16px 0 16px 0"></div>
+    <div class="row">
+      <div class="col s4 center">
+        <h5 id="total_hours" style="margin-bottom: 0">Total Hours: <%= @timecard.total_hours + @timecard.sick_hours %> </h5>
+        <p style="margin-top: 0">(includes sick hours)</p>
+      </div>
+      <div class="col s4 center">
+        <h5 id="overtime_hours">Overtime Hours: <%= @timecard.overtime_hours %> </h5>
+      </div>
+      <div class="col s4 center">
+        <h5 id="sick_hours">Sick Hours: <%= @timecard.sick_hours %> </h5>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+    var locked = false;
+
+    $(function () {
+        if ($("#timecard_lock").html() === "lock") {
+            lock_timecard();
+            locked = true;
+        }
+    });
+
+    $("#btn_clear").click(function () {
+        if (!locked) {
+            $('#sat_start_hour').val("");
+            $('#sat_start_minute').val("");
+            $('#sat_end_hour').val("");
+            $('#sat_end_minute').val("");
+            $('#sat_break_hour').val("");
+            $('#sat_break_minute').val("");
+
+            $('#sun_start_hour').val("");
+            $('#sun_start_minute').val("");
+            $('#sun_end_hour').val("");
+            $('#sun_end_minute').val("");
+            $('#sun_break_hour').val("");
+            $('#sun_break_minute').val("");
+
+            $('#mon_start_hour').val("");
+            $('#mon_start_minute').val("");
+            $('#mon_end_hour').val("");
+            $('#mon_end_minute').val("");
+            $('#mon_break_hour').val("");
+            $('#mon_break_minute').val("");
+
+            $('#tue_start_hour').val("");
+            $('#tue_start_minute').val("");
+            $('#tue_end_hour').val("");
+            $('#tue_end_minute').val("");
+            $('#tue_break_hour').val("");
+            $('#tue_break_minute').val("");
+
+            $('#wed_start_hour').val("");
+            $('#wed_start_minute').val("");
+            $('#wed_end_hour').val("");
+            $('#wed_end_minute').val("");
+            $('#wed_break_hour').val("");
+            $('#wed_break_minute').val("");
+
+            $('#thu_start_hour').val("");
+            $('#thu_start_minute').val("");
+            $('#thu_end_hour').val("");
+            $('#thu_end_minute').val("");
+            $('#thu_break_hour').val("");
+            $('#thu_break_minute').val("");
+
+            $('#fri_start_hour').val("");
+            $('#fri_start_minute').val("");
+            $('#fri_end_hour').val("");
+            $('#fri_end_minute').val("");
+            $('#fri_break_hour').val("");
+            $('#fri_break_minute').val("");
+
+            $('.am-btn').removeClass("animate_theia_text_blue");
+            $('.pm-btn').removeClass("animate_theia_text_blue");
+
+            clear_timecard();
+        }
+    });
+
+    $("#timecard_table input").focusout(function () {
+        if (this.value != "")
+            this.value = zero_pad(this.value, 2);
+    });
+
+
+    $("#timecard_table input[id*='hour']").focusout(function () {
+        if (this.value !== "") {
+            if (parseInt(this.value) >= 8 && parseInt(this.value) < 12) {
+                toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".am-btn"));
+            } else {
+                toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".pm-btn"));
+            }
+        } else {
+            $(this).parent().find(".am-btn").removeClass("animate_theia_text_blue");
+            $(this).parent().find(".pm-btn").removeClass("animate_theia_text_blue");
+        }
+    });
+
+    $("#timecard_table input, input#sick_hours_input").focusout(function () {
+        // console.log("Updating");
+        update_timecard();
+    });
+
+    $(".am-btn").click(function () {
+        if (!locked) {
+            toggle_am_pm($(this));
+            update_timecard();
+        }
+    });
+
+    $(".pm-btn").click(function () {
+        if (!locked) {
+            toggle_am_pm($(this));
+            update_timecard();
+        }
+    });
+
+    $(".copy_time_down").click(function () {
+        if (!locked) {
+            copy_row_to_next_day(this);
+        }
+    });
+
+    $("#timecard_lock").click(function () {
+        if ($("#timecard_lock").html() === "lock_open") {
+            $.ajax({
+                type: 'GET'
+                , url: '<%= timecard_lock_path(@timecard) %>'
+                , success: function () {
+                    $("#timecard_lock").html("lock");
+                    lock_timecard();
+                }
+                , error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log('Upload error: ' + XMLHttpRequest.responseText);
+                }
+            });
+        } else {
+            $.ajax({
+                type: 'GET'
+                , url: '<%= timecard_unlock_path(@timecard) %>'
+                , success: function () {
+                    $("#timecard_lock").html("lock_open");
+                    unlock_timecard();
+                }
+                , error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log('Upload error: ' + XMLHttpRequest.responseText);
+                }
+            });
+        }
+    });
+
+    function zero_pad(n, width, z) {
+        z = z || '0';
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+    }
+
+    function toggle_am_pm(elem) {
+        $(elem).addClass("animate_theia_text_blue");
+        $(elem).siblings().removeClass("animate_theia_text_blue");
+    }
+
+    function lock_timecard() {
+        $("input").attr("disabled", true);
+        locked = true;
+    }
+
+    function unlock_timecard() {
+        $("input").removeAttr("disabled");
+        locked = false
+    }
+
+    function copy_row_to_next_day(elem) {
+        var start_hour = $(elem).parent().find("input.start_hour").val();
+        var start_min = $(elem).parent().find("input.start_min").val();
+        var start_am_pm = $(elem).parent().find("input.start_hour").parent().find(".pm-btn.animate_theia_text_blue").length;
+        var end_hour = $(elem).parent().find("input.end_hour").val();
+        var end_min = $(elem).parent().find("input.end_min").val();
+        var end_am_pm = $(elem).parent().find("input.end_hour").parent().find(".pm-btn.animate_theia_text_blue").length;
+        var break_hour = $(elem).parent().find("input.break_hour").val();
+        var break_min = $(elem).parent().find("input.break_min").val();
+
+        var next = $(elem).parent().next();
+
+        console.log(next.find("input.start_hour").parent().find(".pm-btn").length);
+
+        next.find("input.start_hour").val(start_hour);
+        next.find("input.start_min").val(start_min);
+        if (start_am_pm) {
+            var pm_ele = next.find("input.start_hour").parent().find(".pm-btn");
+            var am_ele = next.find("input.start_hour").parent().find(".am-btn");
+            am_ele.removeClass("animate_theia_text_blue");
+            pm_ele.addClass("animate_theia_text_blue");
+        } else {
+            var pm_ele = next.find("input.start_hour").parent().find(".pm-btn");
+            var am_ele = next.find("input.start_hour").parent().find(".am-btn");
+            pm_ele.removeClass("animate_theia_text_blue");
+            am_ele.addClass("animate_theia_text_blue");
+        }
+        next.find("input.end_hour").val(end_hour);
+        next.find("input.end_min").val(end_min);
+        if (end_am_pm) {
+            next.find("input.end_hour").parent().find(".pm-btn").addClass("animate_theia_text_blue");
+        } else {
+            next.find("input.end_hour").parent().find(".am-btn").addClass("animate_theia_text_blue");
+        }
+        next.find("input.break_hour").val(break_hour);
+        next.find("input.break_min").val(break_min);
+        update_timecard();
+    }
+
+    function clear_timecard() {
+        var data = {
+            timecard: {
+                sat_start: "<%= @timecard.sat_start.strftime("%Y-%m-%d") %> 00:00:00",
+                sat_end: "<%= @timecard.sat_end.strftime("%Y-%m-%d") %> 00:00:00",
+                sat_break_hours: "00",
+                sat_break_minutes: "00",
+                sun_start: "<%= @timecard.sun_start.strftime("%Y-%m-%d") %> 00:00:00",
+                sun_end: "<%= @timecard.sun_end.strftime("%Y-%m-%d") %> 00:00:00",
+                sun_break_hours: "00",
+                sun_break_minutes: "00",
+                mon_start: "<%= @timecard.mon_start.strftime("%Y-%m-%d") %> 00:00:00",
+                mon_end: "<%= @timecard.mon_end.strftime("%Y-%m-%d") %> 00:00:00",
+                mon_break_hours: "00",
+                mon_break_minutes: "00",
+                tue_start: "<%= @timecard.tue_start.strftime("%Y-%m-%d") %> 00:00:00",
+                tue_end: "<%= @timecard.tue_end.strftime("%Y-%m-%d") %> 00:00:00",
+                tue_break_hours: "00",
+                tue_break_minutes: "00",
+                wed_start: "<%= @timecard.wed_start.strftime("%Y-%m-%d") %> 00:00:00",
+                wed_end: "<%= @timecard.wed_end.strftime("%Y-%m-%d") %> 00:00:00",
+                wed_break_hours: "00",
+                wed_break_minutes: "00",
+                thu_start: "<%= @timecard.thu_start.strftime("%Y-%m-%d") %> 00:00:00",
+                thu_end: "<%= @timecard.thu_end.strftime("%Y-%m-%d") %> 00:00:00",
+                thu_break_hours: "00",
+                thu_break_minutes: "00",
+                fri_start: "<%= @timecard.fri_start.strftime("%Y-%m-%d") %> 00:00:00",
+                fri_end: "<%= @timecard.fri_end.strftime("%Y-%m-%d") %> 00:00:00",
+                fri_break_hours: "00",
+                fri_break_minutes: "00",
+                sick_hours: "00"
+            },
+            clear: true
+        };
+
+        $.ajax({
+            type: 'PUT'
+            , url: '<%= timecard_path(@timecard) %>'
+            , data: data
+            , success: function (json) {
+                $("#total_hours").html("Total Hours: " + json["total_hours"]);
+                $("#overtime_hours").html("Overtime Hours: " + json["overtime_total"]);
+                $("#sick_hours").html("Sick Hours: " + json["sick_hours"]);
+                $("#sat_hours").html(json["sat_total"]);
+                $("#sun_hours").html(json["sun_total"]);
+                $("#mon_hours").html(json["mon_total"]);
+                $("#tue_hours").html(json["tue_total"]);
+                $("#wed_hours").html(json["wed_total"]);
+                $("#thu_hours").html(json["thu_total"]);
+                $("#fri_hours").html(json["fri_total"]);
+                $("#sat_overtime").html(json["sat_overtime"]);
+                $("#sun_overtime").html(json["sun_overtime"]);
+                $("#mon_overtime").html(json["mon_overtime"]);
+                $("#tue_overtime").html(json["tue_overtime"]);
+                $("#wed_overtime").html(json["wed_overtime"]);
+                $("#thu_overtime").html(json["thu_overtime"]);
+                $("#fri_overtime").html(json["fri_overtime"]);
+                $("input").removeClass("valid invalid");
+                $("#sick_hours_input").val("0");
+            }
+            , error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log('Upload error: ' + XMLHttpRequest.responseText);
+            }
+        });
+    }
+
+    function update_timecard() {
+        var n = $('.invalid').length;
+
+        if (n > 0) {
+            // console.log(n, "Errors");
+            return;
+        }
+
+        /*
+        var sat_start_build = "";
+        var sat_start_hour_val = $('#sat_start_hour').val();
+        var sat_start_minute_val = $('#sat_start_minute').val();
+        var sat_start_pm_button_is_active = $("#sat_start_am_pm .pm-btn.animate_theia_text_blue").length;
+        var sat_end_build = "";
+        var sat_end_hour_val = $('#sat_end_hour').val();
+        var sat_end_minute_val = $('#sat_end_minute').val();
+        var sat_end_pm_button_is_active = $("#sat_end_am_pm .pm-btn.animate_theia_text_blue").length;
+
+        if (sat_start_hour_val !== "" && sat_start_minute_val !== ""){
+          sat_start_build += "start_date ";
+          if (sat_start_pm_button_is_active && sat_start_hour_val !== "12"){
+              sat_start_build += parseInt(sat_start_hour_val) + 12;
+          } else if (!sat_start_pm_button_is_active && sat_start_hour_val === "12"){
+              sat_start_build += parseInt(sat_start_hour_val) - 12;
+          } else {
+              sat_start_build += parseInt(sat_start_hour_val);
+          }
+          sat_start_build += ":";
+          sat_start_build += sat_start_minute_val + ":00";
+        }
+
+        if (sat_end_hour_val !== "" && sat_end_minute_val !== "") {
+            sat_end_build += "end_date ";
+            if (sat_end_pm_button_is_active && sat_end_hour_val !== "12") {
+                sat_end_build += parseInt(sat_end_hour_val) + 12;
+            } else if (!sat_end_pm_button_is_active && sat_end_hour_val === "12") {
+                sat_end_build += parseInt(sat_end_hour_val) - 12;
+            } else {
+                sat_end_build += parseInt(sat_end_hour_val);
+            }
+            sat_end_build += ":";
+            sat_end_build += sat_end_minute_val + ":00";
+        }
+        */
+
+        var sat_start_build = "", sat_start_hour_val = $("#sat_start_hour").val(),
+            sat_start_minute_val = $("#sat_start_minute").val(),
+            sat_start_pm_button_is_active = $("#sat_start_am_pm .pm-btn.animate_theia_text_blue").length,
+            sat_end_build = "", sat_end_hour_val = $("#sat_end_hour").val(),
+            sat_end_minute_val = $("#sat_end_minute").val(),
+            sat_end_pm_button_is_active = $("#sat_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        "" !== sat_start_hour_val && "" !== sat_start_minute_val && (sat_start_build += "<%= @timecard.sat_start.strftime("%Y-%m-%d") %> ", sat_start_build = sat_start_pm_button_is_active && "12" !== sat_start_hour_val ? sat_start_build + (parseInt(sat_start_hour_val) + 12) : sat_start_pm_button_is_active || "12" !== sat_start_hour_val ? sat_start_build + parseInt(sat_start_hour_val) : sat_start_build + (parseInt(sat_start_hour_val) - 12), sat_start_build += ":", sat_start_build += sat_start_minute_val + ":00");
+        "" !== sat_end_hour_val && "" !== sat_end_minute_val && (sat_end_build += "<%= @timecard.sat_start.strftime("%Y-%m-%d") %> ", sat_end_build = sat_end_pm_button_is_active && "12" !== sat_end_hour_val ? sat_end_build + (parseInt(sat_end_hour_val) + 12) : sat_end_pm_button_is_active || "12" !== sat_end_hour_val ? sat_end_build + parseInt(sat_end_hour_val) : sat_end_build + (parseInt(sat_end_hour_val) - 12), sat_end_build += ":", sat_end_build += sat_end_minute_val + ":00");
+
+        var sun_start_build = "", sun_start_hour_val = $("#sun_start_hour").val(),
+            sun_start_minute_val = $("#sun_start_minute").val(),
+            sun_start_pm_button_is_active = $("#sun_start_am_pm .pm-btn.animate_theia_text_blue").length,
+            sun_end_build = "", sun_end_hour_val = $("#sun_end_hour").val(),
+            sun_end_minute_val = $("#sun_end_minute").val(),
+            sun_end_pm_button_is_active = $("#sun_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        "" !== sun_start_hour_val && "" !== sun_start_minute_val && (sun_start_build += "<%= @timecard.sun_start.strftime("%Y-%m-%d") %> ", sun_start_build = sun_start_pm_button_is_active && "12" !== sun_start_hour_val ? sun_start_build + (parseInt(sun_start_hour_val) + 12) : sun_start_pm_button_is_active || "12" !== sun_start_hour_val ? sun_start_build + parseInt(sun_start_hour_val) : sun_start_build + (parseInt(sun_start_hour_val) - 12), sun_start_build += ":", sun_start_build += sun_start_minute_val + ":00");
+        "" !== sun_end_hour_val && "" !== sun_end_minute_val && (sun_end_build += "<%= @timecard.sun_start.strftime("%Y-%m-%d") %> ", sun_end_build = sun_end_pm_button_is_active && "12" !== sun_end_hour_val ? sun_end_build + (parseInt(sun_end_hour_val) + 12) : sun_end_pm_button_is_active || "12" !== sun_end_hour_val ? sun_end_build + parseInt(sun_end_hour_val) : sun_end_build + (parseInt(sun_end_hour_val) - 12), sun_end_build += ":", sun_end_build += sun_end_minute_val + ":00");
+
+        var mon_start_build = "", mon_start_hour_val = $("#mon_start_hour").val(),
+            mon_start_minute_val = $("#mon_start_minute").val(),
+            mon_start_pm_button_is_active = $("#mon_start_am_pm .pm-btn.animate_theia_text_blue").length,
+            mon_end_build = "", mon_end_hour_val = $("#mon_end_hour").val(),
+            mon_end_minute_val = $("#mon_end_minute").val(),
+            mon_end_pm_button_is_active = $("#mon_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        "" !== mon_start_hour_val && "" !== mon_start_minute_val && (mon_start_build += "<%= @timecard.mon_start.strftime("%Y-%m-%d") %> ", mon_start_build = mon_start_pm_button_is_active && "12" !== mon_start_hour_val ? mon_start_build + (parseInt(mon_start_hour_val) + 12) : mon_start_pm_button_is_active || "12" !== mon_start_hour_val ? mon_start_build + parseInt(mon_start_hour_val) : mon_start_build + (parseInt(mon_start_hour_val) - 12), mon_start_build += ":", mon_start_build += mon_start_minute_val + ":00");
+        "" !== mon_end_hour_val && "" !== mon_end_minute_val && (mon_end_build += "<%= @timecard.mon_start.strftime("%Y-%m-%d") %> ", mon_end_build = mon_end_pm_button_is_active && "12" !== mon_end_hour_val ? mon_end_build + (parseInt(mon_end_hour_val) + 12) : mon_end_pm_button_is_active || "12" !== mon_end_hour_val ? mon_end_build + parseInt(mon_end_hour_val) : mon_end_build + (parseInt(mon_end_hour_val) - 12), mon_end_build += ":", mon_end_build += mon_end_minute_val + ":00");
+
+        var tue_start_build = "", tue_start_hour_val = $("#tue_start_hour").val(),
+            tue_start_minute_val = $("#tue_start_minute").val(),
+            tue_start_pm_button_is_active = $("#tue_start_am_pm .pm-btn.animate_theia_text_blue").length,
+            tue_end_build = "", tue_end_hour_val = $("#tue_end_hour").val(),
+            tue_end_minute_val = $("#tue_end_minute").val(),
+            tue_end_pm_button_is_active = $("#tue_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        "" !== tue_start_hour_val && "" !== tue_start_minute_val && (tue_start_build += "<%= @timecard.tue_start.strftime("%Y-%m-%d") %> ", tue_start_build = tue_start_pm_button_is_active && "12" !== tue_start_hour_val ? tue_start_build + (parseInt(tue_start_hour_val) + 12) : tue_start_pm_button_is_active || "12" !== tue_start_hour_val ? tue_start_build + parseInt(tue_start_hour_val) : tue_start_build + (parseInt(tue_start_hour_val) - 12), tue_start_build += ":", tue_start_build += tue_start_minute_val + ":00");
+        "" !== tue_end_hour_val && "" !== tue_end_minute_val && (tue_end_build += "<%= @timecard.tue_start.strftime("%Y-%m-%d") %> ", tue_end_build = tue_end_pm_button_is_active && "12" !== tue_end_hour_val ? tue_end_build + (parseInt(tue_end_hour_val) + 12) : tue_end_pm_button_is_active || "12" !== tue_end_hour_val ? tue_end_build + parseInt(tue_end_hour_val) : tue_end_build + (parseInt(tue_end_hour_val) - 12), tue_end_build += ":", tue_end_build += tue_end_minute_val + ":00");
+
+        var wed_start_build = "", wed_start_hour_val = $("#wed_start_hour").val(),
+            wed_start_minute_val = $("#wed_start_minute").val(),
+            wed_start_pm_button_is_active = $("#wed_start_am_pm .pm-btn.animate_theia_text_blue").length,
+            wed_end_build = "", wed_end_hour_val = $("#wed_end_hour").val(),
+            wed_end_minute_val = $("#wed_end_minute").val(),
+            wed_end_pm_button_is_active = $("#wed_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        "" !== wed_start_hour_val && "" !== wed_start_minute_val && (wed_start_build += "<%= @timecard.wed_start.strftime("%Y-%m-%d") %> ", wed_start_build = wed_start_pm_button_is_active && "12" !== wed_start_hour_val ? wed_start_build + (parseInt(wed_start_hour_val) + 12) : wed_start_pm_button_is_active || "12" !== wed_start_hour_val ? wed_start_build + parseInt(wed_start_hour_val) : wed_start_build + (parseInt(wed_start_hour_val) - 12), wed_start_build += ":", wed_start_build += wed_start_minute_val + ":00");
+        "" !== wed_end_hour_val && "" !== wed_end_minute_val && (wed_end_build += "<%= @timecard.wed_start.strftime("%Y-%m-%d") %> ", wed_end_build = wed_end_pm_button_is_active && "12" !== wed_end_hour_val ? wed_end_build + (parseInt(wed_end_hour_val) + 12) : wed_end_pm_button_is_active || "12" !== wed_end_hour_val ? wed_end_build + parseInt(wed_end_hour_val) : wed_end_build + (parseInt(wed_end_hour_val) - 12), wed_end_build += ":", wed_end_build += wed_end_minute_val + ":00");
+
+        var thu_start_build = "", thu_start_hour_val = $("#thu_start_hour").val(),
+            thu_start_minute_val = $("#thu_start_minute").val(),
+            thu_start_pm_button_is_active = $("#thu_start_am_pm .pm-btn.animate_theia_text_blue").length,
+            thu_end_build = "", thu_end_hour_val = $("#thu_end_hour").val(),
+            thu_end_minute_val = $("#thu_end_minute").val(),
+            thu_end_pm_button_is_active = $("#thu_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        "" !== thu_start_hour_val && "" !== thu_start_minute_val && (thu_start_build += "<%= @timecard.thu_start.strftime("%Y-%m-%d") %> ", thu_start_build = thu_start_pm_button_is_active && "12" !== thu_start_hour_val ? thu_start_build + (parseInt(thu_start_hour_val) + 12) : thu_start_pm_button_is_active || "12" !== thu_start_hour_val ? thu_start_build + parseInt(thu_start_hour_val) : thu_start_build + (parseInt(thu_start_hour_val) - 12), thu_start_build += ":", thu_start_build += thu_start_minute_val + ":00");
+        "" !== thu_end_hour_val && "" !== thu_end_minute_val && (thu_end_build += "<%= @timecard.thu_start.strftime("%Y-%m-%d") %> ", thu_end_build = thu_end_pm_button_is_active && "12" !== thu_end_hour_val ? thu_end_build + (parseInt(thu_end_hour_val) + 12) : thu_end_pm_button_is_active || "12" !== thu_end_hour_val ? thu_end_build + parseInt(thu_end_hour_val) : thu_end_build + (parseInt(thu_end_hour_val) - 12), thu_end_build += ":", thu_end_build += thu_end_minute_val + ":00");
+
+        var fri_start_build = "", fri_start_hour_val = $("#fri_start_hour").val(),
+            fri_start_minute_val = $("#fri_start_minute").val(),
+            fri_start_pm_button_is_active = $("#fri_start_am_pm .pm-btn.animate_theia_text_blue").length,
+            fri_end_build = "", fri_end_hour_val = $("#fri_end_hour").val(),
+            fri_end_minute_val = $("#fri_end_minute").val(),
+            fri_end_pm_button_is_active = $("#fri_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        "" !== fri_start_hour_val && "" !== fri_start_minute_val && (fri_start_build += "<%= @timecard.fri_start.strftime("%Y-%m-%d") %> ", fri_start_build = fri_start_pm_button_is_active && "12" !== fri_start_hour_val ? fri_start_build + (parseInt(fri_start_hour_val) + 12) : fri_start_pm_button_is_active || "12" !== fri_start_hour_val ? fri_start_build + parseInt(fri_start_hour_val) : fri_start_build + (parseInt(fri_start_hour_val) - 12), fri_start_build += ":", fri_start_build += fri_start_minute_val + ":00");
+        "" !== fri_end_hour_val && "" !== fri_end_minute_val && (fri_end_build += "<%= @timecard.fri_start.strftime("%Y-%m-%d") %> ", fri_end_build = fri_end_pm_button_is_active && "12" !== fri_end_hour_val ? fri_end_build + (parseInt(fri_end_hour_val) + 12) : fri_end_pm_button_is_active || "12" !== fri_end_hour_val ? fri_end_build + parseInt(fri_end_hour_val) : fri_end_build + (parseInt(fri_end_hour_val) - 12), fri_end_build += ":", fri_end_build += fri_end_minute_val + ":00");
+
+        var data = {
+            timecard: {
+                sat_start: sat_start_build,
+                sat_end: sat_end_build,
+                sat_break_hours: $('#sat_break_hour').val(),
+                sat_break_minutes: $('#sat_break_minute').val(),
+                sun_start: sun_start_build,
+                sun_end: sun_end_build,
+                sun_break_hours: $('#sun_break_hour').val(),
+                sun_break_minutes: $('#sun_break_minute').val(),
+                mon_start: mon_start_build,
+                mon_end: mon_end_build,
+                mon_break_hours: $('#mon_break_hour').val(),
+                mon_break_minutes: $('#mon_break_minute').val(),
+                tue_start: tue_start_build,
+                tue_end: tue_end_build,
+                tue_break_hours: $('#tue_break_hour').val(),
+                tue_break_minutes: $('#tue_break_minute').val(),
+                wed_start: wed_start_build,
+                wed_end: wed_end_build,
+                wed_break_hours: $('#wed_break_hour').val(),
+                wed_break_minutes: $('#wed_break_minute').val(),
+                thu_start: thu_start_build,
+                thu_end: thu_end_build,
+                thu_break_hours: $('#thu_break_hour').val(),
+                thu_break_minutes: $('#thu_break_minute').val(),
+                fri_start: fri_start_build,
+                fri_end: fri_end_build,
+                fri_break_hours: $('#fri_break_hour').val(),
+                fri_break_minutes: $('#fri_break_minute').val(),
+                sick_hours: $('#sick_hours_input').val()
+            }
+        };
+
+        console.log(data);
+
+        $.ajax({
+            type: 'PUT'
+            , url: '<%= timecard_url(@timecard) %>'
+            , data: data
+            , success: function (json) {
+                $("#total_hours").html("Total Hours: " + json["total_hours"]);
+                $("#overtime_hours").html("Overtime Hours: " + json["overtime_total"]);
+                $("#sick_hours").html("Sick Hours: " + json["sick_hours"]);
+                $("#sat_hours").html(json["sat_total"]);
+                $("#sun_hours").html(json["sun_total"]);
+                $("#mon_hours").html(json["mon_total"]);
+                $("#tue_hours").html(json["tue_total"]);
+                $("#wed_hours").html(json["wed_total"]);
+                $("#thu_hours").html(json["thu_total"]);
+                $("#fri_hours").html(json["fri_total"]);
+                $("#sat_overtime").html(json["sat_overtime"]);
+                $("#sun_overtime").html(json["sun_overtime"]);
+                $("#mon_overtime").html(json["mon_overtime"]);
+                $("#tue_overtime").html(json["tue_overtime"]);
+                $("#wed_overtime").html(json["wed_overtime"]);
+                $("#thu_overtime").html(json["thu_overtime"]);
+                $("#fri_overtime").html(json["fri_overtime"]);
+            }
+            , error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log('Upload error: ' + XMLHttpRequest.responseText);
+            }
+        });
+    }
+</script>

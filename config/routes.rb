@@ -25,7 +25,8 @@ Rails.application.routes.draw do
   end
 
   resources :timecard,            only: [:new, :create, :show, :update] do
-    get  'lock',                 to: 'timecard#lock'
-    get  'unlock',               to: 'timecard#unlock'
+    get   'lock',                 to: 'timecard#lock'
+    get   'unlock',               to: 'timecard#unlock'
+    get   'lock_and_deactivate',  to: 'timecard#lock_and_deactivate'
   end
 end

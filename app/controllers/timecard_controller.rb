@@ -290,17 +290,24 @@ class TimecardController < ApplicationController
 
   def lock
     timecard = Timecard.find(params[:timecard_id])
-    timecard.locked = true
-    timecard.save
+    timecard.update(locked: true)
   end
 
   def unlock
     timecard = Timecard.find(params[:timecard_id])
-    timecard.locked = false
-    timecard.save
+    timecard.update(locked: false)
+  end
+
+  def lock_and_deactivate
+    timecard = Timecard.find(params[:timecard_id])
+    timecard.update(locked: true, active: false)
+    redirect_back_or @current_user
   end
 
   def edit
+    @timecard = Timecard.find(params[:id])
+    @timecard.update(active: true)
+    @user = @timecard.get_owner
   end
 
   private

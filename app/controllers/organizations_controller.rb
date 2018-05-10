@@ -96,9 +96,10 @@ class OrganizationsController < ApplicationController
   def view_week
     @organization = Organization.find(params[:organization_id])
     date = DateTime.parse(params[:end_date])
-    @week_timecards = Timecard.where(id: (Timebook.where(organization_id: @organization).pluck(:timecard_id)), end_date: date)
+    @week_timecards = Timecard.where(id: (Timebook.where(organization: @organization).order(:user_id).pluck(:timecard_id)), end_date: date)
     @total_week_hours = 0
     @total_week_overtime = 0
+    store_location
   end
 
   def get_week_stats
