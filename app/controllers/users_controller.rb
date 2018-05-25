@@ -7,8 +7,12 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+
     if @user.owned_organization
       @owned_organization = @user.owned_organization
+      @unique_dates = Timecard.where(id: Timebook.where(organization_id: @owned_organization).pluck(:timecard_id)).order(end_date: :desc).distinct(:end_date).pluck(:end_date)
+    elsif Comanager.exists? user: @user
+      @owned_organization = Organization.find((Comanager.find_by user: @user).organization_id)
       @unique_dates = Timecard.where(id: Timebook.where(organization_id: @owned_organization).pluck(:timecard_id)).order(end_date: :desc).distinct(:end_date).pluck(:end_date)
     else
       @timecard = @user.timecards.last
@@ -47,6 +51,40 @@ class UsersController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+  def destroy
+    user = User.find params[:id]
+    password = SecureRandom.urlsafe_base64
+
+    if user.name
+      user.name += " [Removed]"
+    end
+    user.email += " [Removed]"
+    user.password = password
+    user.password_confirmation = password
+    user.disabled = true
+
+    if user.save
+      render json: {message: "Successfully destroyed"}
+    else
+      render json: {message: "Failed to destroy"}
+    end
+  end
+
+  def hard_delete
+    user = User.find params[:user_id]
+
+    Employee.where(user: user).delete_all
+    timecards = Timebook.where(user: user)
+
+    timecards.each do |timebook_entry|
+      Timecard.find(timebook_entry.timecard_id).destroy
+    end
+
+    Timebook.where(user: user).delete_all
+
+    user.destroy
   end
 
   private

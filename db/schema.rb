@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180501172930) do
+ActiveRecord::Schema.define(version: 20180525224314) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "comanagers", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "organization_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "employees", force: :cascade do |t|
     t.integer "user_id"
@@ -135,6 +142,7 @@ ActiveRecord::Schema.define(version: 20180501172930) do
     t.datetime "reset_sent_at"
     t.boolean "needs_to_update_account", default: false
     t.string "user_image_link", default: ""
+    t.boolean "disabled", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

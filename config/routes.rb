@@ -8,8 +8,10 @@ Rails.application.routes.draw do
 
   get     '/signup',              to: 'users#new'
   post    '/signup',              to: 'users#create'
-  resources :users do
-    get   '/timecard_collection', to: 'users#timecard_collection'
+  resources :users,               only: [:index, :edit, :show, :update, :destroy] do
+    get     '/timecard_collection', to: 'users#timecard_collection'
+    get     '/delete_user',         to: 'users#delete'
+    delete  '/hard_delete',         to: 'users#hard_delete'
   end
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]
@@ -17,6 +19,7 @@ Rails.application.routes.draw do
     post  'send_invites',                   to: 'organizations#send_invites'
     post  'collect_timecards',              to: 'organizations#collect_timecards'
     post  'notify_users_timecards_are_due', to: 'organizations#notify_users_timecards_are_due'
+    post  'invite_comanager',               to: 'organizations#invite_comanager'
     get   'view_week',                      to: 'organizations#view_week'
     get   'get_week_stats',                 to: 'organizations#get_week_stats'
 

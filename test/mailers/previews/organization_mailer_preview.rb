@@ -16,7 +16,8 @@ class OrganizationMailerPreview < ActionMailer::Preview
   end
 
   def invite_comanager
-    user = User.new name: "Stephen Phillips"
+    user = User.new name: "Stephen Phillips", email: "stephen@theia.io"
+    user.activation_token = User.new_token
     organization = Organization.new name: "Theia Interactive"
     OrganizationMailer.invite_comanager(user, organization)
   end

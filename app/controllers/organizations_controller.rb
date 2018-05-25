@@ -26,6 +26,7 @@ class OrganizationsController < ApplicationController
   def show
     @organization = Organization.find(params[:id])
     @employees = @organization.employees
+    @comanagers = @organization.comanagers
   end
 
   def notify_users_timecards_are_due
@@ -55,7 +56,25 @@ class OrganizationsController < ApplicationController
 
     current_timecard_date = organization.employees.first.user.timecards.last.end_date
 
-    render json: {message: "Collected timecards and issued out new ones", end_date: current_timecard_date.strftime("%m/%d") }
+    render json: {message: "Collected time cards and issued out new ones", end_date: current_timecard_date.strftime("%m/%d") }
+
+  end
+
+  # noinspection RailsChecklist01
+  def invite_comanager
+    organization = Organization.find(params[:organization_id])
+    password = SecureRandom.urlsafe_base64
+    user = User.new(email: params[:email], password: password, password_confirmation: password)
+    user.needs_to_update_account = true
+    user.admin_level = 11
+    if user.save
+      organization.send_comanager_email(user)
+      comanager = Comanager.new(user: user, organization: organization)
+      comanager.save
+      render json: {message: "Added Comanager Successfully"}
+    else
+      render json: {message: "Failed to add comanager, user already exists"}
+    end
 
   end
 
