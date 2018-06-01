@@ -8,11 +8,8 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
 
-    if @user.owned_organization
-      @owned_organization = @user.owned_organization
-      @unique_dates = Timecard.where(id: Timebook.where(organization_id: @owned_organization).pluck(:timecard_id)).order(end_date: :desc).distinct(:end_date).pluck(:end_date)
-    elsif Comanager.exists? user: @user
-      @owned_organization = Organization.find((Comanager.find_by user: @user).organization_id)
+    if @user.manages_org?
+      @owned_organization = @user.get_owned_org
       @unique_dates = Timecard.where(id: Timebook.where(organization_id: @owned_organization).pluck(:timecard_id)).order(end_date: :desc).distinct(:end_date).pluck(:end_date)
     else
       @timecard = @user.timecards.last

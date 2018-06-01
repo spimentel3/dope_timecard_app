@@ -262,8 +262,7 @@ class TimecardController < ApplicationController
       @timecard.fri_break_minutes_is_set = false
     end
 
-    @timecard.gather_all_hours
-    @timecard.total_hours
+    @timecard.total_all_hours
 
     @timecard.save
 

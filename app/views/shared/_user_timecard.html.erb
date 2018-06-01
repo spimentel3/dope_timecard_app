@@ -436,11 +436,10 @@
 
     $("#timecard_table input[id*='hour']").focusout(function () {
         if (this.value !== "") {
-            if (parseInt(this.value) >= 8 && parseInt(this.value) < 12) {
+            if ($(this).hasClass("start_hour"))
                 toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".am-btn"));
-            } else {
+            else if ($(this).hasClass("end_hour"))
                 toggle_am_pm($(this).siblings("div[id*='am_pm']").children(".pm-btn"));
-            }
         } else {
             $(this).parent().find(".am-btn").removeClass("animate_theia_text_blue");
             $(this).parent().find(".pm-btn").removeClass("animate_theia_text_blue");
@@ -533,7 +532,7 @@
 
         var next = $(elem).parent().next();
 
-        console.log(next.find("input.start_hour").parent().find(".pm-btn").length);
+        // console.log(next.find("input.start_hour").parent().find(".pm-btn").length);
 
         next.find("input.start_hour").val(start_hour);
         next.find("input.start_min").val(start_min);
@@ -645,7 +644,7 @@
         var sat_end_minute_val = $('#sat_end_minute').val();
         var sat_end_pm_button_is_active = $("#sat_end_am_pm .pm-btn.animate_theia_text_blue").length;
 
-        if (sat_start_hour_val !== "" && sat_start_minute_val !== ""){
+        if (sat_start_hour_val !== ""){
           sat_start_build += "start_date ";
           if (sat_start_pm_button_is_active && sat_start_hour_val !== "12"){
               sat_start_build += parseInt(sat_start_hour_val) + 12;
@@ -655,10 +654,14 @@
               sat_start_build += parseInt(sat_start_hour_val);
           }
           sat_start_build += ":";
-          sat_start_build += sat_start_minute_val + ":00";
+          if (sat_start_minute_val !== ""){
+            sat_start_build += sat_start_minute_val + ":00";
+          } else {
+            sat_start_build += "00:00";
+          }
         }
 
-        if (sat_end_hour_val !== "" && sat_end_minute_val !== "") {
+        if (sat_end_hour_val !== "") {
             sat_end_build += "end_date ";
             if (sat_end_pm_button_is_active && sat_end_hour_val !== "12") {
                 sat_end_build += parseInt(sat_end_hour_val) + 12;
@@ -668,72 +671,42 @@
                 sat_end_build += parseInt(sat_end_hour_val);
             }
             sat_end_build += ":";
-            sat_end_build += sat_end_minute_val + ":00";
+            if (sat_end_minute_val !== ""){
+              sat_end_build += sat_end_minute_val + ":00";
+            } else {
+              sat_end_build += "00:00";
+            }
         }
         */
 
-        var sat_start_build = "", sat_start_hour_val = $("#sat_start_hour").val(),
-            sat_start_minute_val = $("#sat_start_minute").val(),
-            sat_start_pm_button_is_active = $("#sat_start_am_pm .pm-btn.animate_theia_text_blue").length,
-            sat_end_build = "", sat_end_hour_val = $("#sat_end_hour").val(),
-            sat_end_minute_val = $("#sat_end_minute").val(),
-            sat_end_pm_button_is_active = $("#sat_end_am_pm .pm-btn.animate_theia_text_blue").length;
-        "" !== sat_start_hour_val && "" !== sat_start_minute_val && (sat_start_build += "<%= @timecard.sat_start.strftime("%Y-%m-%d") %> ", sat_start_build = sat_start_pm_button_is_active && "12" !== sat_start_hour_val ? sat_start_build + (parseInt(sat_start_hour_val) + 12) : sat_start_pm_button_is_active || "12" !== sat_start_hour_val ? sat_start_build + parseInt(sat_start_hour_val) : sat_start_build + (parseInt(sat_start_hour_val) - 12), sat_start_build += ":", sat_start_build += sat_start_minute_val + ":00");
-        "" !== sat_end_hour_val && "" !== sat_end_minute_val && (sat_end_build += "<%= @timecard.sat_start.strftime("%Y-%m-%d") %> ", sat_end_build = sat_end_pm_button_is_active && "12" !== sat_end_hour_val ? sat_end_build + (parseInt(sat_end_hour_val) + 12) : sat_end_pm_button_is_active || "12" !== sat_end_hour_val ? sat_end_build + parseInt(sat_end_hour_val) : sat_end_build + (parseInt(sat_end_hour_val) - 12), sat_end_build += ":", sat_end_build += sat_end_minute_val + ":00");
+        var sat_start_build="",sat_start_hour_val=$("#sat_start_hour").val(),sat_start_minute_val=$("#sat_start_minute").val(),sat_start_pm_button_is_active=$("#sat_start_am_pm .pm-btn.animate_theia_text_blue").length,sat_end_build="",sat_end_hour_val=$("#sat_end_hour").val(),sat_end_minute_val=$("#sat_end_minute").val(),sat_end_pm_button_is_active=$("#sat_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        ""!==sat_start_hour_val&&(sat_start_build+="<%= @timecard.sat_start.strftime("%Y-%m-%d") %> ",sat_start_build=sat_start_pm_button_is_active&&"12"!==sat_start_hour_val?sat_start_build+(parseInt(sat_start_hour_val)+12):sat_start_pm_button_is_active||"12"!==sat_start_hour_val?sat_start_build+parseInt(sat_start_hour_val):sat_start_build+(parseInt(sat_start_hour_val)-12),sat_start_build+=":",sat_start_build=""!==sat_start_minute_val?sat_start_build+(sat_start_minute_val+":00"):sat_start_build+"00:00");
+        ""!==sat_end_hour_val&&(sat_end_build+="<%= @timecard.sat_start.strftime("%Y-%m-%d") %> ",sat_end_build=sat_end_pm_button_is_active&&"12"!==sat_end_hour_val?sat_end_build+(parseInt(sat_end_hour_val)+12):sat_end_pm_button_is_active||"12"!==sat_end_hour_val?sat_end_build+parseInt(sat_end_hour_val):sat_end_build+(parseInt(sat_end_hour_val)-12),sat_end_build+=":",sat_end_build=""!==sat_end_minute_val?sat_end_build+(sat_end_minute_val+":00"):sat_end_build+"00:00");
 
-        var sun_start_build = "", sun_start_hour_val = $("#sun_start_hour").val(),
-            sun_start_minute_val = $("#sun_start_minute").val(),
-            sun_start_pm_button_is_active = $("#sun_start_am_pm .pm-btn.animate_theia_text_blue").length,
-            sun_end_build = "", sun_end_hour_val = $("#sun_end_hour").val(),
-            sun_end_minute_val = $("#sun_end_minute").val(),
-            sun_end_pm_button_is_active = $("#sun_end_am_pm .pm-btn.animate_theia_text_blue").length;
-        "" !== sun_start_hour_val && "" !== sun_start_minute_val && (sun_start_build += "<%= @timecard.sun_start.strftime("%Y-%m-%d") %> ", sun_start_build = sun_start_pm_button_is_active && "12" !== sun_start_hour_val ? sun_start_build + (parseInt(sun_start_hour_val) + 12) : sun_start_pm_button_is_active || "12" !== sun_start_hour_val ? sun_start_build + parseInt(sun_start_hour_val) : sun_start_build + (parseInt(sun_start_hour_val) - 12), sun_start_build += ":", sun_start_build += sun_start_minute_val + ":00");
-        "" !== sun_end_hour_val && "" !== sun_end_minute_val && (sun_end_build += "<%= @timecard.sun_start.strftime("%Y-%m-%d") %> ", sun_end_build = sun_end_pm_button_is_active && "12" !== sun_end_hour_val ? sun_end_build + (parseInt(sun_end_hour_val) + 12) : sun_end_pm_button_is_active || "12" !== sun_end_hour_val ? sun_end_build + parseInt(sun_end_hour_val) : sun_end_build + (parseInt(sun_end_hour_val) - 12), sun_end_build += ":", sun_end_build += sun_end_minute_val + ":00");
+        var sun_start_build="",sun_start_hour_val=$("#sun_start_hour").val(),sun_start_minute_val=$("#sun_start_minute").val(),sun_start_pm_button_is_active=$("#sun_start_am_pm .pm-btn.animate_theia_text_blue").length,sun_end_build="",sun_end_hour_val=$("#sun_end_hour").val(),sun_end_minute_val=$("#sun_end_minute").val(),sun_end_pm_button_is_active=$("#sun_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        ""!==sun_start_hour_val&&(sun_start_build+="<%= @timecard.sun_start.strftime("%Y-%m-%d") %> ",sun_start_build=sun_start_pm_button_is_active&&"12"!==sun_start_hour_val?sun_start_build+(parseInt(sun_start_hour_val)+12):sun_start_pm_button_is_active||"12"!==sun_start_hour_val?sun_start_build+parseInt(sun_start_hour_val):sun_start_build+(parseInt(sun_start_hour_val)-12),sun_start_build+=":",sun_start_build=""!==sun_start_minute_val?sun_start_build+(sun_start_minute_val+":00"):sun_start_build+"00:00");
+        ""!==sun_end_hour_val&&(sun_end_build+="<%= @timecard.sun_start.strftime("%Y-%m-%d") %> ",sun_end_build=sun_end_pm_button_is_active&&"12"!==sun_end_hour_val?sun_end_build+(parseInt(sun_end_hour_val)+12):sun_end_pm_button_is_active||"12"!==sun_end_hour_val?sun_end_build+parseInt(sun_end_hour_val):sun_end_build+(parseInt(sun_end_hour_val)-12),sun_end_build+=":",sun_end_build=""!==sun_end_minute_val?sun_end_build+(sun_end_minute_val+":00"):sun_end_build+"00:00");
 
-        var mon_start_build = "", mon_start_hour_val = $("#mon_start_hour").val(),
-            mon_start_minute_val = $("#mon_start_minute").val(),
-            mon_start_pm_button_is_active = $("#mon_start_am_pm .pm-btn.animate_theia_text_blue").length,
-            mon_end_build = "", mon_end_hour_val = $("#mon_end_hour").val(),
-            mon_end_minute_val = $("#mon_end_minute").val(),
-            mon_end_pm_button_is_active = $("#mon_end_am_pm .pm-btn.animate_theia_text_blue").length;
-        "" !== mon_start_hour_val && "" !== mon_start_minute_val && (mon_start_build += "<%= @timecard.mon_start.strftime("%Y-%m-%d") %> ", mon_start_build = mon_start_pm_button_is_active && "12" !== mon_start_hour_val ? mon_start_build + (parseInt(mon_start_hour_val) + 12) : mon_start_pm_button_is_active || "12" !== mon_start_hour_val ? mon_start_build + parseInt(mon_start_hour_val) : mon_start_build + (parseInt(mon_start_hour_val) - 12), mon_start_build += ":", mon_start_build += mon_start_minute_val + ":00");
-        "" !== mon_end_hour_val && "" !== mon_end_minute_val && (mon_end_build += "<%= @timecard.mon_start.strftime("%Y-%m-%d") %> ", mon_end_build = mon_end_pm_button_is_active && "12" !== mon_end_hour_val ? mon_end_build + (parseInt(mon_end_hour_val) + 12) : mon_end_pm_button_is_active || "12" !== mon_end_hour_val ? mon_end_build + parseInt(mon_end_hour_val) : mon_end_build + (parseInt(mon_end_hour_val) - 12), mon_end_build += ":", mon_end_build += mon_end_minute_val + ":00");
+        var mon_start_build="",mon_start_hour_val=$("#mon_start_hour").val(),mon_start_minute_val=$("#mon_start_minute").val(),mon_start_pm_button_is_active=$("#mon_start_am_pm .pm-btn.animate_theia_text_blue").length,mon_end_build="",mon_end_hour_val=$("#mon_end_hour").val(),mon_end_minute_val=$("#mon_end_minute").val(),mon_end_pm_button_is_active=$("#mon_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        ""!==mon_start_hour_val&&(mon_start_build+="<%= @timecard.mon_start.strftime("%Y-%m-%d") %> ",mon_start_build=mon_start_pm_button_is_active&&"12"!==mon_start_hour_val?mon_start_build+(parseInt(mon_start_hour_val)+12):mon_start_pm_button_is_active||"12"!==mon_start_hour_val?mon_start_build+parseInt(mon_start_hour_val):mon_start_build+(parseInt(mon_start_hour_val)-12),mon_start_build+=":",mon_start_build=""!==mon_start_minute_val?mon_start_build+(mon_start_minute_val+":00"):mon_start_build+"00:00");
+        ""!==mon_end_hour_val&&(mon_end_build+="<%= @timecard.mon_start.strftime("%Y-%m-%d") %> ",mon_end_build=mon_end_pm_button_is_active&&"12"!==mon_end_hour_val?mon_end_build+(parseInt(mon_end_hour_val)+12):mon_end_pm_button_is_active||"12"!==mon_end_hour_val?mon_end_build+parseInt(mon_end_hour_val):mon_end_build+(parseInt(mon_end_hour_val)-12),mon_end_build+=":",mon_end_build=""!==mon_end_minute_val?mon_end_build+(mon_end_minute_val+":00"):mon_end_build+"00:00");
 
-        var tue_start_build = "", tue_start_hour_val = $("#tue_start_hour").val(),
-            tue_start_minute_val = $("#tue_start_minute").val(),
-            tue_start_pm_button_is_active = $("#tue_start_am_pm .pm-btn.animate_theia_text_blue").length,
-            tue_end_build = "", tue_end_hour_val = $("#tue_end_hour").val(),
-            tue_end_minute_val = $("#tue_end_minute").val(),
-            tue_end_pm_button_is_active = $("#tue_end_am_pm .pm-btn.animate_theia_text_blue").length;
-        "" !== tue_start_hour_val && "" !== tue_start_minute_val && (tue_start_build += "<%= @timecard.tue_start.strftime("%Y-%m-%d") %> ", tue_start_build = tue_start_pm_button_is_active && "12" !== tue_start_hour_val ? tue_start_build + (parseInt(tue_start_hour_val) + 12) : tue_start_pm_button_is_active || "12" !== tue_start_hour_val ? tue_start_build + parseInt(tue_start_hour_val) : tue_start_build + (parseInt(tue_start_hour_val) - 12), tue_start_build += ":", tue_start_build += tue_start_minute_val + ":00");
-        "" !== tue_end_hour_val && "" !== tue_end_minute_val && (tue_end_build += "<%= @timecard.tue_start.strftime("%Y-%m-%d") %> ", tue_end_build = tue_end_pm_button_is_active && "12" !== tue_end_hour_val ? tue_end_build + (parseInt(tue_end_hour_val) + 12) : tue_end_pm_button_is_active || "12" !== tue_end_hour_val ? tue_end_build + parseInt(tue_end_hour_val) : tue_end_build + (parseInt(tue_end_hour_val) - 12), tue_end_build += ":", tue_end_build += tue_end_minute_val + ":00");
+        var tue_start_build="",tue_start_hour_val=$("#tue_start_hour").val(),tue_start_minute_val=$("#tue_start_minute").val(),tue_start_pm_button_is_active=$("#tue_start_am_pm .pm-btn.animate_theia_text_blue").length,tue_end_build="",tue_end_hour_val=$("#tue_end_hour").val(),tue_end_minute_val=$("#tue_end_minute").val(),tue_end_pm_button_is_active=$("#tue_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        ""!==tue_start_hour_val&&(tue_start_build+="<%= @timecard.tue_start.strftime("%Y-%m-%d") %> ",tue_start_build=tue_start_pm_button_is_active&&"12"!==tue_start_hour_val?tue_start_build+(parseInt(tue_start_hour_val)+12):tue_start_pm_button_is_active||"12"!==tue_start_hour_val?tue_start_build+parseInt(tue_start_hour_val):tue_start_build+(parseInt(tue_start_hour_val)-12),tue_start_build+=":",tue_start_build=""!==tue_start_minute_val?tue_start_build+(tue_start_minute_val+":00"):tue_start_build+"00:00");
+        ""!==tue_end_hour_val&&(tue_end_build+="<%= @timecard.tue_start.strftime("%Y-%m-%d") %> ",tue_end_build=tue_end_pm_button_is_active&&"12"!==tue_end_hour_val?tue_end_build+(parseInt(tue_end_hour_val)+12):tue_end_pm_button_is_active||"12"!==tue_end_hour_val?tue_end_build+parseInt(tue_end_hour_val):tue_end_build+(parseInt(tue_end_hour_val)-12),tue_end_build+=":",tue_end_build=""!==tue_end_minute_val?tue_end_build+(tue_end_minute_val+":00"):tue_end_build+"00:00");
 
-        var wed_start_build = "", wed_start_hour_val = $("#wed_start_hour").val(),
-            wed_start_minute_val = $("#wed_start_minute").val(),
-            wed_start_pm_button_is_active = $("#wed_start_am_pm .pm-btn.animate_theia_text_blue").length,
-            wed_end_build = "", wed_end_hour_val = $("#wed_end_hour").val(),
-            wed_end_minute_val = $("#wed_end_minute").val(),
-            wed_end_pm_button_is_active = $("#wed_end_am_pm .pm-btn.animate_theia_text_blue").length;
-        "" !== wed_start_hour_val && "" !== wed_start_minute_val && (wed_start_build += "<%= @timecard.wed_start.strftime("%Y-%m-%d") %> ", wed_start_build = wed_start_pm_button_is_active && "12" !== wed_start_hour_val ? wed_start_build + (parseInt(wed_start_hour_val) + 12) : wed_start_pm_button_is_active || "12" !== wed_start_hour_val ? wed_start_build + parseInt(wed_start_hour_val) : wed_start_build + (parseInt(wed_start_hour_val) - 12), wed_start_build += ":", wed_start_build += wed_start_minute_val + ":00");
-        "" !== wed_end_hour_val && "" !== wed_end_minute_val && (wed_end_build += "<%= @timecard.wed_start.strftime("%Y-%m-%d") %> ", wed_end_build = wed_end_pm_button_is_active && "12" !== wed_end_hour_val ? wed_end_build + (parseInt(wed_end_hour_val) + 12) : wed_end_pm_button_is_active || "12" !== wed_end_hour_val ? wed_end_build + parseInt(wed_end_hour_val) : wed_end_build + (parseInt(wed_end_hour_val) - 12), wed_end_build += ":", wed_end_build += wed_end_minute_val + ":00");
+        var wed_start_build="",wed_start_hour_val=$("#wed_start_hour").val(),wed_start_minute_val=$("#wed_start_minute").val(),wed_start_pm_button_is_active=$("#wed_start_am_pm .pm-btn.animate_theia_text_blue").length,wed_end_build="",wed_end_hour_val=$("#wed_end_hour").val(),wed_end_minute_val=$("#wed_end_minute").val(),wed_end_pm_button_is_active=$("#wed_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        ""!==wed_start_hour_val&&(wed_start_build+="<%= @timecard.wed_start.strftime("%Y-%m-%d") %> ",wed_start_build=wed_start_pm_button_is_active&&"12"!==wed_start_hour_val?wed_start_build+(parseInt(wed_start_hour_val)+12):wed_start_pm_button_is_active||"12"!==wed_start_hour_val?wed_start_build+parseInt(wed_start_hour_val):wed_start_build+(parseInt(wed_start_hour_val)-12),wed_start_build+=":",wed_start_build=""!==wed_start_minute_val?wed_start_build+(wed_start_minute_val+":00"):wed_start_build+"00:00");
+        ""!==wed_end_hour_val&&(wed_end_build+="<%= @timecard.wed_start.strftime("%Y-%m-%d") %> ",wed_end_build=wed_end_pm_button_is_active&&"12"!==wed_end_hour_val?wed_end_build+(parseInt(wed_end_hour_val)+12):wed_end_pm_button_is_active||"12"!==wed_end_hour_val?wed_end_build+parseInt(wed_end_hour_val):wed_end_build+(parseInt(wed_end_hour_val)-12),wed_end_build+=":",wed_end_build=""!==wed_end_minute_val?wed_end_build+(wed_end_minute_val+":00"):wed_end_build+"00:00");
 
-        var thu_start_build = "", thu_start_hour_val = $("#thu_start_hour").val(),
-            thu_start_minute_val = $("#thu_start_minute").val(),
-            thu_start_pm_button_is_active = $("#thu_start_am_pm .pm-btn.animate_theia_text_blue").length,
-            thu_end_build = "", thu_end_hour_val = $("#thu_end_hour").val(),
-            thu_end_minute_val = $("#thu_end_minute").val(),
-            thu_end_pm_button_is_active = $("#thu_end_am_pm .pm-btn.animate_theia_text_blue").length;
-        "" !== thu_start_hour_val && "" !== thu_start_minute_val && (thu_start_build += "<%= @timecard.thu_start.strftime("%Y-%m-%d") %> ", thu_start_build = thu_start_pm_button_is_active && "12" !== thu_start_hour_val ? thu_start_build + (parseInt(thu_start_hour_val) + 12) : thu_start_pm_button_is_active || "12" !== thu_start_hour_val ? thu_start_build + parseInt(thu_start_hour_val) : thu_start_build + (parseInt(thu_start_hour_val) - 12), thu_start_build += ":", thu_start_build += thu_start_minute_val + ":00");
-        "" !== thu_end_hour_val && "" !== thu_end_minute_val && (thu_end_build += "<%= @timecard.thu_start.strftime("%Y-%m-%d") %> ", thu_end_build = thu_end_pm_button_is_active && "12" !== thu_end_hour_val ? thu_end_build + (parseInt(thu_end_hour_val) + 12) : thu_end_pm_button_is_active || "12" !== thu_end_hour_val ? thu_end_build + parseInt(thu_end_hour_val) : thu_end_build + (parseInt(thu_end_hour_val) - 12), thu_end_build += ":", thu_end_build += thu_end_minute_val + ":00");
+        var thu_start_build="",thu_start_hour_val=$("#thu_start_hour").val(),thu_start_minute_val=$("#thu_start_minute").val(),thu_start_pm_button_is_active=$("#thu_start_am_pm .pm-btn.animate_theia_text_blue").length,thu_end_build="",thu_end_hour_val=$("#thu_end_hour").val(),thu_end_minute_val=$("#thu_end_minute").val(),thu_end_pm_button_is_active=$("#thu_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        ""!==thu_start_hour_val&&(thu_start_build+="<%= @timecard.thu_start.strftime("%Y-%m-%d") %> ",thu_start_build=thu_start_pm_button_is_active&&"12"!==thu_start_hour_val?thu_start_build+(parseInt(thu_start_hour_val)+12):thu_start_pm_button_is_active||"12"!==thu_start_hour_val?thu_start_build+parseInt(thu_start_hour_val):thu_start_build+(parseInt(thu_start_hour_val)-12),thu_start_build+=":",thu_start_build=""!==thu_start_minute_val?thu_start_build+(thu_start_minute_val+":00"):thu_start_build+"00:00");
+        ""!==thu_end_hour_val&&(thu_end_build+="<%= @timecard.thu_start.strftime("%Y-%m-%d") %> ",thu_end_build=thu_end_pm_button_is_active&&"12"!==thu_end_hour_val?thu_end_build+(parseInt(thu_end_hour_val)+12):thu_end_pm_button_is_active||"12"!==thu_end_hour_val?thu_end_build+parseInt(thu_end_hour_val):thu_end_build+(parseInt(thu_end_hour_val)-12),thu_end_build+=":",thu_end_build=""!==thu_end_minute_val?thu_end_build+(thu_end_minute_val+":00"):thu_end_build+"00:00");
 
-        var fri_start_build = "", fri_start_hour_val = $("#fri_start_hour").val(),
-            fri_start_minute_val = $("#fri_start_minute").val(),
-            fri_start_pm_button_is_active = $("#fri_start_am_pm .pm-btn.animate_theia_text_blue").length,
-            fri_end_build = "", fri_end_hour_val = $("#fri_end_hour").val(),
-            fri_end_minute_val = $("#fri_end_minute").val(),
-            fri_end_pm_button_is_active = $("#fri_end_am_pm .pm-btn.animate_theia_text_blue").length;
-        "" !== fri_start_hour_val && "" !== fri_start_minute_val && (fri_start_build += "<%= @timecard.fri_start.strftime("%Y-%m-%d") %> ", fri_start_build = fri_start_pm_button_is_active && "12" !== fri_start_hour_val ? fri_start_build + (parseInt(fri_start_hour_val) + 12) : fri_start_pm_button_is_active || "12" !== fri_start_hour_val ? fri_start_build + parseInt(fri_start_hour_val) : fri_start_build + (parseInt(fri_start_hour_val) - 12), fri_start_build += ":", fri_start_build += fri_start_minute_val + ":00");
-        "" !== fri_end_hour_val && "" !== fri_end_minute_val && (fri_end_build += "<%= @timecard.fri_start.strftime("%Y-%m-%d") %> ", fri_end_build = fri_end_pm_button_is_active && "12" !== fri_end_hour_val ? fri_end_build + (parseInt(fri_end_hour_val) + 12) : fri_end_pm_button_is_active || "12" !== fri_end_hour_val ? fri_end_build + parseInt(fri_end_hour_val) : fri_end_build + (parseInt(fri_end_hour_val) - 12), fri_end_build += ":", fri_end_build += fri_end_minute_val + ":00");
+        var fri_start_build="",fri_start_hour_val=$("#fri_start_hour").val(),fri_start_minute_val=$("#fri_start_minute").val(),fri_start_pm_button_is_active=$("#fri_start_am_pm .pm-btn.animate_theia_text_blue").length,fri_end_build="",fri_end_hour_val=$("#fri_end_hour").val(),fri_end_minute_val=$("#fri_end_minute").val(),fri_end_pm_button_is_active=$("#fri_end_am_pm .pm-btn.animate_theia_text_blue").length;
+        ""!==fri_start_hour_val&&(fri_start_build+="<%= @timecard.fri_start.strftime("%Y-%m-%d") %> ",fri_start_build=fri_start_pm_button_is_active&&"12"!==fri_start_hour_val?fri_start_build+(parseInt(fri_start_hour_val)+12):fri_start_pm_button_is_active||"12"!==fri_start_hour_val?fri_start_build+parseInt(fri_start_hour_val):fri_start_build+(parseInt(fri_start_hour_val)-12),fri_start_build+=":",fri_start_build=""!==fri_start_minute_val?fri_start_build+(fri_start_minute_val+":00"):fri_start_build+"00:00");
+        ""!==fri_end_hour_val&&(fri_end_build+="<%= @timecard.fri_start.strftime("%Y-%m-%d") %> ",fri_end_build=fri_end_pm_button_is_active&&"12"!==fri_end_hour_val?fri_end_build+(parseInt(fri_end_hour_val)+12):fri_end_pm_button_is_active||"12"!==fri_end_hour_val?fri_end_build+parseInt(fri_end_hour_val):fri_end_build+(parseInt(fri_end_hour_val)-12),fri_end_build+=":",fri_end_build=""!==fri_end_minute_val?fri_end_build+(fri_end_minute_val+":00"):fri_end_build+"00:00");
+
 
         var data = {
             timecard: {

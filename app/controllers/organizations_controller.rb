@@ -162,7 +162,7 @@ class OrganizationsController < ApplicationController
       end
       if helpers.user_is_part_of_org?(current_user) == false
         flash[:danger] = "Wrong user access for organization"
-        redirect_to(@user)
+        redirect_to(@current_user)
       end
     end
 

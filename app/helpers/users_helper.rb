@@ -25,11 +25,11 @@ module UsersHelper
   end
 
   def is_company_owner?
-    @current_user.admin_level  == 10
+    @current_user.admin_level == 10
   end
 
   def is_company_co_owner?
-    @current_cycle.admin_level == 11
+    @current_user.admin_level == 11
   end
 
   def is_company_user?

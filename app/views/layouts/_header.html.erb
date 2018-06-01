@@ -8,19 +8,15 @@
   <div class="nav-wrapper container">
     <% if logged_in? %>
       <a data-target="slide-out" class="sidenav-trigger hide-on-med-and-up" id="side_nav_trigger"><i class="material-icons">menu</i></a>
-      <% if @current_user.user_image_link != "" %>
-        <%= link_to @current_user do %>
-          <img src="<%= @current_user.user_image_link %>" class="circle hide-on-small-and-down" width="64" height="64">
-          <img src="<%= @current_user.user_image_link %>" class="circle hide-on-med-and-up right" width="54" height="54">
-        <% end %>
-      <% else %>
-        <%= link_to(image_tag("icon_only_100.png", size: 64), @current_user, class: "hide-on-small-and-down") %>
-        <%= link_to(image_tag("icon_only_100.png", size: 54), @current_user, class: "hide-on-med-and-up right") %>
-        <% if @current_user.owned_organization != nil %>
-          <%= link_to("#{@current_user.owned_organization.name}", @current_user, class: "brand-logo theia_text_slate hide-on-small-and-down") %>
-          <%= link_to("#{@current_user.owned_organization.name}", @current_user, class: "brand-logo theia_text_slate hide-on-med-and-up", style: "font-size: 1.4rem") %>
-        <% end %>
-      <% end %>
+      <%# if @current_user.user_image_link != "" %>
+        <%#= link_to @current_user do %>
+<!--          <img src="<%#= @current_user.user_image_link %>" class="circle hide-on-small-and-down" width="64" height="64">-->
+<!--          <img src="<%#= @current_user.user_image_link %>" class="circle hide-on-med-and-up right" width="54" height="54">-->
+        <%# end %>
+      <%# else %>
+        <%#= link_to(image_tag("icon_only_100.png", size: 60), @current_user, class: "hide-on-small-and-down") %>
+        <%#= link_to(image_tag("icon_only_100.png", size: 50), @current_user, class: "hide-on-med-and-up right") %>
+      <%# end %>
     <% else %>
       <%= link_to(image_tag("icon_only_100.png", size: 64), login_path, class: "hide-on-small-and-down") %>
       <%= link_to(image_tag("icon_only_100.png", size: 54), login_path, class: "hide-on-med-and-up right") %>
@@ -31,6 +27,19 @@
           <li><%= link_to "Timecards", user_timecard_collection_path(@current_user), class: "theia_text_blue hide-on-small-and-down" %></li>
         <% end %>
         <li><a class="dropdown-trigger theia_text_blue hide-on-small-and-down" href="" data-target="account_dropdown"><%= @current_user.name %><i class="material-icons right">arrow_drop_down</i></a></li>
+      <% end %>
+    </ul>
+    <ul class="left">
+      <% if logged_in? %>
+        <% if @current_user.manages_org? %>
+          <li><%= link_to("#{@current_user.get_owned_org.name}", @current_user, class: "theia_text_slate hide-on-small-and-down", style: "font-size: 2.0rem") %></li>
+        <% end %>
+        <% if is_company_owner? or is_company_co_owner? %>
+          <li><%= link_to "Manage", @current_user.get_owned_org, id: "add_new_users_fd", class: "btn theia_blue waves-effect waves-light" %></li>
+        <% end %>
+        <% if @current_user.manages_org? %>
+          <li><%= link_to("#{@current_user.get_owned_org.name}", @current_user, class: "theia_text_slate hide-on-med-and-up", style: "font-size: 1.4rem") %></li>
+        <% end %>
       <% end %>
     </ul>
     <% if logged_in? %>
