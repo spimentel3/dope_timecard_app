@@ -31,6 +31,16 @@
     </ul>
     <ul class="left">
       <% if logged_in? %>
+        <% if is_company_user? %>
+          <% if @current_user.user_image_link != "" %>
+            <%= link_to @current_user, class: "hide-on-small-and-down", style: "max-height: 64px" do %>
+              <img src="<%= @current_user.user_image_link %>" class="circle hide-on-small-and-down" width="64" height="64">
+              <img src="<%= @current_user.user_image_link %>" class="circle hide-on-med-and-up right" width="54" height="54">
+            <% end %>
+          <% else %>
+            <%= link_to(image_tag("icon_only_100.png", size: 60), @current_user, class: "hide-on-small-and-down", style: "max-height: 64px") %>
+          <% end %>
+        <% end %>
         <% if @current_user.manages_org? %>
           <li><%= link_to("#{@current_user.get_owned_org.name}", @current_user, class: "theia_text_slate hide-on-small-and-down", style: "font-size: 2.0rem") %></li>
         <% end %>
@@ -48,7 +58,9 @@
           <div class="user-view">
             <div class="background theia_blue"></div>
             <% if @current_user.user_image_link != "" %>
-              <img src="<%= @current_user.user_image_link %>" class="circle" width="100" height="100">
+              <%= link_to @current_user do %>
+                <img src="<%= @current_user.user_image_link %>" class="circle" width="100" height="100">
+              <% end %>
             <% else %>
              <%= image_tag("icon_only_white_200.png", size: 100) %>
             <% end %>
