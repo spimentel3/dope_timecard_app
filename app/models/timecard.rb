@@ -130,7 +130,7 @@ class Timecard < ApplicationRecord
     self.total_fri_hours
     self.total_overtime
     self.total_hours = (self.sat_hours + self.sun_hours + self.mon_hours + self.tue_hours + self.wed_hours + self.thu_hours + self.fri_hours).round(2)
-    debugger
+    
     if self.total_hours > 40.0
       difference = self.total_hours - 40.0
       self.overtime_hours += difference
