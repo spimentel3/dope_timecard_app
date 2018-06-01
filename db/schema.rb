@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180601205826) do
+ActiveRecord::Schema.define(version: 20180601225338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,7 +112,7 @@ ActiveRecord::Schema.define(version: 20180601205826) do
     t.float "overtime_hours", default: 0.0
     t.datetime "end_date"
     t.string "stephens_quote"
-    t.integer "total_hours", default: 0
+    t.float "total_hours", default: 0.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "sick_hours", default: 0
@@ -143,6 +143,8 @@ ActiveRecord::Schema.define(version: 20180601205826) do
     t.boolean "needs_to_update_account", default: false
     t.string "user_image_link", default: ""
     t.boolean "disabled", default: false
+    t.string "f_name", default: ""
+    t.string "l_name", default: ""
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

@@ -40,4 +40,18 @@ module UsersHelper
     @current_user.admin_level  == 100
   end
 
+  def manages_user(user)
+    org = @current_user.owned_organization
+    emp = Employee.find_by(user_id: user)
+    if !emp
+      return false
+    end
+
+    if org and emp.organization_id == @current_user.owned_organization.id
+      return true
+    else
+      return false
+    end
+  end
+
 end

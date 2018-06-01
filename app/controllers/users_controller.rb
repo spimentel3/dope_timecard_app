@@ -44,7 +44,11 @@ class UsersController < ApplicationController
     @user.needs_to_update_account = false
     if @user.update_attributes(user_params)
       flash[:success] = "Profile Updated"
-      redirect_to @user
+      if helpers.has_company_access? and helpers.manages_user(@user)
+        redirect_to organization_path(@current_user.owned_organization)
+      else
+        redirect_to @user
+      end
     else
       render 'edit'
     end
@@ -86,7 +90,7 @@ class UsersController < ApplicationController
 
   private
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :user_image_link)
+      params.require(:user).permit(:name, :f_name, :l_name, :email, :password, :password_confirmation, :user_image_link)
     end
 
     def logged_in_user
@@ -105,7 +109,7 @@ class UsersController < ApplicationController
 
     def correct_user
       @user = User.find(params[:id])
-      redirect_to(@current_user) unless current_user?(@user) or has_admin_access
+      redirect_to(@current_user) unless current_user?(@user) or has_admin_access? or helpers.manages_user(@user)
     end
 
     def new_account
@@ -116,7 +120,9 @@ class UsersController < ApplicationController
       end
     end
 
-    def has_admin_access
+    def has_admin_access?
       @current_user.admin_level == 1
     end
+
+
 end

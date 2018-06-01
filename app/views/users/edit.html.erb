@@ -23,24 +23,31 @@
         <%= form_for @user do |f| %>
 
           <div class="input-field">
-            <%= f.text_field :name %>
-            <%= f.label :name %>
+            <%= f.text_field :f_name %>
+            <%= f.label :f_name, "First Name" %>
           </div>
 
           <div class="input-field">
-            <%= f.text_field :email %>
-            <%= f.label :email %>
+            <%= f.text_field :l_name %>
+            <%= f.label :l_name, "Last Name" %>
           </div>
 
-          <div class="input-field">
-            <%= f.password_field :password %>
-            <%= f.label :password %>
-          </div>
+          <% if !(manages_user(@user)) %>
+            <div class="input-field">
+              <%= f.text_field :email %>
+              <%= f.label :email %>
+            </div>
 
-          <div class="input-field">
-            <%= f.password_field :password_confirmation %>
-            <%= f.label :password_confirmation, "Password Confirmation" %>
-          </div>
+            <div class="input-field">
+              <%= f.password_field :password %>
+              <%= f.label :password %>
+            </div>
+
+            <div class="input-field">
+              <%= f.password_field :password_confirmation %>
+              <%= f.label :password_confirmation, "Password Confirmation" %>
+            </div>
+          <% end %>
 
           <div class="input-field">
             <%= f.text_field :user_image_link, placeholder: "https://placekitten.com/g/200/200" %>

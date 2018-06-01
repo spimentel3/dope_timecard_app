@@ -88,8 +88,9 @@
                 <% elsif !user.user.name %>
                   - Pending
                 <% end %>
-                <%= link_to "View", user_timecard_collection_path(user.user), class: "secondary-content user_actions theia_text_blue" %>
                 <a class="theia_text_blue secondary-content user_actions delete_user" user_name="<%= user.user.name %>" user_id="<%= user.user.id %>">Delete</a>
+                <%= link_to "View", user_timecard_collection_path(user.user), class: "secondary-content user_actions theia_text_blue" %>
+                <%= link_to "Edit", edit_user_path(user.user), class: "secondary-content user_actions theia_text_blue" %>
               </li>
             <% end %>
           </ul>
