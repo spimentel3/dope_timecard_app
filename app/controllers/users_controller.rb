@@ -42,8 +42,10 @@ class UsersController < ApplicationController
 
   def update
     @user.needs_to_update_account = false
+    @user.name = "#{params[:user][:f_name]} #{params[:user][:l_name]}"
     if @user.update_attributes(user_params)
       flash[:success] = "Profile Updated"
+      # if setting a new name or profile pic for someone in your organization else editing youself
       if helpers.has_company_access? and helpers.manages_user(@user)
         redirect_to organization_path(@current_user.owned_organization)
       else
@@ -90,7 +92,7 @@ class UsersController < ApplicationController
 
   private
     def user_params
-      params.require(:user).permit(:name, :f_name, :l_name, :email, :password, :password_confirmation, :user_image_link)
+      params.require(:user).permit(:f_name, :l_name, :email, :password, :password_confirmation, :user_image_link)
     end
 
     def logged_in_user
