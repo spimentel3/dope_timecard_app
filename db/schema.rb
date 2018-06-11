@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180601225338) do
+ActiveRecord::Schema.define(version: 20180608181031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,6 +125,14 @@ ActiveRecord::Schema.define(version: 20180601225338) do
     t.float "wed_overtime", default: 0.0
     t.float "thu_overtime", default: 0.0
     t.float "fri_overtime", default: 0.0
+    t.float "double_overtime", default: 0.0
+    t.float "sat_double_overtime", default: 0.0
+    t.float "sun_double_overtime", default: 0.0
+    t.float "mon_double_overtime", default: 0.0
+    t.float "tue_double_overtime", default: 0.0
+    t.float "wed_double_overtime", default: 0.0
+    t.float "thu_double_overtime", default: 0.0
+    t.float "fri_double_overtime", default: 0.0
   end
 
   create_table "users", force: :cascade do |t|

@@ -39,6 +39,12 @@ class Timecard < ApplicationRecord
     if self.sat_hours > 8.0
       self.sat_overtime = (self.sat_hours - 8.0).round(2)
       self.sat_hours = 8.0
+      if self.sat_overtime > 4.0
+        self.sat_double_overtime = (self.sat_overtime - 4.0).round(2)
+        self.sat_overtime = 4.0
+      else
+        self.sat_double_overtime = 0.0
+      end
     else
       self.sat_overtime = 0.0
     end
@@ -51,6 +57,12 @@ class Timecard < ApplicationRecord
     if self.sun_hours > 8.0
       self.sun_overtime = (self.sun_hours - 8.0).round(2)
       self.sun_hours = 8.0
+      if self.sun_overtime > 4.0
+        self.sun_double_overtime = (self.sun_overtime - 4.0).round(2)
+        self.sun_overtime = 4.0
+      else
+        self.sun_double_overtime = 0.0
+      end
     else
       self.sun_overtime = 0.0
     end
@@ -63,6 +75,12 @@ class Timecard < ApplicationRecord
     if self.mon_hours > 8.0
       self.mon_overtime = (self.mon_hours - 8.0).round(2)
       self.mon_hours = 8.0
+      if self.mon_overtime > 4.0
+        self.mon_double_overtime = (self.mon_overtime - 4.0).round(2)
+        self.mon_overtime = 4.0
+      else
+        self.mon_double_overtime = 0.0
+      end
     else
       self.mon_overtime = 0.0
     end
@@ -75,6 +93,12 @@ class Timecard < ApplicationRecord
     if self.tue_hours > 8.0
       self.tue_overtime = (self.tue_hours - 8.0).round(2)
       self.tue_hours = 8.0
+      if self.tue_overtime > 4.0
+        self.tue_double_overtime = (self.tue_overtime - 4.0).round(2)
+        self.tue_overtime = 4.0
+      else
+        self.tue_double_overtime = 0.0
+      end
     else
       self.tue_overtime = 0.0
     end
@@ -87,6 +111,12 @@ class Timecard < ApplicationRecord
     if self.wed_hours > 8.0
       self.wed_overtime = (self.wed_hours - 8.0).round(2)
       self.wed_hours = 8.0
+      if self.wed_overtime > 4.0
+        self.wed_double_overtime = (self.wed_overtime - 4.0).round(2)
+        self.wed_overtime = 4.0
+      else
+        self.wed_double_overtime = 0.0
+      end
     else
       self.wed_overtime = 0.0
     end
@@ -99,6 +129,12 @@ class Timecard < ApplicationRecord
     if self.thu_hours > 8.0
       self.thu_overtime = (self.thu_hours - 8.0).round(2)
       self.thu_hours = 8.0
+      if self.thu_overtime > 4.0
+        self.thu_double_overtime = (self.thu_overtime - 4.0).round(2)
+        self.thu_overtime = 4.0
+      else
+        self.thu_double_overtime = 0.0
+      end
     else
       self.thu_overtime = 0.0
     end
@@ -111,6 +147,12 @@ class Timecard < ApplicationRecord
     if self.fri_hours > 8.0
       self.fri_overtime = (self.fri_hours - 8.0).round(2)
       self.fri_hours = 8.0
+      if self.fri_overtime > 4.0
+        self.fri_double_overtime = (self.fri_overtime - 4.0).round(2)
+        self.fri_overtime = 4.0
+      else
+        self.fri_double_overtime = 0.0
+      end
     else
       self.fri_overtime = 0.0
     end
@@ -118,6 +160,7 @@ class Timecard < ApplicationRecord
 
   def total_overtime
     self.overtime_hours = self.sat_overtime + self.sun_overtime + self.mon_overtime + self.tue_overtime + self.wed_overtime + self.thu_overtime + self.fri_overtime
+    self.double_overtime = self.sat_double_overtime + self.sun_double_overtime + self.mon_double_overtime + self.tue_double_overtime + self.wed_double_overtime + self.thu_double_overtime + self.fri_double_overtime
   end
 
   def total_all_hours

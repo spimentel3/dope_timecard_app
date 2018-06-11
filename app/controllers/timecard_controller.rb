@@ -282,6 +282,7 @@ class TimecardController < ApplicationController
                   thu_overtime: "#{@timecard.thu_overtime}",
                   fri_overtime: "#{@timecard.fri_overtime}",
                   overtime_total: "#{@timecard.overtime_hours}",
+                  double_overtime: "#{@timecard.double_overtime}",
                   sick_hours: "#{@timecard.sick_hours}"
                   }
 

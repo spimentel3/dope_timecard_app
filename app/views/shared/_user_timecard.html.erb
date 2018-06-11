@@ -346,15 +346,18 @@
     </div>
     <div class="divider" style="margin: 16px 0 16px 0"></div>
     <div class="row">
-      <div class="col s4 center">
-        <h5 id="total_hours" style="margin-bottom: 0">Total Hours: <%= @timecard.total_hours + @timecard.sick_hours %> </h5>
-        <p style="margin-top: 0">(includes sick hours)</p>
+      <div class="col s3 center">
+        <h5 id="sick_hours">Sick Hours: <%= @timecard.sick_hours %> </h5>
       </div>
-      <div class="col s4 center">
+      <div class="col s3 center">
         <h5 id="overtime_hours">Overtime Hours: <%= @timecard.overtime_hours %> </h5>
       </div>
-      <div class="col s4 center">
-        <h5 id="sick_hours">Sick Hours: <%= @timecard.sick_hours %> </h5>
+      <div class="col s3 center">
+        <h5 id="double_overtime_hours">2x Overtime Hours: <%= @timecard.double_overtime %> </h5>
+      </div>
+      <div class="col s3 center">
+        <h5 id="total_hours" style="margin-bottom: 0">Total Hours: <%= @timecard.total_hours + @timecard.sick_hours %> </h5>
+        <p style="margin-top: 0">(includes sick hours)</p>
       </div>
     </div>
   </div>
@@ -602,6 +605,7 @@
             , success: function (json) {
                 $("#total_hours").html("Total Hours: " + json["total_hours"]);
                 $("#overtime_hours").html("Overtime Hours: " + json["overtime_total"]);
+                $("#double_overtime_hours").html("2x Overtime Hours: " + json["double_overtime"]);
                 $("#sick_hours").html("Sick Hours: " + json["sick_hours"]);
                 $("#sat_hours").html(json["sat_total"]);
                 $("#sun_hours").html(json["sun_total"]);
@@ -751,6 +755,7 @@
             , success: function (json) {
                 $("#total_hours").html("Total Hours: " + json["total_hours"]);
                 $("#overtime_hours").html("Overtime Hours: " + json["overtime_total"]);
+                $("#double_overtime_hours").html("2x Overtime Hours: " + json["double_overtime"]);
                 $("#sick_hours").html("Sick Hours: " + json["sick_hours"]);
                 $("#sat_hours").html(json["sat_total"]);
                 $("#sun_hours").html(json["sun_total"]);

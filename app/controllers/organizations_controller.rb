@@ -97,8 +97,14 @@ class OrganizationsController < ApplicationController
         employee = Employee.new(user: user, organization: @organization)
         employee.save
 
+        latest_timecard_date = Timecard.where(id: Timebook.where(organization: @organization).pluck(:timecard_id)).order(end_date: :asc).limit(1).pluck(:end_date)
+
         timecard = Timecard.new
-        timecard.set_up_timecard
+        if !latest_timecard_date.empty?
+          timecard.set_up_timecard(latest_timecard_date[0])
+        else
+          timecard.set_up_timecard
+        end
         timecard.save
 
         timebook_entry = Timebook.new(organization: @organization, timecard: timecard, user: user)
@@ -124,7 +130,7 @@ class OrganizationsController < ApplicationController
   def get_week_stats
     organization = Organization.find(params[:organization_id])
     date = DateTime.parse(params[:end_date])
-    week_timecards = Timecard.where(id: (Timebook.where(organization_id: organization ).pluck(:timecard_id)), end_date: date)
+    week_timecards = Timecard.where(id: (Timebook.where(organization: organization ).pluck(:timecard_id)), end_date: date)
     total_week_hours = 0
     total_week_overtime = 0
     total_week_sick = 0
