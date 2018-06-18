@@ -97,11 +97,13 @@ class OrganizationsController < ApplicationController
         employee = Employee.new(user: user, organization: @organization)
         employee.save
 
-        latest_timecard_date = Timecard.where(id: Timebook.where(organization: @organization).pluck(:timecard_id)).order(end_date: :asc).limit(1).pluck(:end_date)
+        debugger
+        latest_timecard_date = Timecard.where(id: Timebook.where(organization: @organization).pluck(:timecard_id)).order(end_date: :desc).first.end_date
 
+        debugger
         timecard = Timecard.new
-        if !latest_timecard_date.empty?
-          timecard.set_up_timecard(latest_timecard_date[0])
+        if latest_timecard_date
+          timecard.set_up_timecard(latest_timecard_date)
         else
           timecard.set_up_timecard
         end
