@@ -84,37 +84,37 @@ class OrganizationsController < ApplicationController
     @invites = params[:emails]
     @successful_invites = []
     @unsuccessful_invites = []
-    @invites.each do |email|
-      if email == ""
-        next
-      end
-      password = SecureRandom.urlsafe_base64
-      user = User.new(email: email, password: password, password_confirmation: password)
-      user.needs_to_update_account = true
-      user.admin_level = 20
-      if user.save
-        user.send_invitation_email
-        employee = Employee.new(user: user, organization: @organization)
-        employee.save
-
-        debugger
-        latest_timecard_date = Timecard.where(id: Timebook.where(organization: @organization).pluck(:timecard_id)).order(end_date: :desc).first.end_date
-
-        debugger
-        timecard = Timecard.new
-        if latest_timecard_date
-          timecard.set_up_timecard(latest_timecard_date)
-        else
-          timecard.set_up_timecard
+    if @invites
+      @invites.each do |email|
+        if email == ""
+          next
         end
-        timecard.save
+        password = SecureRandom.urlsafe_base64
+        user = User.new(email: email, password: password, password_confirmation: password)
+        user.needs_to_update_account = true
+        user.admin_level = 20
+        if user.save
+          user.send_invitation_email
+          employee = Employee.new(user: user, organization: @organization)
+          employee.save
 
-        timebook_entry = Timebook.new(organization: @organization, timecard: timecard, user: user)
-        timebook_entry.save
+          latest_timecard_date = Timecard.where(id: Timebook.where(organization: @organization).pluck(:timecard_id)).order(end_date: :desc).first
+          timecard = Timecard.new
 
-        @successful_invites.push(user)
-      else
-        @unsuccessful_invites.push(user)
+          if latest_timecard_date.nil?
+            timecard.set_up_timecard
+          else
+            timecard.set_up_timecard(latest_timecard_date.end_date)
+          end
+          timecard.save
+
+          timebook_entry = Timebook.new(organization: @organization, timecard: timecard, user: user)
+          timebook_entry.save
+
+          @successful_invites.push(user)
+        else
+          @unsuccessful_invites.push(user)
+        end
       end
     end
   end
@@ -123,7 +123,11 @@ class OrganizationsController < ApplicationController
   def view_week
     @organization = Organization.find(params[:organization_id])
     date = DateTime.parse(params[:end_date])
-    @week_timecards = Timecard.where(id: (Timebook.where(organization: @organization).order(:user_id).pluck(:timecard_id)), end_date: date)
+    users_in_order = User.find(@organization.employees.pluck(:user_id)).sort_by{|e| e[:f_name]}.pluck(:id)
+    @week_timecards = []
+    users_in_order.each do |user_id|
+      @week_timecards.push Timecard.where(id: (Timebook.where(organization: @organization, user_id: user_id).pluck(:timecard_id).last), end_date: date).first
+    end
     @total_week_hours = 0
     @total_week_overtime = 0
     store_location
