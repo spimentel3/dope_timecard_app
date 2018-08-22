@@ -126,7 +126,7 @@ class OrganizationsController < ApplicationController
     users_in_order = User.find(@organization.employees.pluck(:user_id)).sort_by{|e| e[:f_name]}.pluck(:id)
     @week_timecards = []
     users_in_order.each do |user_id|
-      @week_timecards.push Timecard.where(id: (Timebook.where(organization: @organization, user_id: user_id).pluck(:timecard_id).last), end_date: date).first
+      @week_timecards.push Timecard.where(id: (Timebook.where(organization: @organization, user_id: user_id).pluck(:timecard_id)), end_date: date).first
     end
     @total_week_hours = 0
     @total_week_overtime = 0
