@@ -356,7 +356,7 @@
         <h5 id="double_overtime_hours">2x Overtime Hours: <%= @timecard.double_overtime %> </h5>
       </div>
       <div class="col s3 center">
-        <h5 id="total_hours" style="margin-bottom: 0">Total Hours: <%= @timecard.total_hours + @timecard.sick_hours %> </h5>
+        <h5 id="total_hours" style="margin-bottom: 0">Total Hours: <%= @timecard.total_hours + @timecard.overtime_hours + @timecard.double_overtime %> </h5>
         <p style="margin-top: 0">(includes overtime hours)</p>
       </div>
     </div>

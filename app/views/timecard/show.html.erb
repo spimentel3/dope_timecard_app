@@ -88,8 +88,8 @@
     </table>
     <div class="row">
       <div class="col s4 center">
-        <h5 style="margin-bottom: 0px">Total Time: <%= @timecard.total_hours + @timecard.sick_hours %></h5>
-        <p style="margin-top: 0px">(includes sick hours)</p>
+        <h5 style="margin-bottom: 0px">Total Time: <%= @timecard.total_hours + @timecard.overtime_hours + @timecard.double_overtime %></h5>
+        <p style="margin-top: 0px">(includes overtime hours)</p>
       </div>
       <div class="col s4 center">
         <h5>Sick Hours: <%= @timecard.sick_hours %></h5>
