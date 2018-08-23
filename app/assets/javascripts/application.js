@@ -12,4 +12,6 @@
 //
 //= require jquery
 //= require rails-ujs
+//= require chart.min
+//= require materialize.min
 //= require_tree .

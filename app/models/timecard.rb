@@ -31,131 +31,76 @@ class Timecard < ApplicationRecord
 
   end
 
-  def total_sat_hours
-    self.sat_hours = ((self.sat_end - self.sat_start) / 1.hour).round(2) - self.sat_break_hours - (self.sat_break_minutes / 60.0).round(2)
-    if self.sat_hours < 0
-      self.sat_hours = 0
+  def calculate_hours(day)
+    day[:hours] = (((day[:end] - day[:start]) / 1.hour) - day[:break_hours] - (day[:break_minutes] / 60.0)).round(2)
+    if day[:hours] < 0
+      day[:hours] = 0
     end
-    if self.sat_hours > 8.0
-      self.sat_overtime = (self.sat_hours - 8.0).round(2)
-      self.sat_hours = 8.0
-      if self.sat_overtime > 4.0
-        self.sat_double_overtime = (self.sat_overtime - 4.0).round(2)
-        self.sat_overtime = 4.0
+
+    # This handles if the employee works more than 8 hours a day
+    if day[:hours] > 8.0
+      day[:overtime] = (day[:hours] - 8.0).round(2)
+      day[:hours] = 8.0
+      if day[:overtime] > 4.0
+        day[:double_overtime] = (day[:overtime] - 4.0).round(2)
+        day[:overtime] = 4.0
       else
-        self.sat_double_overtime = 0.0
+        day[:double_overtime] = 0.0
       end
     else
-      self.sat_overtime = 0.0
+      day[:overtime] = 0.0
+      day[:double_overtime] = 0.0
     end
+  end
+
+  def total_sat_hours
+    day = { hours: self.sat_hours, end: self.sat_end, start: self.sat_start, break_hours: self.sat_break_hours, break_minutes: self.sat_break_minutes, overtime: self.sat_overtime, double_overtime: self.sat_double_overtime }
+    calculate_hours day
+    self.sat_hours = day[:hours]
+    self.sat_overtime = day[:overtime]
+    self.sat_double_overtime = day[:double_overtime]
   end
   def total_sun_hours
-    self.sun_hours = ((self.sun_end - self.sun_start) / 1.hour).round(2) - self.sun_break_hours - (self.sun_break_minutes / 60.0).round(2)
-    if self.sun_hours < 0
-      self.sun_hours = 0
-    end
-    if self.sun_hours > 8.0
-      self.sun_overtime = (self.sun_hours - 8.0).round(2)
-      self.sun_hours = 8.0
-      if self.sun_overtime > 4.0
-        self.sun_double_overtime = (self.sun_overtime - 4.0).round(2)
-        self.sun_overtime = 4.0
-      else
-        self.sun_double_overtime = 0.0
-      end
-    else
-      self.sun_overtime = 0.0
-    end
+    day = { hours: self.sun_hours, end: self.sun_end, start: self.sun_start, break_hours: self.sun_break_hours, break_minutes: self.sun_break_minutes, overtime: self.sun_overtime, double_overtime: self.sun_double_overtime }
+    calculate_hours day
+    self.sun_hours = day[:hours]
+    self.sun_overtime = day[:overtime]
+    self.sun_double_overtime = day[:double_overtime]
   end
   def total_mon_hours
-    self.mon_hours = ((self.mon_end - self.mon_start) / 1.hour).round(2) - self.mon_break_hours - (self.mon_break_minutes / 60.0).round(2)
-    if self.mon_hours < 0
-      self.mon_hours = 0
-    end
-    if self.mon_hours > 8.0
-      self.mon_overtime = (self.mon_hours - 8.0).round(2)
-      self.mon_hours = 8.0
-      if self.mon_overtime > 4.0
-        self.mon_double_overtime = (self.mon_overtime - 4.0).round(2)
-        self.mon_overtime = 4.0
-      else
-        self.mon_double_overtime = 0.0
-      end
-    else
-      self.mon_overtime = 0.0
-    end
+    day = { hours: self.mon_hours, end: self.mon_end, start: self.mon_start, break_hours: self.mon_break_hours, break_minutes: self.mon_break_minutes, overtime: self.mon_overtime, double_overtime: self.mon_double_overtime }
+    calculate_hours day
+    self.mon_hours = day[:hours]
+    self.mon_overtime = day[:overtime]
+    self.mon_double_overtime = day[:double_overtime]
   end
   def total_tue_hours
-    self.tue_hours = ((self.tue_end - self.tue_start) / 1.hour).round(2) - self.tue_break_hours - (self.tue_break_minutes / 60.0).round(2)
-    if self.tue_hours < 0
-      self.tue_hours = 0
-    end
-    if self.tue_hours > 8.0
-      self.tue_overtime = (self.tue_hours - 8.0).round(2)
-      self.tue_hours = 8.0
-      if self.tue_overtime > 4.0
-        self.tue_double_overtime = (self.tue_overtime - 4.0).round(2)
-        self.tue_overtime = 4.0
-      else
-        self.tue_double_overtime = 0.0
-      end
-    else
-      self.tue_overtime = 0.0
-    end
+    day = { hours: self.tue_hours, end: self.tue_end, start: self.tue_start, break_hours: self.tue_break_hours, break_minutes: self.tue_break_minutes, overtime: self.tue_overtime, double_overtime: self.tue_double_overtime }
+    calculate_hours day
+    self.tue_hours = day[:hours]
+    self.tue_overtime = day[:overtime]
+    self.tue_double_overtime = day[:double_overtime]
   end
   def total_wed_hours
-    self.wed_hours = ((self.wed_end - self.wed_start) / 1.hour).round(2) - self.wed_break_hours - (self.wed_break_minutes / 60.0).round(2)
-    if self.wed_hours < 0
-      self.wed_hours = 0
-    end
-    if self.wed_hours > 8.0
-      self.wed_overtime = (self.wed_hours - 8.0).round(2)
-      self.wed_hours = 8.0
-      if self.wed_overtime > 4.0
-        self.wed_double_overtime = (self.wed_overtime - 4.0).round(2)
-        self.wed_overtime = 4.0
-      else
-        self.wed_double_overtime = 0.0
-      end
-    else
-      self.wed_overtime = 0.0
-    end
+    day = { hours: self.wed_hours, end: self.wed_end, start: self.wed_start, break_hours: self.wed_break_hours, break_minutes: self.wed_break_minutes, overtime: self.wed_overtime, double_overtime: self.wed_double_overtime }
+    calculate_hours day
+    self.wed_hours = day[:hours]
+    self.wed_overtime = day[:overtime]
+    self.wed_double_overtime = day[:double_overtime]
   end
   def total_thu_hours
-    self.thu_hours = ((self.thu_end - self.thu_start) / 1.hour).round(2) - self.thu_break_hours - (self.thu_break_minutes / 60.0).round(2)
-    if self.thu_hours < 0
-      self.thu_hours = 0
-    end
-    if self.thu_hours > 8.0
-      self.thu_overtime = (self.thu_hours - 8.0).round(2)
-      self.thu_hours = 8.0
-      if self.thu_overtime > 4.0
-        self.thu_double_overtime = (self.thu_overtime - 4.0).round(2)
-        self.thu_overtime = 4.0
-      else
-        self.thu_double_overtime = 0.0
-      end
-    else
-      self.thu_overtime = 0.0
-    end
+    day = { hours: self.thu_hours, end: self.thu_end, start: self.thu_start, break_hours: self.thu_break_hours, break_minutes: self.thu_break_minutes, overtime: self.thu_overtime, double_overtime: self.thu_double_overtime }
+    calculate_hours day
+    self.thu_hours = day[:hours]
+    self.thu_overtime = day[:overtime]
+    self.thu_double_overtime = day[:double_overtime]
   end
   def total_fri_hours
-    self.fri_hours = ((self.fri_end - self.fri_start) / 1.hour).round(2) - self.fri_break_hours - (self.fri_break_minutes / 60.0).round(2)
-    if self.fri_hours < 0
-      self.fri_hours = 0
-    end
-    if self.fri_hours > 8.0
-      self.fri_overtime = (self.fri_hours - 8.0).round(2)
-      self.fri_hours = 8.0
-      if self.fri_overtime > 4.0
-        self.fri_double_overtime = (self.fri_overtime - 4.0).round(2)
-        self.fri_overtime = 4.0
-      else
-        self.fri_double_overtime = 0.0
-      end
-    else
-      self.fri_overtime = 0.0
-    end
+    day = { hours: self.fri_hours, end: self.fri_end, start: self.fri_start, break_hours: self.fri_break_hours, break_minutes: self.fri_break_minutes, overtime: self.fri_overtime, double_overtime: self.fri_double_overtime }
+    calculate_hours day
+    self.fri_hours = day[:hours]
+    self.fri_overtime = day[:overtime]
+    self.fri_double_overtime = day[:double_overtime]
   end
 
   def total_overtime
@@ -173,7 +118,8 @@ class Timecard < ApplicationRecord
     self.total_fri_hours
     self.total_overtime
     self.total_hours = (self.sat_hours + self.sun_hours + self.mon_hours + self.tue_hours + self.wed_hours + self.thu_hours + self.fri_hours).round(2)
-    
+
+    # This is if the employee works over 40 hours in one week, different from 8 hours a day rule.
     if self.total_hours > 40.0
       difference = self.total_hours - 40.0
       self.overtime_hours += difference

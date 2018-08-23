@@ -24,6 +24,7 @@ class SessionsController < ApplicationController
 
   def destroy
     logout if logged_in?
+    clear_back_location
     redirect_to root_url
   end
 end
