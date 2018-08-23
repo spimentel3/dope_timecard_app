@@ -12,7 +12,7 @@
         <p>Double Overtime Hours: <%= timecard.timecard.double_overtime %></p>
         <p>Sick Hours: <%= timecard.timecard.sick_hours %></p>
         <div class="divider" style="max-width: 130px"></div>
-        <p>Total Hours: <%= timecard.timecard.total_hours + timecard.timecard.overtime_hours + timecard.timecard.double_overtime %></p>
+        <p>Total Hours: <%= timecard.timecard.total_hours + timecard.timecard.overtime_hours + timecard.timecard.double_overtime + timecard.timecard.sick_hours %></p>
       </div>
       <div class="card-action">
         <%= link_to "View Timecard", timecard.timecard, class: "theia_text_blue" %>
